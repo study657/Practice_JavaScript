@@ -1,5 +1,6 @@
 let game = document.querySelector('.game');
-let ship_4 = document.querySelector('.ship_4');
+let ship_4_0 = document.querySelector('.ship_4_0');
+let ship_4_1 = document.querySelector('.ship_4_1');
 let trs = document.querySelectorAll('tr');
 let tds = game.querySelectorAll('td');
 
@@ -7,13 +8,18 @@ for (let i = 0; i < tds.length; i++) {
     tds[i].id = i + 1;
 }
 
+for (let i = 0; i < trs.length; i++) {
+    trs[i].dataset.num = i;
+    for (let k = 0; k < trs[i].children.length; k++) {
+        trs[i].children[k].dataset.num = k;
+    }
+}
+
 
 function shipPlacement(ship) {
-    let top_coordinates = ['0', '40px', '80px', '120px', '160px', '200px', '240px', '280px', '320px', '360px'];
-    let left_coordinates = ['0', '40px', '80px', '120px', '160px', '200px', '240px'];
-
     if (randonDirection() == 'horizontal') {
-        ship.style.display = 'block';
+        let top_coordinates = ['0', '40px', '80px', '120px', '160px', '200px', '240px', '280px', '320px', '360px'];
+        let left_coordinates = ['0', '40px', '80px', '120px', '160px', '200px', '240px'];
 
         let topCurrentCoordinate = top_coordinates[getRandomIntInclusive(0, top_coordinates.length - 1)];
         let leftCurrentCoordinate = left_coordinates[getRandomIntInclusive(0, left_coordinates.length - 1)];
@@ -25,35 +31,40 @@ function shipPlacement(ship) {
 
 
         let shipOnCells = getCellsOnShip(topCurrentCoordinate, leftCurrentCoordinate, 4); // Массив из ячеек где стоит корабль
-        let cellsAboutShip = getCellsAboutShip(shipOnCells, 4);
 
+        if (!checkOnAvailabilityShipOnCell(shipOnCells) && !checkCellsAboutShip(shipOnCells, 4, 'horizontal')) {
+            ship.style.display = 'block';
 
-        if (checkOnAvailabilityShipOnCell(shipOnCells)) {
-            let check = cellsAboutShip.some(function(item){
-                if(item.classList.contains('parking')){
-                    return true;
-                }else{
-                    return false;
-                }
-            });
-
-            if(!check){
-                for(let i = 0; i < shipOnCells.length; i++){
-                    shipOnCells[i].className = 'parking';
-                }
-            }else{
-                ship.style.display = 'none';
-                cellsAboutShip.length = 0;
-                shipPlacement(ship_4);
+            for (let i = 0; i < shipOnCells.length; i++) {
+                shipOnCells[i].className = 'parking';
             }
-
         } else {
             ship.style.display = 'none';
-            cellsAboutShip.length = 0;
-            shipPlacement(ship_4);
+            shipPlacement(ship);
         }
-    }else{
+    } else {
+        let top_coordinates = ['0', '40px', '80px', '120px', '160px', '200px', '240px'];
+        let left_coordinates = ['40px', '80px', '120px', '160px', '200px', '240px', '280px', '320px', '360px', '400px'];
 
+        let topCurrentCoordinate = top_coordinates[getRandomIntInclusive(0, top_coordinates.length - 1)];
+        let leftCurrentCoordinate = left_coordinates[getRandomIntInclusive(0, left_coordinates.length - 1)];
+
+        ship.style.top = topCurrentCoordinate;
+        ship.style.left = leftCurrentCoordinate;
+
+        let shipOnCells = getCellsOnShipVertical(topCurrentCoordinate, leftCurrentCoordinate, 4); // Массив из ячеек где стоит корабль
+
+        if (!checkOnAvailabilityShipOnCell(shipOnCells) && !checkCellsAboutShip(shipOnCells, 4, 'vertical')) {
+            ship.style.display = 'block';
+            ship.style.transform = 'rotate(90deg)';
+
+            for (let i = 0; i < shipOnCells.length; i++) {
+                shipOnCells[i].className = 'parking';
+            }
+        } else {
+            ship.style.display = 'none';
+            shipPlacement(ship);
+        }
     }
 };
 
@@ -73,94 +84,136 @@ function getCellsOnShip(top, left, ship) { // функция которая по
     }
 };
 
-function checkOnAvailabilityShipOnCell(shipOnCells) { // Проверка на наличие корабля куда встал новый корабль
+function getCellsOnShipVertical(top, left, ship) { // функция которая получает все колонки в виде массива, куда встает корабль. Где ship - это разряд корабля
+    if (ship == 4) {
+        let allCels = [];
+        let topStartCell = parseFloat(top) / 40;
+        let leftStartCell = (parseFloat(left) / 40) - 1;
+
+        let startCell = trs[topStartCell].querySelectorAll('td')[leftStartCell].id;
+
+        for (let i = 0; i <= 3; i++) {
+            let cell = document.getElementById(String(Number(startCell) + (i * 10)));
+            allCels.push(cell);
+        }
+
+        return allCels;
+    }
+};
+
+function checkOnAvailabilityShipOnCell(shipOnCells) { // Проверка на наличие корабля, чтобы новый корабль не встал туда, где корабль уже есть
     return check = shipOnCells.some(function (item) {
         if (item.classList.contains('parking')) {
-            return false;
-        } else {
             return true;
+        } else {
+            return false;
         }
     });
 };
 
-function getCellsAboutShip(shipOnCells, ship) {
-    if (ship == 4) {
+function checkCellsAboutShip(shipOnCells, ship, orientation) { // Функция, которая проверяет все ячейки близлежащего корабля и выводит эти ячейки нам в виде массима
+    if (ship == 4 && orientation == 'horizontal') {
         let cellsAboutShip = [];
-        let data_numFirstCell = parseFloat(shipOnCells[0].id) - 1;
 
-        let test0 = document.getElementById(String(data_numFirstCell));
-        let test1 = document.getElementById(String(parseFloat(data_numFirstCell) + 10));
-        let test2 = document.getElementById(String(parseFloat(data_numFirstCell) + 11));
-        let test3 = document.getElementById(String(parseFloat(data_numFirstCell) - 10));
-        let test4 = document.getElementById(String(parseFloat(data_numFirstCell) - 9));
+        let data_numFirstCell = parseFloat(shipOnCells[0].id);
 
-        if (test0 !== null) {
-            cellsAboutShip.push(test0);
-        } 
-        if (test1 !== null) {
-            cellsAboutShip.push(test1);
-        } 
-        if (test2 !== null) {
-            cellsAboutShip.push(test2);
-        }
-        if (test3 !== null) {
-            cellsAboutShip.push(test3);
-        }
-        if (test4 !== null) {
-            cellsAboutShip.push(test4);
+        let lineOnShip = document.getElementById(String(data_numFirstCell)).parentElement;
+        let leftCallFromShip = lineOnShip.children[document.getElementById(data_numFirstCell).dataset.num - 1];
+        let rigthCallFromShip = lineOnShip.children[Number(document.getElementById(data_numFirstCell).dataset.num) + 4];
+
+        if (leftCallFromShip !== undefined) {
+            cellsAboutShip.push(leftCallFromShip);
         }
 
-
-        let data_numLastCell = parseFloat(shipOnCells[shipOnCells.length - 1].id) + 1;
-        
-        let test5 = document.getElementById(String(data_numLastCell));
-        let test6 = document.getElementById(String(parseFloat(data_numLastCell) + 9));
-        let test7 = document.getElementById(String(parseFloat(data_numLastCell) + 10));
-        let test8 = document.getElementById(String(parseFloat(data_numLastCell) - 10));
-        let test9 = document.getElementById(String(parseFloat(data_numLastCell) - 11));
-
-        if (test5 !== null) {
-            cellsAboutShip.push(test5);
-        } 
-        if (test6 !== null) {
-            cellsAboutShip.push(test6);
-        } 
-        if (test7 !== null) {
-            cellsAboutShip.push(test7);
-        }
-        if (test8 !== null) {
-            cellsAboutShip.push(test8);
-        }
-        if (test9 !== null) {
-            cellsAboutShip.push(test9);
+        if (rigthCallFromShip !== undefined) {
+            cellsAboutShip.push(rigthCallFromShip);
         }
 
-        let data_numFirstCenterCell = parseFloat(shipOnCells[1].id);
-        
-        let test10 = document.getElementById(String(parseFloat(data_numFirstCenterCell) - 10));
-        let test11 = document.getElementById(String(parseFloat(data_numFirstCenterCell) + 10));
+        let lineUpAbotShip = document.getElementById(String(data_numFirstCell)).parentElement.previousElementSibling;
+        if (lineUpAbotShip !== null) {
+            let firstCheckCallOnLine = document.getElementById(String(data_numFirstCell - 10));
+            let numberCall = firstCheckCallOnLine.dataset.num - 1;
 
-        if (test10 !== null) {
-            cellsAboutShip.push(test10);
-        } 
-        if (test11 !== null) {
-            cellsAboutShip.push(test11);
+            for (let i = 0; i <= 5; i++) {
+                if (lineUpAbotShip.children[numberCall + i] !== undefined) {
+                    cellsAboutShip.push(lineUpAbotShip.children[numberCall + i]);
+                }
+            }
         }
 
 
-        let data_numSecondCenterCell = parseFloat(shipOnCells[2].id);
-        
-        let test13 = document.getElementById(String(parseFloat(data_numSecondCenterCell) - 10));
-        let test14 = document.getElementById(String(parseFloat(data_numSecondCenterCell) + 10));
+        let lineDownAbotShip = document.getElementById(String(data_numFirstCell)).parentElement.nextElementSibling;
+        if (lineDownAbotShip !== null) {
+            let firstCheckCallOnLine = document.getElementById(String(data_numFirstCell + 10));
 
-        if (test13 !== null) {
-            cellsAboutShip.push(test13);
-        } 
-        if (test14 !== null) {
-            cellsAboutShip.push(test14);
+            let numberCall = firstCheckCallOnLine.dataset.num - 1;
+
+            for (let i = 0; i <= 5; i++) {
+                if (lineDownAbotShip.children[numberCall + i] !== undefined) {
+                    cellsAboutShip.push(lineDownAbotShip.children[numberCall + i]);
+                }
+            }
         }
 
-        return cellsAboutShip;
+        let check = cellsAboutShip.some(function (item) {
+            if (item.classList.contains('parking')) {
+                return true;
+            } else {
+                return false;
+            }
+        });
+
+        return check;
+    }
+
+    if (ship == 4 && orientation == 'vertical') {
+        let cellsAboutShip = [];
+        let data_numFirstCell = parseFloat(shipOnCells[0].id);
+
+        let numberRowWhereShip = Number(document.getElementById(String(data_numFirstCell)).parentElement.dataset.num);
+        let numberUpRowWhereShip = Number(trs[numberRowWhereShip - 1].dataset.num);
+
+        let numberCallBehindShip = Number(document.getElementById(String(data_numFirstCell)).dataset.num) - 1;
+
+        for (let i = 0; i <= 5; i++) {
+            if (trs[numberUpRowWhereShip + i] !== undefined) {
+                if (trs[numberUpRowWhereShip + i].children[numberCallBehindShip] !== undefined) {
+                    cellsAboutShip.push(trs[numberUpRowWhereShip + i].children[numberCallBehindShip]);
+                }
+            }
+        }
+
+        let numberCallFrontShip = Number(document.getElementById(String(data_numFirstCell)).dataset.num) + 1;
+
+        for (let i = 0; i <= 5; i++) {
+            if (trs[numberUpRowWhereShip + i] !== undefined) {
+                if (trs[numberUpRowWhereShip + i].children[numberCallFrontShip] !== undefined) {
+                    cellsAboutShip.push(trs[numberUpRowWhereShip + i].children[numberCallFrontShip]);
+                }
+            }
+        }
+
+        let rowUpShip = trs[numberRowWhereShip - 1];
+        let rowDownShip = trs[numberRowWhereShip + 4];
+        let numberCallWhereIsShip = document.getElementById(String(data_numFirstCell)).dataset.num;
+
+        if (rowUpShip !== undefined) {
+            cellsAboutShip.push(rowUpShip.children[numberCallWhereIsShip]);
+        }
+
+        if (rowDownShip !== undefined) {
+            cellsAboutShip.push(rowDownShip.children[numberCallWhereIsShip]);
+        }
+
+        let check = cellsAboutShip.some(function (item) {
+            if (item.classList.contains('parking')) {
+                return true;
+            } else {
+                return false;
+            }
+        });
+
+        return check;
     }
 };
 
@@ -191,4 +244,5 @@ function getRandomIntInclusive(min, max) {
 
 
 
-shipPlacement(ship_4);
+shipPlacement(ship_4_0);
+shipPlacement(ship_4_1);

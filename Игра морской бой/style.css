@@ -3,7 +3,7 @@
 }
 
 .game table {
-  width: 100%;
+  width: 400px;
 }
 
 .game table td {
@@ -15,7 +15,19 @@
   cursor: pointer;
 }
 
-.game .ship_4 {
+.game .ship_4_0 {
+  display: none;
+  background: url(images/4_h.png) center center/cover no-repeat;
+  width: 160px;
+  height: 40px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  -webkit-transform-origin: 0 0 0;
+          transform-origin: 0 0 0;
+}
+
+.game .ship_4_1 {
   display: none;
   background: url(images/4_h.png) center center/cover no-repeat;
   width: 160px;

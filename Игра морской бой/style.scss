@@ -2,7 +2,7 @@
     position: relative;
 
     table{
-        width: 100%;
+        width: 400px;
     
         td{
             min-height: 40px;
@@ -14,7 +14,18 @@
         }
     }
 
-    .ship_4{
+    .ship_4_0{
+        display: none;
+        background: url(images/4_h.png) center center/cover no-repeat;
+        width: 160px;
+        height: 40px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        transform-origin: 0 0 0;
+    }
+
+    .ship_4_1{
         display: none;
         background: url(images/4_h.png) center center/cover no-repeat;
         width: 160px;
