@@ -1,6 +1,5 @@
 let game = document.querySelector('.game');
-let ship_4_0 = document.querySelector('.ship_4_0');
-let ship_4_1 = document.querySelector('.ship_4_1');
+let ship_4 = document.querySelector('.ship_4');
 let trs = document.querySelectorAll('tr');
 let tds = game.querySelectorAll('td');
 
@@ -39,7 +38,6 @@ function shipPlacement(ship) {
                 shipOnCells[i].className = 'parking';
             }
         } else {
-            ship.style.display = 'none';
             shipPlacement(ship);
         }
     } else {
@@ -62,7 +60,6 @@ function shipPlacement(ship) {
                 shipOnCells[i].className = 'parking';
             }
         } else {
-            ship.style.display = 'none';
             shipPlacement(ship);
         }
     }
@@ -171,27 +168,46 @@ function checkCellsAboutShip(shipOnCells, ship, orientation) { // Функция
         let data_numFirstCell = parseFloat(shipOnCells[0].id);
 
         let numberRowWhereShip = Number(document.getElementById(String(data_numFirstCell)).parentElement.dataset.num);
-        let numberUpRowWhereShip = Number(trs[numberRowWhereShip - 1].dataset.num);
-
         let numberCallBehindShip = Number(document.getElementById(String(data_numFirstCell)).dataset.num) - 1;
-
-        for (let i = 0; i <= 5; i++) {
-            if (trs[numberUpRowWhereShip + i] !== undefined) {
-                if (trs[numberUpRowWhereShip + i].children[numberCallBehindShip] !== undefined) {
-                    cellsAboutShip.push(trs[numberUpRowWhereShip + i].children[numberCallBehindShip]);
-                }
-            }
-        }
-
         let numberCallFrontShip = Number(document.getElementById(String(data_numFirstCell)).dataset.num) + 1;
+        let numberUpRowWhereShip = '';
+        if(trs[numberRowWhereShip - 1] !== undefined){
+            numberUpRowWhereShip = Number(trs[numberRowWhereShip - 1].dataset.num);
+            for (let i = 0; i <= 5; i++) {
+                if (trs[numberUpRowWhereShip + i] !== undefined) {
+                    if (trs[numberUpRowWhereShip + i].children[numberCallBehindShip] !== undefined) {
+                        cellsAboutShip.push(trs[numberUpRowWhereShip + i].children[numberCallBehindShip]);
+                    }
+                }
+            }
 
-        for (let i = 0; i <= 5; i++) {
-            if (trs[numberUpRowWhereShip + i] !== undefined) {
-                if (trs[numberUpRowWhereShip + i].children[numberCallFrontShip] !== undefined) {
-                    cellsAboutShip.push(trs[numberUpRowWhereShip + i].children[numberCallFrontShip]);
+            for (let i = 0; i <= 5; i++) {
+                if (trs[numberUpRowWhereShip + i] !== undefined) {
+                    if (trs[numberUpRowWhereShip + i].children[numberCallFrontShip] !== undefined) {
+                        cellsAboutShip.push(trs[numberUpRowWhereShip + i].children[numberCallFrontShip]);
+                    }
+                }
+            }
+        }else{
+            numberUpRowWhereShip = Number(trs[numberRowWhereShip].dataset.num);
+            for (let i = 0; i <= 4; i++) {
+                if (trs[numberUpRowWhereShip + i] !== undefined) {
+                    if (trs[numberUpRowWhereShip + i].children[numberCallBehindShip] !== undefined) {
+                        cellsAboutShip.push(trs[numberUpRowWhereShip + i].children[numberCallBehindShip]);
+                    }
+                }
+            }
+
+            for (let i = 0; i <= 4; i++) {
+                if (trs[numberUpRowWhereShip + i] !== undefined) {
+                    if (trs[numberUpRowWhereShip + i].children[numberCallFrontShip] !== undefined) {
+                        cellsAboutShip.push(trs[numberUpRowWhereShip + i].children[numberCallFrontShip]);
+                    }
                 }
             }
         }
+
+
 
         let rowUpShip = trs[numberRowWhereShip - 1];
         let rowDownShip = trs[numberRowWhereShip + 4];
@@ -244,5 +260,4 @@ function getRandomIntInclusive(min, max) {
 
 
 
-shipPlacement(ship_4_0);
-shipPlacement(ship_4_1);
+shipPlacement(ship_4);
