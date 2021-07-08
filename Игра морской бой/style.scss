@@ -1,5 +1,6 @@
 .game{
     position: relative;
+    width: 400px;
 
     table{
         width: 400px;
@@ -15,7 +16,6 @@
     }
 
     .ship_4{
-        display: none;
         background: url(images/4_h.png) center center/cover no-repeat;
         width: 160px;
         height: 40px;
@@ -25,135 +25,33 @@
         transform-origin: 0 0 0;
     }
 
-    // .ship_4_1{
-    //     display: none;
-    //     background: url(images/4_h.png) center center/cover no-repeat;
-    //     width: 160px;
-    //     height: 40px;
-    //     position: absolute;
-    //     top: 0;
-    //     left: 0;
-    //     transform-origin: 0 0 0;
-    // }
+    .ship_3{
+        background: url(images/3_h.png) center center/cover no-repeat;
+        width: 120px;
+        height: 40px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        transform-origin: 0 0 0;
+    }
 
-    // .ship_4_2{
-    //     display: none;
-    //     background: url(images/4_h.png) center center/cover no-repeat;
-    //     width: 160px;
-    //     height: 40px;
-    //     position: absolute;
-    //     top: 0;
-    //     left: 0;
-    //     transform-origin: 0 0 0;
-    // }
+    .ship_2{
+        background: url(images/2_h.png) center center/cover no-repeat;
+        width: 80px;
+        height: 40px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        transform-origin: 0 0 0;
+    }
 
-    // .ship_4_3{
-    //     display: none;
-    //     background: url(images/4_h.png) center center/cover no-repeat;
-    //     width: 160px;
-    //     height: 40px;
-    //     position: absolute;
-    //     top: 0;
-    //     left: 0;
-    //     transform-origin: 0 0 0;
-    // }
-
-    // .ship_3_0{
-        // display: none;
-    //     background: url(images/3_h.png) center center/cover no-repeat;
-    //     width: 120px;
-    //     height: 40px;
-    //     position: absolute;
-    //     top: 40px;
-    //     left: 40px;
-    //     transform-origin: 0 0 0;
-    // }
-
-    // .ship_3_1{
-        // display: none;
-    //     background: url(images/3_h.png) center center/cover no-repeat;
-    //     width: 120px;
-    //     height: 40px;
-    //     position: absolute;
-    //     top: 40px;
-    //     left: 40px;
-    //     transform-origin: 0 0 0;
-    // }
-
-    // .ship_2_0{
-        // display: none;
-    //     background: url(images/2_h.png) center center/cover no-repeat;
-    //     width: 80px;
-    //     height: 40px;
-    //     position: absolute;
-    //     top: 80px;
-    //     left: 0;
-    //     transform-origin: 0 0 0;
-    // }
-
-    // .ship_2_1{
-        // display: none;
-    //     background: url(images/2_h.png) center center/cover no-repeat;
-    //     width: 80px;
-    //     height: 40px;
-    //     position: absolute;
-    //     top: 80px;
-    //     left: 0;
-    //     transform-origin: 0 0 0;
-    // }
-
-    // .ship_2_2{
-        // display: none;
-    //     background: url(images/2_h.png) center center/cover no-repeat;
-    //     width: 80px;
-    //     height: 40px;
-    //     position: absolute;
-    //     top: 80px;
-    //     left: 0;
-    //     transform-origin: 0 0 0;
-    // }
-
-    // .ship_1_0{
-        // display: none;
-    //     background: url(images/1_h.png) center center/cover no-repeat;
-    //     width: 40px;
-    //     height: 40px;
-    //     position: absolute;
-    //     top: 120px;
-    //     left: 0;
-    //     transform-origin: 0 0 0;
-    // }
-
-    // .ship_1_1{
-        // display: none;
-    //     background: url(images/1_h.png) center center/cover no-repeat;
-    //     width: 40px;
-    //     height: 40px;
-    //     position: absolute;
-    //     top: 120px;
-    //     left: 0;
-    //     transform-origin: 0 0 0;
-    // }
-
-    // .ship_1_2{
-        // display: none;
-    //     background: url(images/1_h.png) center center/cover no-repeat;
-    //     width: 40px;
-    //     height: 40px;
-    //     position: absolute;
-    //     top: 120px;
-    //     left: 0;
-    //     transform-origin: 0 0 0;
-    // }
-
-    // .ship_1_3{
-        // display: none;
-    //     background: url(images/1_h.png) center center/cover no-repeat;
-    //     width: 40px;
-    //     height: 40px;
-    //     position: absolute;
-    //     top: 120px;
-    //     left: 0;
-    //     transform-origin: 0 0 0;
-    // }
+    .ship_1{
+        background: url(images/1_h.png) center center/cover no-repeat;
+        width: 40px;
+        height: 40px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        transform-origin: 0 0 0;
+    }
 }

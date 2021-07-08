@@ -1,7 +1,9 @@
 let game = document.querySelector('.game');
-let ship_4 = document.querySelector('.ship_4');
 let trs = document.querySelectorAll('tr');
 let tds = game.querySelectorAll('td');
+let random = document.querySelector('.random');
+let top_coordinates = ['0', '40px', '80px', '120px', '160px', '200px', '240px', '280px', '320px', '360px', '400px'];
+let left_coordinates = ['0', '40px', '80px', '120px', '160px', '200px', '240px', '280px', '320px', '360px', '400px'];
 
 for (let i = 0; i < tds.length; i++) {
     tds[i].id = i + 1;
@@ -15,59 +17,93 @@ for (let i = 0; i < trs.length; i++) {
 }
 
 
-function shipPlacement(ship) {
-    if (randonDirection() == 'horizontal') {
-        let top_coordinates = ['0', '40px', '80px', '120px', '160px', '200px', '240px', '280px', '320px', '360px'];
-        let left_coordinates = ['0', '40px', '80px', '120px', '160px', '200px', '240px'];
+function shipPlacement(shipLength) { // Основная функция, которая создает корабль, исходя из параметров его длины
+    if (randonDirection() == 'horizontal') { // Ветка, если корабль получился рандомно с расположением ГОРИЗОНТАЛЬНЫМ
+        let maxCoordinateFromArr_top_coordinates = 0;
+        let maxCoordinateFromArr_left_coordinates = 0;
 
-        let topCurrentCoordinate = top_coordinates[getRandomIntInclusive(0, top_coordinates.length - 1)];
-        let leftCurrentCoordinate = left_coordinates[getRandomIntInclusive(0, left_coordinates.length - 1)];
+        if (shipLength == 4) {
+            maxCoordinateFromArr_top_coordinates = 9;
+            maxCoordinateFromArr_left_coordinates = 6;
+        }
 
-        ship.style.top = topCurrentCoordinate;
-        ship.style.left = leftCurrentCoordinate;
+        if (shipLength == 3) {
+            maxCoordinateFromArr_top_coordinates = 9;
+            maxCoordinateFromArr_left_coordinates = 7;
+        }
 
+        if (shipLength == 2) {
+            maxCoordinateFromArr_top_coordinates = 9;
+            maxCoordinateFromArr_left_coordinates = 8;
+        }
 
+        if (shipLength == 1) {
+            maxCoordinateFromArr_top_coordinates = 9;
+            maxCoordinateFromArr_left_coordinates = 9;
+        }
 
+        let topCurrentCoordinate = top_coordinates[getRandomIntInclusive(0, maxCoordinateFromArr_top_coordinates)]; // Получение рандомной координаты по массиву top_coordinates
+        let leftCurrentCoordinate = left_coordinates[getRandomIntInclusive(0, maxCoordinateFromArr_left_coordinates)]; // Получение рандомной координаты по массиву left_coordinates
+        let shipOnCells = getCellsOnShipHorizontal(topCurrentCoordinate, leftCurrentCoordinate, shipLength); // Массив из ячеек где стоит корабль
 
-        let shipOnCells = getCellsOnShip(topCurrentCoordinate, leftCurrentCoordinate, 4); // Массив из ячеек где стоит корабль
-
-        if (!checkOnAvailabilityShipOnCell(shipOnCells) && !checkCellsAboutShip(shipOnCells, 4, 'horizontal')) {
-            ship.style.display = 'block';
+        if (!checkOnAvailabilityShipOnCell(shipOnCells) && !checkCellsAboutShip(shipOnCells, shipLength, 'horizontal')) { // Проверки на то, что сам корабль встал не на другой корабль, а так же, что рядом нет мешающих кораблей
+            let ship = createShip(shipLength, game);
+            ship.style.top = topCurrentCoordinate;
+            ship.style.left = leftCurrentCoordinate;
 
             for (let i = 0; i < shipOnCells.length; i++) {
                 shipOnCells[i].className = 'parking';
             }
         } else {
-            shipPlacement(ship);
+            shipPlacement(shipLength); // Если проверка не прошла, то функция вызывается повторно
         }
-    } else {
-        let top_coordinates = ['0', '40px', '80px', '120px', '160px', '200px', '240px'];
-        let left_coordinates = ['40px', '80px', '120px', '160px', '200px', '240px', '280px', '320px', '360px', '400px'];
+    } else { // Ветка, если корабль получился рандомно с расположением ВЕРТИКАЛЬНЫМ
+        let maxCoordinateFromArr_top_coordinates = 0;
+        let maxCoordinateFromArr_left_coordinates = 0;
 
-        let topCurrentCoordinate = top_coordinates[getRandomIntInclusive(0, top_coordinates.length - 1)];
-        let leftCurrentCoordinate = left_coordinates[getRandomIntInclusive(0, left_coordinates.length - 1)];
+        if (shipLength == 4) {
+            maxCoordinateFromArr_top_coordinates = 6;
+            maxCoordinateFromArr_left_coordinates = 10;
+        }
 
-        ship.style.top = topCurrentCoordinate;
-        ship.style.left = leftCurrentCoordinate;
+        if (shipLength == 3) {
+            maxCoordinateFromArr_top_coordinates = 7;
+            maxCoordinateFromArr_left_coordinates = 10;
+        }
 
-        let shipOnCells = getCellsOnShipVertical(topCurrentCoordinate, leftCurrentCoordinate, 4); // Массив из ячеек где стоит корабль
+        if (shipLength == 2) {
+            maxCoordinateFromArr_top_coordinates = 8;
+            maxCoordinateFromArr_left_coordinates = 10;
+        }
 
-        if (!checkOnAvailabilityShipOnCell(shipOnCells) && !checkCellsAboutShip(shipOnCells, 4, 'vertical')) {
-            ship.style.display = 'block';
+        if (shipLength == 1) {
+            maxCoordinateFromArr_top_coordinates = 9;
+            maxCoordinateFromArr_left_coordinates = 10;
+        }
+
+        let topCurrentCoordinate = top_coordinates[getRandomIntInclusive(0, maxCoordinateFromArr_top_coordinates)];
+        let leftCurrentCoordinate = left_coordinates[getRandomIntInclusive(1, maxCoordinateFromArr_left_coordinates)];
+        let shipOnCells = getCellsOnShipVertical(topCurrentCoordinate, leftCurrentCoordinate, shipLength);
+
+        if (!checkOnAvailabilityShipOnCell(shipOnCells) && !checkCellsAboutShip(shipOnCells, shipLength, 'vertical')) {
+            let ship = createShip(shipLength, game);
+
+            ship.style.top = topCurrentCoordinate;
+            ship.style.left = leftCurrentCoordinate;
             ship.style.transform = 'rotate(90deg)';
 
             for (let i = 0; i < shipOnCells.length; i++) {
                 shipOnCells[i].className = 'parking';
             }
         } else {
-            shipPlacement(ship);
+            shipPlacement(shipLength);
         }
     }
 };
 
 
-function getCellsOnShip(top, left, ship) { // функция которая получает все колонки в виде массива, куда встает корабль. Где ship - это разряд корабля
-    if (ship == 4) {
+function getCellsOnShipHorizontal(top, left, shipLength) { // Функция которая получает все колонки в виде массива, куда встает корабль, который имеет горизонтальное положение. Где shipLength - это разряд корабля
+    if (shipLength == 4) {
         let allCels = [];
         let topStartCell = parseFloat(top) / 40;
         let leftStartCell = parseFloat(left) / 40;
@@ -79,10 +115,47 @@ function getCellsOnShip(top, left, ship) { // функция которая по
 
         return allCels;
     }
+
+    if (shipLength == 3) {
+        let allCels = [];
+        let topStartCell = parseFloat(top) / 40;
+        let leftStartCell = parseFloat(left) / 40;
+
+        for (let i = 0; i <= 2; i++) {
+            let cell = trs[topStartCell].querySelectorAll('td')[leftStartCell + i];
+            allCels.push(cell);
+        }
+
+        return allCels;
+    }
+
+    if (shipLength == 2) {
+        let allCels = [];
+        let topStartCell = parseFloat(top) / 40;
+        let leftStartCell = parseFloat(left) / 40;
+
+        for (let i = 0; i <= 1; i++) {
+            let cell = trs[topStartCell].querySelectorAll('td')[leftStartCell + i];
+            allCels.push(cell);
+        }
+
+        return allCels;
+    }
+
+    if (shipLength == 1) {
+        let allCels = [];
+        let topStartCell = parseFloat(top) / 40;
+        let leftStartCell = parseFloat(left) / 40;
+
+        let cell = trs[topStartCell].querySelectorAll('td')[leftStartCell];
+        allCels.push(cell);
+
+        return allCels;
+    }
 };
 
-function getCellsOnShipVertical(top, left, ship) { // функция которая получает все колонки в виде массива, куда встает корабль. Где ship - это разряд корабля
-    if (ship == 4) {
+function getCellsOnShipVertical(top, left, shipLength) { // Функция которая получает все колонки в виде массива, куда встает корабль, который имеет вертикальное положение. Где shipLength - это разряд корабля
+    if (shipLength == 4) {
         let allCels = [];
         let topStartCell = parseFloat(top) / 40;
         let leftStartCell = (parseFloat(left) / 40) - 1;
@@ -93,6 +166,49 @@ function getCellsOnShipVertical(top, left, ship) { // функция котор�
             let cell = document.getElementById(String(Number(startCell) + (i * 10)));
             allCels.push(cell);
         }
+
+        return allCels;
+    }
+
+    if (shipLength == 3) {
+        let allCels = [];
+        let topStartCell = parseFloat(top) / 40;
+        let leftStartCell = (parseFloat(left) / 40) - 1;
+
+        let startCell = trs[topStartCell].querySelectorAll('td')[leftStartCell].id;
+
+        for (let i = 0; i <= 2; i++) {
+            let cell = document.getElementById(String(Number(startCell) + (i * 10)));
+            allCels.push(cell);
+        }
+
+        return allCels;
+    }
+
+    if (shipLength == 2) {
+        let allCels = [];
+        let topStartCell = parseFloat(top) / 40;
+        let leftStartCell = (parseFloat(left) / 40) - 1;
+
+        let startCell = trs[topStartCell].querySelectorAll('td')[leftStartCell].id;
+
+        for (let i = 0; i <= 1; i++) {
+            let cell = document.getElementById(String(Number(startCell) + (i * 10)));
+            allCels.push(cell);
+        }
+
+        return allCels;
+    }
+
+    if (shipLength == 1) {
+        let allCels = [];
+        let topStartCell = parseFloat(top) / 40;
+        let leftStartCell = (parseFloat(left) / 40) - 1;
+
+        let startCell = trs[topStartCell].querySelectorAll('td')[leftStartCell].id;
+
+        let cell = document.getElementById(String(Number(startCell)));
+        allCels.push(cell);
 
         return allCels;
     }
@@ -108,15 +224,29 @@ function checkOnAvailabilityShipOnCell(shipOnCells) { // Проверка на �
     });
 };
 
-function checkCellsAboutShip(shipOnCells, ship, orientation) { // Функция, которая проверяет все ячейки близлежащего корабля и выводит эти ячейки нам в виде массима
-    if (ship == 4 && orientation == 'horizontal') {
+function checkCellsAboutShip(shipOnCells, shipLength, orientation) { // Функция, которая проверяет все ячейки близлежащего корабля и выводит false если корабль поставить можно и true, если нельзя
+    if (orientation == 'horizontal') { // Если расположение корабля ГОРИЗОНТАЛЬНОЕ
+        let itarations = 0;
+        if (shipLength == 4) {
+            itarations = 5;
+        }
+        if (shipLength == 3) {
+            itarations = 4;
+        }
+        if (shipLength == 2) {
+            itarations = 3;
+        }
+        if (shipLength == 1) {
+            itarations = 2;
+        }
+
         let cellsAboutShip = [];
 
         let data_numFirstCell = parseFloat(shipOnCells[0].id);
 
         let lineOnShip = document.getElementById(String(data_numFirstCell)).parentElement;
         let leftCallFromShip = lineOnShip.children[document.getElementById(data_numFirstCell).dataset.num - 1];
-        let rigthCallFromShip = lineOnShip.children[Number(document.getElementById(data_numFirstCell).dataset.num) + 4];
+        let rigthCallFromShip = lineOnShip.children[Number(document.getElementById(data_numFirstCell).dataset.num) + (itarations - 1)];
 
         if (leftCallFromShip !== undefined) {
             cellsAboutShip.push(leftCallFromShip);
@@ -131,7 +261,7 @@ function checkCellsAboutShip(shipOnCells, ship, orientation) { // Функция
             let firstCheckCallOnLine = document.getElementById(String(data_numFirstCell - 10));
             let numberCall = firstCheckCallOnLine.dataset.num - 1;
 
-            for (let i = 0; i <= 5; i++) {
+            for (let i = 0; i <= itarations; i++) {
                 if (lineUpAbotShip.children[numberCall + i] !== undefined) {
                     cellsAboutShip.push(lineUpAbotShip.children[numberCall + i]);
                 }
@@ -145,7 +275,7 @@ function checkCellsAboutShip(shipOnCells, ship, orientation) { // Функция
 
             let numberCall = firstCheckCallOnLine.dataset.num - 1;
 
-            for (let i = 0; i <= 5; i++) {
+            for (let i = 0; i <= itarations; i++) {
                 if (lineDownAbotShip.children[numberCall + i] !== undefined) {
                     cellsAboutShip.push(lineDownAbotShip.children[numberCall + i]);
                 }
@@ -163,7 +293,23 @@ function checkCellsAboutShip(shipOnCells, ship, orientation) { // Функция
         return check;
     }
 
-    if (ship == 4 && orientation == 'vertical') {
+
+
+    if (orientation == 'vertical') { // Если расположение корабля ВЕРТИКАЛЬНОЕ
+        let itarations = 0;
+        if (shipLength == 4) {
+            itarations = 5;
+        }
+        if (shipLength == 3) {
+            itarations = 4;
+        }
+        if (shipLength == 2) {
+            itarations = 3;
+        }
+        if (shipLength == 1) {
+            itarations = 2;
+        }
+
         let cellsAboutShip = [];
         let data_numFirstCell = parseFloat(shipOnCells[0].id);
 
@@ -171,9 +317,9 @@ function checkCellsAboutShip(shipOnCells, ship, orientation) { // Функция
         let numberCallBehindShip = Number(document.getElementById(String(data_numFirstCell)).dataset.num) - 1;
         let numberCallFrontShip = Number(document.getElementById(String(data_numFirstCell)).dataset.num) + 1;
         let numberUpRowWhereShip = '';
-        if(trs[numberRowWhereShip - 1] !== undefined){
+        if (trs[numberRowWhereShip - 1] !== undefined) {
             numberUpRowWhereShip = Number(trs[numberRowWhereShip - 1].dataset.num);
-            for (let i = 0; i <= 5; i++) {
+            for (let i = 0; i <= itarations; i++) {
                 if (trs[numberUpRowWhereShip + i] !== undefined) {
                     if (trs[numberUpRowWhereShip + i].children[numberCallBehindShip] !== undefined) {
                         cellsAboutShip.push(trs[numberUpRowWhereShip + i].children[numberCallBehindShip]);
@@ -181,16 +327,16 @@ function checkCellsAboutShip(shipOnCells, ship, orientation) { // Функция
                 }
             }
 
-            for (let i = 0; i <= 5; i++) {
+            for (let i = 0; i <= itarations; i++) {
                 if (trs[numberUpRowWhereShip + i] !== undefined) {
                     if (trs[numberUpRowWhereShip + i].children[numberCallFrontShip] !== undefined) {
                         cellsAboutShip.push(trs[numberUpRowWhereShip + i].children[numberCallFrontShip]);
                     }
                 }
             }
-        }else{
+        } else {
             numberUpRowWhereShip = Number(trs[numberRowWhereShip].dataset.num);
-            for (let i = 0; i <= 4; i++) {
+            for (let i = 0; i < itarations; i++) {
                 if (trs[numberUpRowWhereShip + i] !== undefined) {
                     if (trs[numberUpRowWhereShip + i].children[numberCallBehindShip] !== undefined) {
                         cellsAboutShip.push(trs[numberUpRowWhereShip + i].children[numberCallBehindShip]);
@@ -198,7 +344,7 @@ function checkCellsAboutShip(shipOnCells, ship, orientation) { // Функция
                 }
             }
 
-            for (let i = 0; i <= 4; i++) {
+            for (let i = 0; i < itarations; i++) {
                 if (trs[numberUpRowWhereShip + i] !== undefined) {
                     if (trs[numberUpRowWhereShip + i].children[numberCallFrontShip] !== undefined) {
                         cellsAboutShip.push(trs[numberUpRowWhereShip + i].children[numberCallFrontShip]);
@@ -208,9 +354,8 @@ function checkCellsAboutShip(shipOnCells, ship, orientation) { // Функция
         }
 
 
-
         let rowUpShip = trs[numberRowWhereShip - 1];
-        let rowDownShip = trs[numberRowWhereShip + 4];
+        let rowDownShip = trs[numberRowWhereShip + (itarations - 1)];
         let numberCallWhereIsShip = document.getElementById(String(data_numFirstCell)).dataset.num;
 
         if (rowUpShip !== undefined) {
@@ -233,7 +378,7 @@ function checkCellsAboutShip(shipOnCells, ship, orientation) { // Функция
     }
 };
 
-function randonDirection() {
+function randonDirection() { // Функция, которая рандомно определяет направление корабля (Горизонтальное или Вертикальное)
     if (getRandomIntInclusive(0, 1) == 0) {
         return 'horizontal';
     } else {
@@ -241,23 +386,72 @@ function randonDirection() {
     }
 };
 
-function getRandomIntInclusive(min, max) {
+function getRandomIntInclusive(min, max) { // Функция, которая отдаем рандомное число в соотвествии с переданными промежутками
     min = Math.ceil(min);
     max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min + 1)) + min; //Максимум и минимум включаются
+    return Math.floor(Math.random() * (max - min + 1)) + min; // Максимум и минимум включаются
 };
 
+function createShip(shipLength, parent) { // Функция, которая создает новый корабль, в зависимости от его параметра длины
+    let ship = document.createElement('div');
+    if (shipLength == 4) {
+        ship.classList.add('ship_4', 'ship');
+        parent.append(ship);
+        return ship;
+    }
+
+    if (shipLength == 3) {
+        ship.classList.add('ship_3', 'ship');
+        parent.append(ship);
+        return ship;
+    }
+
+    if (shipLength == 2) {
+        ship.classList.add('ship_2', 'ship');
+        parent.append(ship);
+        return ship;
+    }
+
+    if (shipLength == 1) {
+        ship.classList.add('ship_1', 'ship');
+        parent.append(ship);
+        return ship;
+    }
+};
+
+shipPlacement(4);
+shipPlacement(3);
+shipPlacement(3);
+shipPlacement(2);
+shipPlacement(2);
+shipPlacement(2);
+shipPlacement(1);
+shipPlacement(1);
+shipPlacement(1);
+shipPlacement(1);
 
 
+random.addEventListener('click', function () { // При нажатии на кнопку "Изменить рандом кораблей", происходит сброс всех классов parking (там где стоят корабли), удаление кораблей, а после создаются новые
+    for (let i = 0; i < tds.length; i++) {
+        if (tds[i].classList.contains('parking')) {
+            tds[i].classList.remove('parking');
+        }
+    }
 
+    let ships = document.querySelectorAll('.ship');
 
+    for (let i = 0; i < ships.length; i++) {
+        ships[i].remove();
+    }
 
-
-
-
-
-
-
-
-
-shipPlacement(ship_4);
+    shipPlacement(4);
+    shipPlacement(3);
+    shipPlacement(3);
+    shipPlacement(2);
+    shipPlacement(2);
+    shipPlacement(2);
+    shipPlacement(1);
+    shipPlacement(1);
+    shipPlacement(1);
+    shipPlacement(1);
+});
