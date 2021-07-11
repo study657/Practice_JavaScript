@@ -1,6 +1,7 @@
-.game{
+.game_client{
     position: relative;
     width: 400px;
+    margin: 0 auto;
 
     table{
         width: 400px;
@@ -14,44 +15,66 @@
             cursor: pointer;
         }
     }
+}
 
-    .ship_4{
-        background: url(images/4_h.png) center center/cover no-repeat;
-        width: 160px;
-        height: 40px;
-        position: absolute;
-        top: 0;
-        left: 0;
-        transform-origin: 0 0 0;
-    }
+.game_server{
+    display: none;
+    position: relative;
+    width: 400px;
+    margin: 0 auto;
 
-    .ship_3{
-        background: url(images/3_h.png) center center/cover no-repeat;
-        width: 120px;
-        height: 40px;
-        position: absolute;
-        top: 0;
-        left: 0;
-        transform-origin: 0 0 0;
+    table{
+        td{
+            min-height: 40px;
+            height: 40px;
+            min-width: 40px;
+            width: 40px;
+            border: 2px solid rgb(235, 224, 224);
+            cursor: pointer;
+        }
     }
+}
 
-    .ship_2{
-        background: url(images/2_h.png) center center/cover no-repeat;
-        width: 80px;
-        height: 40px;
-        position: absolute;
-        top: 0;
-        left: 0;
-        transform-origin: 0 0 0;
-    }
+.navigation{
+    text-align: center;
+}
 
-    .ship_1{
-        background: url(images/1_h.png) center center/cover no-repeat;
-        width: 40px;
-        height: 40px;
-        position: absolute;
-        top: 0;
-        left: 0;
-        transform-origin: 0 0 0;
-    }
+.ship_4{
+    background: url(images/4_h.png) center center/cover no-repeat;
+    width: 160px;
+    height: 40px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform-origin: 0 0 0;
+}
+
+.ship_3{
+    background: url(images/3_h.png) center center/cover no-repeat;
+    width: 120px;
+    height: 40px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform-origin: 0 0 0;
+}
+
+.ship_2{
+    background: url(images/2_h.png) center center/cover no-repeat;
+    width: 80px;
+    height: 40px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform-origin: 0 0 0;
+}
+
+.ship_1{
+    background: url(images/1_h.png) center center/cover no-repeat;
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform-origin: 0 0 0;
 }
