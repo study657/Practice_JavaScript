@@ -11,12 +11,24 @@ let start_game = document.querySelector('.start_game');
 let navigation = document.querySelector('.navigation');
 let top_coordinates = ['0', '40px', '80px', '120px', '160px', '200px', '240px', '280px', '320px', '360px', '400px'];
 let left_coordinates = ['0', '40px', '80px', '120px', '160px', '200px', '240px', '280px', '320px', '360px', '400px'];
+let objMapsShips = {
+    '4ship': [],
+    '3ship_1': [],
+    '3ship_2': [],
+    '2ship_1': [],
+    '2ship_2': [],
+    '2ship_3': [],
+    '1ship_1': [],
+    '1ship_2': [],
+    '1ship_3': [],
+    '1ship_4': [],
+};
 
 markTdsAndTrs(tds_client, trs_client);
 markTdsAndTrs(tds_server, trs_server);
 
 
-function shipPlacement(shipLength, selectorGame, trs, genSelector, showShips = null) { // Основная функция, которая создает корабль, исходя из параметров его длины
+function shipPlacement(shipLength, selectorGame, trs, genSelector, className, showShips = null) { // Основная функция, которая создает корабль, исходя из параметров его длины
     if (randonDirection() == 'horizontal') { // Ветка, если корабль получился рандомно с расположением ГОРИЗОНТАЛЬНЫМ
         let maxCoordinateFromArr_top_coordinates = 0;
         let maxCoordinateFromArr_left_coordinates = 0;
@@ -53,10 +65,11 @@ function shipPlacement(shipLength, selectorGame, trs, genSelector, showShips = n
             }
 
             for (let i = 0; i < shipOnCells.length; i++) {
-                shipOnCells[i].className = 'parking';
+                shipOnCells[i].classList.add('parking');
+                shipOnCells[i].classList.add(className);
             }
         } else {
-            shipPlacement(shipLength, selectorGame, trs, genSelector, showShips); // Если проверка не прошла, то функция вызывается повторно
+            shipPlacement(shipLength, selectorGame, trs, genSelector, className, showShips); // Если проверка не прошла, то функция вызывается повторно
         }
     } else { // Ветка, если корабль получился рандомно с расположением ВЕРТИКАЛЬНЫМ
         let maxCoordinateFromArr_top_coordinates = 0;
@@ -95,10 +108,11 @@ function shipPlacement(shipLength, selectorGame, trs, genSelector, showShips = n
             }
 
             for (let i = 0; i < shipOnCells.length; i++) {
-                shipOnCells[i].className = 'parking';
+                shipOnCells[i].classList.add('parking');
+                shipOnCells[i].classList.add(className);
             }
         } else {
-            shipPlacement(shipLength, selectorGame, trs, genSelector, showShips);
+            shipPlacement(shipLength, selectorGame, trs, genSelector, className, showShips);
         }
     }
 
@@ -419,23 +433,25 @@ function shipPlacement(shipLength, selectorGame, trs, genSelector, showShips = n
             return ship;
         }
     };
+
+    console.log(objMapsShips);
 };
-shipPlacement(4, game_client, trs_client, client, 'yes');
-shipPlacement(3, game_client, trs_client, client, 'yes');
-shipPlacement(3, game_client, trs_client, client, 'yes');
-shipPlacement(2, game_client, trs_client, client, 'yes');
-shipPlacement(2, game_client, trs_client, client, 'yes');
-shipPlacement(2, game_client, trs_client, client, 'yes');
-shipPlacement(1, game_client, trs_client, client, 'yes');
-shipPlacement(1, game_client, trs_client, client, 'yes');
-shipPlacement(1, game_client, trs_client, client, 'yes');
-shipPlacement(1, game_client, trs_client, client, 'yes');
+shipPlacement(4, game_client, trs_client, client, '4ship', 'yes');
+shipPlacement(3, game_client, trs_client, client, '3ship_1', 'yes');
+shipPlacement(3, game_client, trs_client, client, '3ship_2', 'yes');
+shipPlacement(2, game_client, trs_client, client, '2ship_1', 'yes');
+shipPlacement(2, game_client, trs_client, client, '2ship_2', 'yes');
+shipPlacement(2, game_client, trs_client, client, '2ship_3', 'yes');
+shipPlacement(1, game_client, trs_client, client, '1ship_1', 'yes');
+shipPlacement(1, game_client, trs_client, client, '1ship_2', 'yes');
+shipPlacement(1, game_client, trs_client, client, '1ship_3', 'yes');
+shipPlacement(1, game_client, trs_client, client, '1ship_4', 'yes');
 
 
 random.addEventListener('click', function () { // При нажатии на кнопку "Изменить рандом кораблей", происходит сброс всех классов parking (там где стоят корабли), удаление кораблей, а после создаются новые
     for (let i = 0; i < tds_client.length; i++) {
         if (tds_client[i].classList.contains('parking')) {
-            tds_client[i].classList.remove('parking');
+            tds_client[i].className = '';
         }
     }
 
@@ -445,16 +461,16 @@ random.addEventListener('click', function () { // При нажатии на к�
         ships[i].remove();
     }
 
-    shipPlacement(4, game_client, trs_client, client, 'yes');
-    shipPlacement(3, game_client, trs_client, client, 'yes');
-    shipPlacement(3, game_client, trs_client, client, 'yes');
-    shipPlacement(2, game_client, trs_client, client, 'yes');
-    shipPlacement(2, game_client, trs_client, client, 'yes');
-    shipPlacement(2, game_client, trs_client, client, 'yes');
-    shipPlacement(1, game_client, trs_client, client, 'yes');
-    shipPlacement(1, game_client, trs_client, client, 'yes');
-    shipPlacement(1, game_client, trs_client, client, 'yes');
-    shipPlacement(1, game_client, trs_client, client, 'yes');
+    shipPlacement(4, game_client, trs_client, client, '4ship', 'yes');
+    shipPlacement(3, game_client, trs_client, client, '3ship_1', 'yes');
+    shipPlacement(3, game_client, trs_client, client, '3ship_2', 'yes');
+    shipPlacement(2, game_client, trs_client, client, '2ship_1', 'yes');
+    shipPlacement(2, game_client, trs_client, client, '2ship_2', 'yes');
+    shipPlacement(2, game_client, trs_client, client, '2ship_3', 'yes');
+    shipPlacement(1, game_client, trs_client, client, '1ship_1', 'yes');
+    shipPlacement(1, game_client, trs_client, client, '1ship_2', 'yes');
+    shipPlacement(1, game_client, trs_client, client, '1ship_3', 'yes');
+    shipPlacement(1, game_client, trs_client, client, '1ship_4', 'yes');
 });
 
 
@@ -462,16 +478,16 @@ start_game.addEventListener('click', function () {
     game_server.style.display = 'block';
     navigation.style.display = 'none';
 
-    shipPlacement(4, game_server, trs_server, server);
-    shipPlacement(3, game_server, trs_server, server);
-    shipPlacement(3, game_server, trs_server, server);
-    shipPlacement(2, game_server, trs_server, server);
-    shipPlacement(2, game_server, trs_server, server);
-    shipPlacement(2, game_server, trs_server, server);
-    shipPlacement(1, game_server, trs_server, server);
-    shipPlacement(1, game_server, trs_server, server);
-    shipPlacement(1, game_server, trs_server, server);
-    shipPlacement(1, game_server, trs_server, server);
+    shipPlacement(4, game_server, trs_server, server, '4ship');
+    shipPlacement(3, game_server, trs_server, server, '3ship_1');
+    shipPlacement(3, game_server, trs_server, server, '3ship_2');
+    shipPlacement(2, game_server, trs_server, server, '2ship_1');
+    shipPlacement(2, game_server, trs_server, server, '2ship_2');
+    shipPlacement(2, game_server, trs_server, server, '2ship_3');
+    shipPlacement(1, game_server, trs_server, server, '1ship_1');
+    shipPlacement(1, game_server, trs_server, server, '1ship_2');
+    shipPlacement(1, game_server, trs_server, server, '1ship_3');
+    shipPlacement(1, game_server, trs_server, server, '1ship_4');
 });
 
 
@@ -495,6 +511,23 @@ function markTdsAndTrs(tds, trs) {
 
 for(let i = 0; i < tds_server.length; i++){
     tds_server[i].addEventListener('click', function(){
-        console.log('dsfsdfds');
+        if(tds_server[i].classList.contains('parking')){
+            tds_server[i].classList.add('got');
+            tds_server[i].classList.remove('parking');
+        }else{
+            tds_server[i].classList.add('away');
+        }
+    });
+}
+
+for(let i = 0; i < tds_server.length; i++){
+    tds_server[i].addEventListener('mouseover', function(){
+        tds_server[i].classList.toggle('active');
+    });
+}
+
+for(let i = 0; i < tds_server.length; i++){
+    tds_server[i].addEventListener('mouseout', function(){
+        tds_server[i].classList.remove('active');
     });
 }

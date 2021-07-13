@@ -1,3 +1,14 @@
+@mixin show_ships($picture, $width, $height){
+    background: url($picture) center center/cover no-repeat;
+    width: $width;
+    height: $height;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform-origin: 0 0 0;
+}
+
+
 .game_client{
     position: relative;
     width: 400px;
@@ -35,46 +46,38 @@
     }
 }
 
+.ship_4{
+    @include show_ships('images/4_h.png', 160px, 40px);
+}
+
+.ship_3{
+    @include show_ships('images/3_h.png', 120px, 40px);
+}
+
+.ship_2{
+    @include show_ships('images/2_h.png', 80px, 40px);
+}
+
+.ship_1{
+    @include show_ships('images/1_h.png', 40px, 40px);
+}
+
 .navigation{
     text-align: center;
 }
 
-.ship_4{
-    background: url(images/4_h.png) center center/cover no-repeat;
-    width: 160px;
-    height: 40px;
-    position: absolute;
-    top: 0;
-    left: 0;
-    transform-origin: 0 0 0;
+.message{
+    text-align: center;
 }
 
-.ship_3{
-    background: url(images/3_h.png) center center/cover no-repeat;
-    width: 120px;
-    height: 40px;
-    position: absolute;
-    top: 0;
-    left: 0;
-    transform-origin: 0 0 0;
+.active{
+    background-color: #a9a3a3e6;
 }
 
-.ship_2{
-    background: url(images/2_h.png) center center/cover no-repeat;
-    width: 80px;
-    height: 40px;
-    position: absolute;
-    top: 0;
-    left: 0;
-    transform-origin: 0 0 0;
+.got{
+    background-color: red;
 }
 
-.ship_1{
-    background: url(images/1_h.png) center center/cover no-repeat;
-    width: 40px;
-    height: 40px;
-    position: absolute;
-    top: 0;
-    left: 0;
-    transform-origin: 0 0 0;
+.away{
+    background-color: rgb(37, 18, 18);
 }

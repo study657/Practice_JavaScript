@@ -33,12 +33,8 @@
   cursor: pointer;
 }
 
-.navigation {
-  text-align: center;
-}
-
 .ship_4 {
-  background: url(images/4_h.png) center center/cover no-repeat;
+  background: url("images/4_h.png") center center/cover no-repeat;
   width: 160px;
   height: 40px;
   position: absolute;
@@ -49,7 +45,7 @@
 }
 
 .ship_3 {
-  background: url(images/3_h.png) center center/cover no-repeat;
+  background: url("images/3_h.png") center center/cover no-repeat;
   width: 120px;
   height: 40px;
   position: absolute;
@@ -60,7 +56,7 @@
 }
 
 .ship_2 {
-  background: url(images/2_h.png) center center/cover no-repeat;
+  background: url("images/2_h.png") center center/cover no-repeat;
   width: 80px;
   height: 40px;
   position: absolute;
@@ -71,7 +67,7 @@
 }
 
 .ship_1 {
-  background: url(images/1_h.png) center center/cover no-repeat;
+  background: url("images/1_h.png") center center/cover no-repeat;
   width: 40px;
   height: 40px;
   position: absolute;
@@ -79,5 +75,25 @@
   left: 0;
   -webkit-transform-origin: 0 0 0;
           transform-origin: 0 0 0;
+}
+
+.navigation {
+  text-align: center;
+}
+
+.message {
+  text-align: center;
+}
+
+.active {
+  background-color: #a9a3a3e6;
+}
+
+.got {
+  background-color: red;
+}
+
+.away {
+  background-color: #251212;
 }
 /*# sourceMappingURL=style.css.map */
