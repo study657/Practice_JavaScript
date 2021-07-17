@@ -7,6 +7,7 @@ let tds_client = game_client.querySelectorAll('td');
 let trs_server = game_server.querySelectorAll('tr');
 let tds_server = game_server.querySelectorAll('td');
 let random = document.querySelector('.random');
+let message = document.querySelector('.message');
 let start_game = document.querySelector('.start_game');
 let navigation = document.querySelector('.navigation');
 let top_coordinates = ['0', '40px', '80px', '120px', '160px', '200px', '240px', '280px', '320px', '360px', '400px'];
@@ -37,7 +38,6 @@ let objMapsShipsForPlayer = { // Создаем объект для игрока
         '1ship_4': [],
     }
 };
-
 let objMapsShipsForBot = { // Создаем объект для бота, в котором будет храниться вся карта кораблей в виде массивов с клеточками
     'horizontal': {
         '4ship': [],
@@ -64,7 +64,6 @@ let objMapsShipsForBot = { // Создаем объект для бота, в к
         '1ship_4': [],
     }
 };
-
 markTdsAndTrs(tds_client, trs_client);
 markTdsAndTrs(tds_server, trs_server);
 
@@ -393,8 +392,8 @@ random.addEventListener('click', function () { // При нажатии на к�
     shipPlacement('1ship_4', game_client, trs_client, client, 'player', 'yes');
 });
 
-
 start_game.addEventListener('click', function () { // При нажатии на кнопочку "Начать игру" происходит создание вражеского поля с расстановкой кораблей, однако они не видимы игроку
+    message.style.display = 'block';
     game_server.style.display = 'block';
     navigation.style.display = 'none';
 
@@ -409,40 +408,6 @@ start_game.addEventListener('click', function () { // При нажатии на
     shipPlacement('1ship_3', game_server, trs_server, server, 'bot');
     shipPlacement('1ship_4', game_server, trs_server, server, 'bot');
 });
-
-
-
-for (let i = 0; i < tds_server.length; i++) { // Вешается обработчик события на каждую ячейку во вражеском поле противника
-    tds_server[i].addEventListener('click', function add() {
-        if (tds_server[i].classList.contains('parking')) {
-            tds_server[i].classList.add('got'); // Красим ячейку в красный цвет, если попали в корабль
-            tds_server[i].classList.remove('parking');
-            let lengthShip = this.classList[0]; // Получаем длинну корабля и узнаем что за корабль перед нами
-            let orientation = this.classList[1]; // Получаем ориентацию корабля
-
-            for (let k = 0; k < objMapsShipsForBot[orientation][lengthShip].length; k++) { // Вырезаем из нашего объекта с картой кораблей у бота ячейку, в которую попал пользователь
-                if (objMapsShipsForBot[orientation][lengthShip][k] == this) {
-                    objMapsShipsForBot[orientation][lengthShip].splice(objMapsShipsForBot[orientation][lengthShip].indexOf(this), 1);
-                }
-            }
-
-            if (objMapsShipsForBot[orientation][lengthShip].length == 0) { // Если в карте кораблей у данного корабля все ячейки выбиты и угаданы, тогда маркируем все ячейки в серый, которые распологаются около корабля
-                let aboutsShips = game_server.querySelectorAll('.about' + lengthShip);
-
-                for (let i = 0; i < aboutsShips.length; i++) {
-                    aboutsShips[i].classList.add('away');
-                }
-            }
-        } else {
-            tds_server[i].classList.add('away');
-        }
-        this.removeEventListener('click', add); // Отвязываем обработчик события с ячейки на которую уже кликнули
-
-        if (checkWinner(game_server)) { // Проверка на победителя
-            alert('Поздравляем, Вы победили!');
-        }
-    });
-}
 
 
 
@@ -602,6 +567,7 @@ function getCellsAboutShip(shipOnCells, shipLength, orientation, trs, genSelecto
 function markTdsAndTrs(tds, trs) { // Функция, которая маркирует все клеточки и все ряды определенным нужным мне образом в самом начале
     for (let i = 0; i < tds.length; i++) {
         tds[i].setAttribute('name', i + 1);
+        tds[i].classList.add('empty');
     }
 
     for (let i = 0; i < trs.length; i++) {
@@ -612,6 +578,7 @@ function markTdsAndTrs(tds, trs) { // Функция, которая марки�
     }
 };
 
+
 function checkWinner(selectorGame) { // Функция, которая проверяет победителя путем получения всех элементов с классом 'parking' и если таково больше нет, то выводится true, а если есть, то false
     let cellsWithParkings = selectorGame.querySelectorAll('.parking');
 
@@ -621,3 +588,61 @@ function checkWinner(selectorGame) { // Функция, которая пров�
         return false;
     }
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+for (let i = 0; i < tds_server.length; i++) { // Вешается обработчик события на каждую ячейку во вражеском поле противника
+    tds_server[i].addEventListener('click', function add() {
+        if (message.innerHTML == 'Ваш ход') { // Реализация логики стрельбы человека
+            if (this.classList.contains('parking') && message.innerHTML == 'Ваш ход') {
+                this.classList.add('got'); // Красим ячейку в красный цвет, если попали в корабль
+                this.classList.remove('parking'); // Удаляем класс parking
+                let lengthShip = this.classList[1]; // Получаем длинну корабля и узнаем что за корабль перед нами
+                let orientation = this.classList[2]; // Получаем ориентацию корабля
+                this.classList.remove('empty'); // Удаляем класс empty
+
+                for (let k = 0; k < objMapsShipsForBot[orientation][lengthShip].length; k++) { // Вырезаем из нашего объекта с картой кораблей у бота ячейку, в которую попал пользователь
+                    if (objMapsShipsForBot[orientation][lengthShip][k] == this) {
+                        objMapsShipsForBot[orientation][lengthShip].splice(objMapsShipsForBot[orientation][lengthShip].indexOf(this), 1);
+                    }
+                }
+
+                if (objMapsShipsForBot[orientation][lengthShip].length == 0) { // Если в карте кораблей у данного корабля все ячейки выбиты и угаданы, тогда маркируем все ячейки в серый, которые распологаются около корабля
+                    let aboutsShips = game_server.querySelectorAll('.about' + lengthShip);
+
+                    for (let j = 0; j < aboutsShips.length; j++) {
+                        aboutsShips[j].classList.add('away');
+                        aboutsShips[j].classList.remove('empty');
+                    }
+                }
+
+                if (checkWinner(game_server)) { // Проверка на победителя
+                    alert('Поздравляем, Вы победили!');
+                }
+            }
+
+            if (!this.classList.contains('parking') && this.classList.contains('empty') && message.innerHTML == 'Ваш ход') { // Если попадания от человека не было, тогда мы ставим человеку мимо и запускаем логику стрельбы бота
+                this.classList.add('away');
+                this.classList.remove('empty');
+                message.innerHTML = 'Ходит бот';
+                ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                setTimeout(function () { // Реализация логики стрельбы бота ??????????????????????????????????????????????????????????????????????????????
+                    message.innerHTML = 'Ваш ход';
+                }, 3000);
+            }
+        }
+    });
+}
