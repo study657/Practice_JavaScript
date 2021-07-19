@@ -321,12 +321,6 @@ function shipPlacement(shipLength, selectorGame, trs, genSelector, player, showS
         }
     };
 
-    function getRandomIntInclusive(min, max) { // Функция, которая отдаем рандомное число в соотвествии с переданными промежутками
-        min = Math.ceil(min);
-        max = Math.floor(max);
-        return Math.floor(Math.random() * (max - min + 1)) + min; // Максимум и минимум включаются
-    };
-
     function createShip(shipLength, parent) { // Функция, которая создает новый корабль, в зависимости от его параметра длинны
         let ship = document.createElement('div');
         if (shipLength == '4ship') {
@@ -564,6 +558,13 @@ function getCellsAboutShip(shipOnCells, shipLength, orientation, trs, genSelecto
 };
 
 
+function getRandomIntInclusive(min, max) { // Функция, которая отдаем рандомное число в соотвествии с переданными промежутками
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min; // Максимум и минимум включаются
+};
+
+
 function markTdsAndTrs(tds, trs) { // Функция, которая маркирует все клеточки и все ряды определенным нужным мне образом в самом начале
     for (let i = 0; i < tds.length; i++) {
         tds[i].setAttribute('name', i + 1);
@@ -603,7 +604,7 @@ function checkWinner(selectorGame) { // Функция, которая пров�
 
 
 
-
+let orientationHits = []; // Ориентация попаданий
 for (let i = 0; i < tds_server.length; i++) { // Вешается обработчик события на каждую ячейку во вражеском поле противника
     tds_server[i].addEventListener('click', function add() {
         if (message.innerHTML == 'Ваш ход') { // Реализация логики стрельбы человека
@@ -638,10 +639,51 @@ for (let i = 0; i < tds_server.length; i++) { // Вешается обработ
                 this.classList.add('away');
                 this.classList.remove('empty');
                 message.innerHTML = 'Ходит бот';
-                ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                setTimeout(function () { // Реализация логики стрельбы бота ??????????????????????????????????????????????????????????????????????????????
-                    message.innerHTML = 'Ваш ход';
-                }, 3000);
+
+                setTimeout(function () { // Реализация логики стрельбы бота
+                    for (let i = 1; i <= 10; i++) {
+                        let emptyCells = [...game_client.querySelectorAll('.empty')];
+                        let randomElem = emptyCells[getRandomIntInclusive(0, emptyCells.length - 1)];
+
+                        if (randomElem.classList.contains('parking')) {
+                            randomElem.classList.add('got'); // Красим ячейку в красный цвет, если попали в корабль
+                            randomElem.classList.remove('parking'); // Удаляем класс parking
+                            let lengthShip = randomElem.classList[1]; // Получаем длинну корабля и узнаем что за корабль перед нами
+                            let orientation = randomElem.classList[2]; // Получаем ориентацию корабля
+                            randomElem.classList.remove('empty'); // Удаляем класс empty
+
+                            for (let k = 0; k < objMapsShipsForPlayer[orientation][lengthShip].length; k++) { // Вырезаем из нашего объекта с картой кораблей у бота ячейку, в которую попал пользователь
+                                if (objMapsShipsForPlayer[orientation][lengthShip][k] == randomElem) {
+                                    objMapsShipsForPlayer[orientation][lengthShip].splice(objMapsShipsForPlayer[orientation][lengthShip].indexOf(randomElem), 1);
+                                }
+                            }
+
+                            if (objMapsShipsForPlayer[orientation][lengthShip].length == 0) { // Если в карте кораблей у данного корабля все ячейки выбиты и угаданы, тогда маркируем все ячейки в серый, которые распологаются около корабля
+                                let aboutsShips = game_client.querySelectorAll('.about' + lengthShip);
+
+                                for (let j = 0; j < aboutsShips.length; j++) {
+                                    aboutsShips[j].classList.add('away');
+                                    aboutsShips[j].classList.remove('empty');
+                                }
+                            }
+                            console.log(objMapsShipsForPlayer);
+                            continue;
+                        }
+
+                        if (!randomElem.classList.contains('parking') && randomElem.classList.contains('empty')) {
+                            randomElem.classList.add('away');
+                            randomElem.classList.remove('empty');
+                            message.innerHTML = 'Ваш ход';
+                            break;
+                        }
+
+
+
+
+
+                        // message.innerHTML = 'Ваш ход'; // Удалить
+                    }
+                }, 1000);
             }
         }
     });
