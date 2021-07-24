@@ -38,6 +38,7 @@ let objMapsShipsForPlayer = { // Создаем объект для игрока
         '1ship_4': [],
     }
 };
+console.log(objMapsShipsForPlayer);
 let objMapsShipsForBot = { // Создаем объект для бота, в котором будет храниться вся карта кораблей в виде массивов с клеточками
     'horizontal': {
         '4ship': [],
@@ -363,6 +364,7 @@ shipPlacement('1ship_4', game_client, trs_client, client, 'player', 'yes');
 random.addEventListener('click', function () { // При нажатии на кнопку "Изменить рандом кораблей", происходит сброс всех классов, удаление кораблей, а после создаются новые
     for (let i = 0; i < tds_client.length; i++) {
         tds_client[i].className = '';
+        tds_client[i].classList.add('empty');
     }
 
     let ships = document.querySelectorAll('.ship');
@@ -370,8 +372,10 @@ random.addEventListener('click', function () { // При нажатии на к�
         ships[i].remove();
     }
 
-    for (let key in objMapsShipsForPlayer) {
-        objMapsShipsForPlayer[key].length = 0;
+    for (let key in objMapsShipsForPlayer) { // Зачищаем карту кораблей игрока
+        for(let obj in objMapsShipsForPlayer[key]){
+            objMapsShipsForPlayer[key][obj].length = 0;
+        }
     }
 
     shipPlacement('4ship', game_client, trs_client, client, 'player', 'yes');
@@ -593,22 +597,11 @@ function checkWinner(selectorGame) { // Функция, которая пров�
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-let orientationHits = []; // Ориентация попаданий
+let orientationHits = []; // Ориентация попаданий, который выглядит примерно таким образом: [ [ [три ячейки по направлению ВВЕРХ], [ВНИЗ] ], [ [ВПРАВО], [ВЛЕВО] ] ]
 for (let i = 0; i < tds_server.length; i++) { // Вешается обработчик события на каждую ячейку во вражеском поле противника
     tds_server[i].addEventListener('click', function add() {
         if (message.innerHTML == 'Ваш ход') { // Реализация логики стрельбы человека
-            if (this.classList.contains('parking') && message.innerHTML == 'Ваш ход') {
+            if (this.classList.contains('parking')) { // Проверка на то, что действительно было зафиксированно попадание в корабль
                 this.classList.add('got'); // Красим ячейку в красный цвет, если попали в корабль
                 this.classList.remove('parking'); // Удаляем класс parking
                 let lengthShip = this.classList[1]; // Получаем длинну корабля и узнаем что за корабль перед нами
@@ -640,51 +633,158 @@ for (let i = 0; i < tds_server.length; i++) { // Вешается обработ
                 this.classList.remove('empty');
                 message.innerHTML = 'Ходит бот';
 
+
                 setTimeout(function () { // Реализация логики стрельбы бота
-                    for (let i = 1; i <= 10; i++) {
-                        let emptyCells = [...game_client.querySelectorAll('.empty')];
-                        let randomElem = emptyCells[getRandomIntInclusive(0, emptyCells.length - 1)];
+                    while (true) { // Идет запуск бесконечного цикла, который будет идти вечно пока не будет остановлен принудительно
+                        if (orientationHits.length == 0) { // Идет проверка на то, пустой ли массив направлений или нет.
+                            let emptyCells = [...game_client.querySelectorAll('.empty')]; // Берем все пустые клетки, в которые можно стрелять
+                            let randomElem = emptyCells[getRandomIntInclusive(0, emptyCells.length - 1)]; // Выбираем один рандомный элемент для стрельбы
+                            console.log(randomElem);
+                            let nameFirstCell = randomElem.getAttribute('name'); // Получаем порядковый номер ячейки в которой произошло попадание
+                            let numFirstCall = Number(randomElem.dataset.num); // Получаем порядковый номер ячейки в ряде, на которой произошел клик
 
-                        if (randomElem.classList.contains('parking')) {
-                            randomElem.classList.add('got'); // Красим ячейку в красный цвет, если попали в корабль
-                            randomElem.classList.remove('parking'); // Удаляем класс parking
-                            let lengthShip = randomElem.classList[1]; // Получаем длинну корабля и узнаем что за корабль перед нами
-                            let orientation = randomElem.classList[2]; // Получаем ориентацию корабля
-                            randomElem.classList.remove('empty'); // Удаляем класс empty
+                            if (randomElem.classList.contains('parking') && randomElem.classList.contains('empty')) { // Проверяем реальное попадание в корабль
+                                randomElem.classList.add('got'); // Красим ячейку в красный цвет, если попали в корабль
+                                randomElem.classList.remove('parking'); // Удаляем класс parking
+                                let lengthShip = randomElem.classList[1]; // Получаем длинну корабля и узнаем что за корабль перед нами
+                                let orientation = randomElem.classList[2]; // Получаем ориентацию корабля
+                                randomElem.classList.remove('empty'); // Удаляем класс empty
 
-                            for (let k = 0; k < objMapsShipsForPlayer[orientation][lengthShip].length; k++) { // Вырезаем из нашего объекта с картой кораблей у бота ячейку, в которую попал пользователь
-                                if (objMapsShipsForPlayer[orientation][lengthShip][k] == randomElem) {
-                                    objMapsShipsForPlayer[orientation][lengthShip].splice(objMapsShipsForPlayer[orientation][lengthShip].indexOf(randomElem), 1);
+                                for (let k = 0; k < objMapsShipsForPlayer[orientation][lengthShip].length; k++) { // Вырезаем из нашего объекта с картой кораблей у пользователя ячейку, в которую попал бот
+                                    if (objMapsShipsForPlayer[orientation][lengthShip][k] == randomElem) {
+                                        objMapsShipsForPlayer[orientation][lengthShip].splice(objMapsShipsForPlayer[orientation][lengthShip].indexOf(randomElem), 1);
+                                    }
+                                }
+
+                                getFourDirectionAfterHit(orientationHits, game_client, randomElem, nameFirstCell, numFirstCall); // Выбираем по три ячейки от попадания в разных направлениях
+
+                                if (objMapsShipsForPlayer[orientation][lengthShip].length == 0) { // Если в карте кораблей у данного корабля все ячейки выбиты и угаданы, тогда маркируем все ячейки в серый, которые распологаются около корабля
+                                    let aboutsShips = game_client.querySelectorAll('.about' + lengthShip);
+
+                                    for (let j = 0; j < aboutsShips.length; j++) {
+                                        aboutsShips[j].classList.add('away');
+                                        aboutsShips[j].classList.remove('empty');
+                                    }
+
+                                    orientationHits.length = 0; // Т.к. все ячейки у корабля выбиты и угаданы и формально его больше нет на поле, то мы обнуляем (зачищаем) массив направлений от попаданий
+                                }
+                                
+                                if (checkWinner(game_client)) { // Проверка на победителя
+                                    // РЕАЛИЗОВАТЬ ЛОГИКУ!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                                    alert('Я победил, но не расстраивайтесь, возможно Вы победите в другой раз;)');
                                 }
                             }
 
-                            if (objMapsShipsForPlayer[orientation][lengthShip].length == 0) { // Если в карте кораблей у данного корабля все ячейки выбиты и угаданы, тогда маркируем все ячейки в серый, которые распологаются около корабля
-                                let aboutsShips = game_client.querySelectorAll('.about' + lengthShip);
-
-                                for (let j = 0; j < aboutsShips.length; j++) {
-                                    aboutsShips[j].classList.add('away');
-                                    aboutsShips[j].classList.remove('empty');
-                                }
+                            if (!randomElem.classList.contains('parking') && randomElem.classList.contains('empty')) { // Проверка на то, если выбранный рандомный элемент не попал в корабль
+                                randomElem.classList.add('away');
+                                randomElem.classList.remove('empty');
+                                message.innerHTML = 'Ваш ход';
+                                break;
                             }
-                            console.log(objMapsShipsForPlayer);
-                            continue;
+                        } else { // Альтернативная ветка, когда массив с направлениями не пустой
+                            let randomGlobalDirectionNum = getRandomIntInclusive(0, orientationHits.length - 1); // Получили число рандомного направления (верх и низ или право и лево) в массиве, который имеет вот такой вид: [ [ [ячейки], [ячейки], [ячейки] ], [ [ячейки], [ячейки], [ячейки] ] ]
+                            let randomDirectionNum = getRandomIntInclusive(0, orientationHits[randomGlobalDirectionNum].length - 1); // Получили число рандомного направления
+                            let randomDirection = orientationHits[randomGlobalDirectionNum][randomDirectionNum]; // Получили рандомный выбор направления куда дальше будет вестись стрельба
+
+                            if (randomDirection.length !== 0) { // Проверили на то, что массив с ячейками не пустой, потому что корабль может стоять с самого боку игрового поля
+                                let elemForHit = randomDirection[0]; // Выбрали ячейку для выстрела
+
+                                if (elemForHit.classList.contains('parking') && elemForHit.classList.contains('empty')) { // Проверка на попадание
+                                    elemForHit.classList.add('got'); // Красим ячейку в красный цвет, если попали в корабль
+                                    elemForHit.classList.remove('parking'); // Удаляем класс parking
+                                    let lengthShip = elemForHit.classList[1]; // Получаем длинну корабля и узнаем что за корабль перед нами
+                                    let orientation = elemForHit.classList[2]; // Получаем ориентацию корабля
+                                    elemForHit.classList.remove('empty'); // Удаляем класс empty
+                                    orientationHits[randomGlobalDirectionNum][randomDirectionNum].shift(); // Вырезаем элемент (ячейку) в которую попали из массива направлений
+
+                                    if (orientationHits.length == 2) { // Проверка на то, что если попадание зафиксированно затем в одно из направлений, то следующие направления (противоположные) уже не нужны и их нужно удалить
+                                        if (randomGlobalDirectionNum == 0) {
+                                            orientationHits.pop();
+                                        }
+
+                                        if (randomGlobalDirectionNum == 1) {
+                                            orientationHits.shift();
+                                        }
+                                    }
+
+                                    for (let k = 0; k < objMapsShipsForPlayer[orientation][lengthShip].length; k++) { // Вырезаем из нашего объекта с картой кораблей у бота ячейку, в которую попал бот
+                                        if (objMapsShipsForPlayer[orientation][lengthShip][k] == elemForHit) {
+                                            objMapsShipsForPlayer[orientation][lengthShip].splice(objMapsShipsForPlayer[orientation][lengthShip].indexOf(elemForHit), 1);
+                                        }
+                                    }
+
+                                    if (objMapsShipsForPlayer[orientation][lengthShip].length == 0) { // Если в карте кораблей у данного корабля все ячейки выбиты и угаданы, тогда маркируем все ячейки в серый, которые распологаются около корабля
+                                        let aboutsShips = game_client.querySelectorAll('.about' + lengthShip);
+
+                                        for (let j = 0; j < aboutsShips.length; j++) {
+                                            aboutsShips[j].classList.add('away');
+                                            aboutsShips[j].classList.remove('empty');
+                                        }
+
+                                        orientationHits.length = 0;
+                                    }
+
+                                    if (checkWinner(game_client)) { // Проверка на победителя
+                                        // РЕАЛИЗОВАТЬ ЛОГИКУ!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                                        alert('Я победил, но не расстраивайтесь, возможно Вы победите в другой раз;)');
+                                    }
+                                    continue;
+                                }
+
+
+                                if (!elemForHit.classList.contains('empty')) { // Проверка на то, что вдруг рядом стоящая ячейка уже была бита и она не пустая
+                                    orientationHits[randomGlobalDirectionNum].slice(randomDirectionNum, 1);
+                                    continue;
+                                }
+
+
+                                if (!elemForHit.classList.contains('parking') && elemForHit.classList.contains('empty')) { // Проверка на то, что мы не попали в корабль
+                                    elemForHit.classList.add('away');
+                                    elemForHit.classList.remove('empty');
+                                    message.innerHTML = 'Ваш ход';
+                                    break;
+                                }
+                            } else { // Альтернативная ветка того, что если в массиве направления нет ни единой клетки для выстрела, что она стоит сбоку, тогда удаляем сразу же это направление
+                                orientationHits[randomGlobalDirectionNum].slice(randomDirectionNum, 1);
+                                continue;
+                            }
                         }
-
-                        if (!randomElem.classList.contains('parking') && randomElem.classList.contains('empty')) {
-                            randomElem.classList.add('away');
-                            randomElem.classList.remove('empty');
-                            message.innerHTML = 'Ваш ход';
-                            break;
-                        }
-
-
-
-
-
-                        // message.innerHTML = 'Ваш ход'; // Удалить
                     }
-                }, 1000);
+                }, 2000);
             }
         }
     });
 }
+
+
+function getFourDirectionAfterHit(orientationHits, game_client, randomElem, nameFirstCell, numFirstCall) { // Функция, которая записывает в массив по три ячейки, по разным направлениям от той ячейки, в которой было попадание
+    orientationHits.push([]);
+    orientationHits[0].push([]);
+    for (let k = 1; k <= 3; k++) {
+        if (game_client.querySelector('[name="' + (Number(nameFirstCell) - (10 * k)) + '"]') !== null) {
+            orientationHits[0][0].push(game_client.querySelector('[name="' + (Number(nameFirstCell) - (10 * k)) + '"]'));
+        }
+    }
+
+    orientationHits[0].push([]);
+    for (let k = 1; k <= 3; k++) {
+        if (game_client.querySelector('[name="' + (Number(nameFirstCell) + (10 * k)) + '"]') !== null) {
+            orientationHits[0][1].push(game_client.querySelector('[name="' + (Number(nameFirstCell) + (10 * k)) + '"]'));
+        }
+    }
+
+    orientationHits.push([]);
+    orientationHits[1].push([]);
+    for (let k = 1; k <= 3; k++) {
+        if (randomElem.parentElement.children[numFirstCall + k] !== undefined) {
+            orientationHits[1][0].push(randomElem.parentElement.children[numFirstCall + k]);
+        }
+    }
+
+    orientationHits[1].push([]);
+    for (let k = 1; k <= 3; k++) {
+        if (randomElem.parentElement.children[numFirstCall - k] !== undefined) {
+            orientationHits[1][1].push(randomElem.parentElement.children[numFirstCall - k]);
+        }
+    }
+};
