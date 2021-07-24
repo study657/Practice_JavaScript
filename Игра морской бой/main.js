@@ -1,3 +1,4 @@
+let rowContainer = document.querySelector('.row');
 let client = document.querySelector('.client');
 let game_client = document.querySelector('.game_client');
 let server = document.querySelector('.server');
@@ -38,7 +39,6 @@ let objMapsShipsForPlayer = { // Создаем объект для игрока
         '1ship_4': [],
     }
 };
-console.log(objMapsShipsForPlayer);
 let objMapsShipsForBot = { // Создаем объект для бота, в котором будет храниться вся карта кораблей в виде массивов с клеточками
     'horizontal': {
         '4ship': [],
@@ -373,7 +373,7 @@ random.addEventListener('click', function () { // При нажатии на к�
     }
 
     for (let key in objMapsShipsForPlayer) { // Зачищаем карту кораблей игрока
-        for(let obj in objMapsShipsForPlayer[key]){
+        for (let obj in objMapsShipsForPlayer[key]) {
             objMapsShipsForPlayer[key][obj].length = 0;
         }
     }
@@ -392,6 +392,7 @@ random.addEventListener('click', function () { // При нажатии на к�
 
 start_game.addEventListener('click', function () { // При нажатии на кнопочку "Начать игру" происходит создание вражеского поля с расстановкой кораблей, однако они не видимы игроку
     message.style.display = 'block';
+    message.innerHTML = 'Ваш ход';
     game_server.style.display = 'block';
     navigation.style.display = 'none';
 
@@ -624,6 +625,7 @@ for (let i = 0; i < tds_server.length; i++) { // Вешается обработ
                 }
 
                 if (checkWinner(game_server)) { // Проверка на победителя
+                    restartGame();
                     alert('Поздравляем, Вы победили!');
                 }
             }
@@ -639,7 +641,6 @@ for (let i = 0; i < tds_server.length; i++) { // Вешается обработ
                         if (orientationHits.length == 0) { // Идет проверка на то, пустой ли массив направлений или нет.
                             let emptyCells = [...game_client.querySelectorAll('.empty')]; // Берем все пустые клетки, в которые можно стрелять
                             let randomElem = emptyCells[getRandomIntInclusive(0, emptyCells.length - 1)]; // Выбираем один рандомный элемент для стрельбы
-                            console.log(randomElem);
                             let nameFirstCell = randomElem.getAttribute('name'); // Получаем порядковый номер ячейки в которой произошло попадание
                             let numFirstCall = Number(randomElem.dataset.num); // Получаем порядковый номер ячейки в ряде, на которой произошел клик
 
@@ -668,10 +669,11 @@ for (let i = 0; i < tds_server.length; i++) { // Вешается обработ
 
                                     orientationHits.length = 0; // Т.к. все ячейки у корабля выбиты и угаданы и формально его больше нет на поле, то мы обнуляем (зачищаем) массив направлений от попаданий
                                 }
-                                
+
                                 if (checkWinner(game_client)) { // Проверка на победителя
-                                    // РЕАЛИЗОВАТЬ ЛОГИКУ!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                                    restartGame();
                                     alert('Я победил, но не расстраивайтесь, возможно Вы победите в другой раз;)');
+                                    break;
                                 }
                             }
 
@@ -725,8 +727,9 @@ for (let i = 0; i < tds_server.length; i++) { // Вешается обработ
                                     }
 
                                     if (checkWinner(game_client)) { // Проверка на победителя
-                                        // РЕАЛИЗОВАТЬ ЛОГИКУ!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                                        restartGame();
                                         alert('Я победил, но не расстраивайтесь, возможно Вы победите в другой раз;)');
+                                        break;
                                     }
                                     continue;
                                 }
@@ -787,4 +790,67 @@ function getFourDirectionAfterHit(orientationHits, game_client, randomElem, name
             orientationHits[1][1].push(randomElem.parentElement.children[numFirstCall - k]);
         }
     }
+};
+
+function createElement(parent, htmlTag, classes, text, type = null) { // Функция, которая позволяет создать html элемент на странице
+    let elem = document.createElement(htmlTag);
+    elem.innerHTML = text;
+    for (let i = 0; i < classes.length; i++) {
+        elem.classList.add(classes[i]);
+    }
+    if (type !== null) {
+        elem.type = type;
+    }
+    parent.append(elem);
+
+    return elem;
+};
+
+function restartGame(){ // Функция, которая запускает логику рестарта игры, когда есть победитель
+    message.innerHTML = '';
+    let buttonRestartGame = createElement(rowContainer, 'button', ['btn', 'btn-success', 'mt-3'], 'Начать сначала', 'button');
+
+    buttonRestartGame.addEventListener('click', function () {
+        for (let key in objMapsShipsForPlayer) { // Зачищаем карту кораблей игрока
+            for (let obj in objMapsShipsForPlayer[key]) {
+                objMapsShipsForPlayer[key][obj].length = 0;
+            }
+        }
+
+        for (let key in objMapsShipsForBot) { // Зачищаем карту кораблей бота
+            for (let obj in objMapsShipsForBot[key]) {
+                objMapsShipsForBot[key][obj].length = 0;
+            }
+        }
+
+        for (let i = 0; i < tds_client.length; i++) {
+            tds_client[i].className = '';
+        }
+
+        for (let i = 0; i < tds_server.length; i++) {
+            tds_server[i].className = '';
+        }
+
+        let ships = document.querySelectorAll('.ship');
+        for (let i = 0; i < ships.length; i++) {
+            ships[i].remove();
+        }
+
+        markTdsAndTrs(tds_client, trs_client);
+        markTdsAndTrs(tds_server, trs_server);
+
+        shipPlacement('4ship', game_client, trs_client, client, 'player', 'yes');
+        shipPlacement('3ship_1', game_client, trs_client, client, 'player', 'yes');
+        shipPlacement('3ship_2', game_client, trs_client, client, 'player', 'yes');
+        shipPlacement('2ship_1', game_client, trs_client, client, 'player', 'yes');
+        shipPlacement('2ship_2', game_client, trs_client, client, 'player', 'yes');
+        shipPlacement('2ship_3', game_client, trs_client, client, 'player', 'yes');
+        shipPlacement('1ship_1', game_client, trs_client, client, 'player', 'yes');
+        shipPlacement('1ship_2', game_client, trs_client, client, 'player', 'yes');
+        shipPlacement('1ship_3', game_client, trs_client, client, 'player', 'yes');
+        shipPlacement('1ship_4', game_client, trs_client, client, 'player', 'yes');
+
+        navigation.style.display = 'block';
+        this.remove();
+    });
 };

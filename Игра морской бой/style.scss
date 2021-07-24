@@ -71,6 +71,9 @@
 .message{
     text-align: center;
     display: none;
+    font-size: 25px;
+    font-weight: 900;
+    color: #3376f1;
 }
 
 .active{
@@ -83,4 +86,8 @@
 
 .away{
     background-color: rgb(37, 18, 18);
+}
+
+.btn-success{
+    font-size: 20px;
 }
