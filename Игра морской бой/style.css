@@ -19,6 +19,50 @@
   z-index: 1;
 }
 
+.game_client .ship_4 {
+  background: url("images/4_h.png") center center/cover no-repeat;
+  width: 160px;
+  height: 40px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  -webkit-transform-origin: 0 0 0;
+          transform-origin: 0 0 0;
+}
+
+.game_client .ship_3 {
+  background: url("images/3_h.png") center center/cover no-repeat;
+  width: 120px;
+  height: 40px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  -webkit-transform-origin: 0 0 0;
+          transform-origin: 0 0 0;
+}
+
+.game_client .ship_2 {
+  background: url("images/2_h.png") center center/cover no-repeat;
+  width: 80px;
+  height: 40px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  -webkit-transform-origin: 0 0 0;
+          transform-origin: 0 0 0;
+}
+
+.game_client .ship_1 {
+  background: url("images/1_h.png") center center/cover no-repeat;
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  -webkit-transform-origin: 0 0 0;
+          transform-origin: 0 0 0;
+}
+
 .game_server {
   display: none;
   position: relative;
@@ -35,7 +79,8 @@
   cursor: pointer;
 }
 
-.ship_4 {
+.game_server .ship_4 {
+  display: none;
   background: url("images/4_h.png") center center/cover no-repeat;
   width: 160px;
   height: 40px;
@@ -46,7 +91,8 @@
           transform-origin: 0 0 0;
 }
 
-.ship_3 {
+.game_server .ship_3 {
+  display: none;
   background: url("images/3_h.png") center center/cover no-repeat;
   width: 120px;
   height: 40px;
@@ -57,7 +103,8 @@
           transform-origin: 0 0 0;
 }
 
-.ship_2 {
+.game_server .ship_2 {
+  display: none;
   background: url("images/2_h.png") center center/cover no-repeat;
   width: 80px;
   height: 40px;
@@ -68,7 +115,8 @@
           transform-origin: 0 0 0;
 }
 
-.ship_1 {
+.game_server .ship_1 {
+  display: none;
   background: url("images/1_h.png") center center/cover no-repeat;
   width: 40px;
   height: 40px;
@@ -105,5 +153,22 @@
 
 .btn-success {
   font-size: 20px;
+}
+
+.volum {
+  display: none;
+  text-align: center;
+  color: red;
+  font-weight: 900;
+}
+
+.volum p,
+.volum label {
+  font: 1rem 'Fira Sans', sans-serif;
+  margin-bottom: 0px;
+}
+
+.volum input {
+  margin: .4rem;
 }
 /*# sourceMappingURL=style.css.map */

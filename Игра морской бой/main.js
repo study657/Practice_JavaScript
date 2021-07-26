@@ -11,6 +11,9 @@ let random = document.querySelector('.random');
 let message = document.querySelector('.message');
 let start_game = document.querySelector('.start_game');
 let navigation = document.querySelector('.navigation');
+let volum = document.querySelector('.volum');
+let volumes = document.querySelector('.volumes');
+let volumescale = document.querySelector('.volumescale');
 let top_coordinates = ['0', '40px', '80px', '120px', '160px', '200px', '240px', '280px', '320px', '360px', '400px'];
 let left_coordinates = ['0', '40px', '80px', '120px', '160px', '200px', '240px', '280px', '320px', '360px', '400px'];
 let objMapsShipsForPlayer = { // Создаем объект для игрока, в котором будет храниться вся карта кораблей в виде массивов с клеточками
@@ -395,17 +398,18 @@ start_game.addEventListener('click', function () { // При нажатии на
     message.innerHTML = 'Ваш ход';
     game_server.style.display = 'block';
     navigation.style.display = 'none';
+    volum.style.display = 'block';
 
-    shipPlacement('4ship', game_server, trs_server, server, 'bot');
-    shipPlacement('3ship_1', game_server, trs_server, server, 'bot');
-    shipPlacement('3ship_2', game_server, trs_server, server, 'bot');
-    shipPlacement('2ship_1', game_server, trs_server, server, 'bot');
-    shipPlacement('2ship_2', game_server, trs_server, server, 'bot');
-    shipPlacement('2ship_3', game_server, trs_server, server, 'bot');
-    shipPlacement('1ship_1', game_server, trs_server, server, 'bot');
-    shipPlacement('1ship_2', game_server, trs_server, server, 'bot');
-    shipPlacement('1ship_3', game_server, trs_server, server, 'bot');
-    shipPlacement('1ship_4', game_server, trs_server, server, 'bot');
+    shipPlacement('4ship', game_server, trs_server, server, 'bot', 'yes');
+    shipPlacement('3ship_1', game_server, trs_server, server, 'bot', 'yes');
+    shipPlacement('3ship_2', game_server, trs_server, server, 'bot', 'yes');
+    shipPlacement('2ship_1', game_server, trs_server, server, 'bot', 'yes');
+    shipPlacement('2ship_2', game_server, trs_server, server, 'bot', 'yes');
+    shipPlacement('2ship_3', game_server, trs_server, server, 'bot', 'yes');
+    shipPlacement('1ship_1', game_server, trs_server, server, 'bot', 'yes');
+    shipPlacement('1ship_2', game_server, trs_server, server, 'bot', 'yes');
+    shipPlacement('1ship_3', game_server, trs_server, server, 'bot', 'yes');
+    shipPlacement('1ship_4', game_server, trs_server, server, 'bot', 'yes');
 });
 
 
@@ -589,6 +593,10 @@ function checkWinner(selectorGame) { // Функция, которая пров�
     let cellsWithParkings = selectorGame.querySelectorAll('.parking');
 
     if (cellsWithParkings.length == 0) {
+        let ships = game_server.querySelectorAll('.ship');
+        for(let i = 0; i < ships.length; i++){
+            ships[i].style.display = 'block';
+        }
         return true;
     } else {
         return false;
@@ -608,7 +616,7 @@ for (let i = 0; i < tds_server.length; i++) { // Вешается обработ
                 let lengthShip = this.classList[1]; // Получаем длинну корабля и узнаем что за корабль перед нами
                 let orientation = this.classList[2]; // Получаем ориентацию корабля
                 this.classList.remove('empty'); // Удаляем класс empty
-                startAudioEffect('audio/popal.mp3'); // Запускаем звук попадания по кораблю
+                startAudioEffect('audio/popal.mp3', volumescale); // Запускаем звук попадания по кораблю
 
                 for (let k = 0; k < objMapsShipsForBot[orientation][lengthShip].length; k++) { // Вырезаем из нашего объекта с картой кораблей у бота ячейку, в которую попал пользователь
                     if (objMapsShipsForBot[orientation][lengthShip][k] == this) {
@@ -634,7 +642,7 @@ for (let i = 0; i < tds_server.length; i++) { // Вешается обработ
             if (!this.classList.contains('parking') && this.classList.contains('empty') && message.innerHTML == 'Ваш ход') { // Если попадания от человека не было, тогда мы ставим человеку мимо и запускаем логику стрельбы бота
                 this.classList.add('away');
                 this.classList.remove('empty');
-                startAudioEffect('audio/mimo.mp3');
+                startAudioEffect('audio/mimo.mp3', volumescale);
                 message.innerHTML = 'Ходит бот';
 
 
@@ -761,6 +769,12 @@ for (let i = 0; i < tds_server.length; i++) { // Вешается обработ
     });
 }
 
+volumes.addEventListener('change', function(){ // Вешаем обработчик события на инпут с регулировкой звука и при его изменении записываем это значение в показатель громкости
+    volumescale.innerHTML = this.value;
+});
+
+
+
 
 function getFourDirectionAfterHit(orientationHits, game_client, randomElem, nameFirstCell, numFirstCall) { // Функция, которая записывает в массив по три ячейки, по разным направлениям от той ячейки, в которой было попадание
     orientationHits.push([]);
@@ -810,6 +824,7 @@ function createElement(parent, htmlTag, classes, text, type = null) { // Фун�
 
 function restartGame() { // Функция, которая запускает логику рестарта игры, когда есть победитель
     message.innerHTML = '';
+    volum.style.display = 'none';
     let buttonRestartGame = createElement(rowContainer, 'button', ['btn', 'btn-success', 'mt-3'], 'Начать сначала', 'button');
 
     buttonRestartGame.addEventListener('click', function () {
@@ -857,8 +872,9 @@ function restartGame() { // Функция, которая запускает л
     });
 };
 
-function startAudioEffect(sound) { // Функция, которая позволяет запустить звуковое оповещение при ходе пользователя
+function startAudioEffect(sound, volumescale) { // Функция, которая позволяет запустить звуковое оповещение при ходе пользователя
     let audio = new Audio(); // Создаём новый элемент Audio
     audio.src = sound; // Указываем путь к звуку "клика"
     audio.autoplay = true; // Автоматически запускаем
+    audio.volume = Number(volumescale.innerHTML) / 100;
 };

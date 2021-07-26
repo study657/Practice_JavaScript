@@ -1,4 +1,4 @@
-@mixin show_ships($picture, $width, $height){
+@mixin show_ships($picture, $width, $height) {
     background: url($picture) center center/cover no-repeat;
     width: $width;
     height: $height;
@@ -9,15 +9,15 @@
 }
 
 
-.game_client{
+.game_client {
     position: relative;
     width: 400px;
     margin: 0 auto;
 
-    table{
+    table {
         width: 400px;
-    
-        td{
+
+        td {
             min-height: 40px;
             height: 40px;
             min-width: 40px;
@@ -28,16 +28,32 @@
             z-index: 1;
         }
     }
+
+    .ship_4 {
+        @include show_ships('images/4_h.png', 160px, 40px);
+    }
+    
+    .ship_3 {
+        @include show_ships('images/3_h.png', 120px, 40px);
+    }
+    
+    .ship_2 {
+        @include show_ships('images/2_h.png', 80px, 40px);
+    }
+    
+    .ship_1 {
+        @include show_ships('images/1_h.png', 40px, 40px);
+    }
 }
 
-.game_server{
+.game_server {
     display: none;
     position: relative;
     width: 400px;
     margin: 0 auto;
 
-    table{
-        td{
+    table {
+        td {
             min-height: 40px;
             height: 40px;
             min-width: 40px;
@@ -46,29 +62,33 @@
             cursor: pointer;
         }
     }
+
+    .ship_4 {
+        display: none;
+        @include show_ships('images/4_h.png', 160px, 40px);
+    }
+    
+    .ship_3 {
+        display: none;
+        @include show_ships('images/3_h.png', 120px, 40px);
+    }
+    
+    .ship_2 {
+        display: none;
+        @include show_ships('images/2_h.png', 80px, 40px);
+    }
+    
+    .ship_1 {
+        display: none;
+        @include show_ships('images/1_h.png', 40px, 40px);
+    }
 }
 
-.ship_4{
-    @include show_ships('images/4_h.png', 160px, 40px);
-}
-
-.ship_3{
-    @include show_ships('images/3_h.png', 120px, 40px);
-}
-
-.ship_2{
-    @include show_ships('images/2_h.png', 80px, 40px);
-}
-
-.ship_1{
-    @include show_ships('images/1_h.png', 40px, 40px);
-}
-
-.navigation{
+.navigation {
     text-align: center;
 }
 
-.message{
+.message {
     text-align: center;
     display: none;
     font-size: 25px;
@@ -76,18 +96,34 @@
     color: #3376f1;
 }
 
-.active{
+.active {
     background-color: #a9a3a3e6;
 }
 
-.got{
+.got {
     background-color: red;
 }
 
-.away{
+.away {
     background-color: rgb(37, 18, 18);
 }
 
-.btn-success{
+.btn-success {
     font-size: 20px;
+}
+
+.volum {
+    display: none;
+    text-align: center;
+    color: red;
+    font-weight: 900;
+    p,
+    label {
+        font: 1rem 'Fira Sans', sans-serif;
+        margin-bottom: 0px;
+    }
+
+    input {
+        margin: .4rem;
+    }
 }
