@@ -1,0 +1,80 @@
+.scoreBlock,
+.bestScoreBlock,
+.timerBlock {
+    margin-top: 10px;
+    font-size: 20px;
+    font-weight: 900;
+    color: #291ed2;
+    font-family: fantasy;
+}
+
+.gameBlock {
+    border: 2px solid black;
+    max-width: 760px;
+    width: 760px;
+    height: 500px;
+    margin-top: 50px;
+    background-color: grey;
+    padding: 0;
+
+    .snake {
+        width: max-content;
+        position: relative;
+
+        .head_snake {
+            border: 1px solid green;
+            max-width: 20px;
+            width: 20px;
+            height: 20px;
+            border-radius: 10px 0 0 10px;
+            background-color: green;
+            position: absolute;
+            -webkit-transform: rotate(0);
+            transform: rotate(90deg);
+            top: 40px;
+            left: 40px;
+        }
+
+        .body_snake_1 {
+            border: 1px solid green;
+            max-width: 20px;
+            width: 20px;
+            height: 20px;
+            background-color: green;
+            position: absolute;
+            top: 60px;
+            left: 40px;
+        }
+
+        .body_snake_2 {
+            border: 1px solid green;
+            max-width: 20px;
+            width: 20px;
+            height: 20px;
+            background-color: green;
+            position: absolute;
+            top: 60px;
+            left: 60px;
+        }
+
+        .body_snake_3 {
+            border: 1px solid green;
+            max-width: 20px;
+            width: 20px;
+            height: 20px;
+            background-color: green;
+            position: absolute;
+            top: 60px;
+            left: 80px;
+        }
+    }
+}
+
+.buttonStart {
+    width: 300px;
+    margin: 30px auto;
+    color: #332020;
+    font-size: 20px;
+    font-weight: 800;
+    font-family: cursive;
+}
