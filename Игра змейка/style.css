@@ -8,20 +8,21 @@
   font-family: fantasy;
 }
 
+.col-md-8 {
+  margin-top: 30px;
+}
+
 .gameBlock {
-  border: 2px solid black;
-  max-width: 760px;
-  width: 760px;
-  height: 500px;
-  margin: 30px auto;
+  border: 3px solid black;
+  max-width: 766px;
+  width: 766px;
+  height: 506px;
+  margin: 0 auto;
   background-color: grey;
   padding: 0;
 }
 
 .gameBlock .snake {
-  width: -webkit-max-content;
-  width: -moz-max-content;
-  width: max-content;
   position: relative;
 }
 
@@ -34,9 +35,9 @@
   background-color: green;
   position: absolute;
   -webkit-transform: rotate(0);
-  transform: rotate(90deg);
-  top: 40px;
-  left: 40px;
+  transform: rotate(180deg);
+  top: 80px;
+  left: 80px;
 }
 
 .gameBlock .snake .body_snake_1 {
@@ -46,8 +47,8 @@
   height: 20px;
   background-color: green;
   position: absolute;
-  top: 60px;
-  left: 40px;
+  top: 80px;
+  left: 60px;
 }
 
 .gameBlock .snake .body_snake_2 {
@@ -57,8 +58,8 @@
   height: 20px;
   background-color: green;
   position: absolute;
-  top: 60px;
-  left: 60px;
+  top: 80px;
+  left: 40px;
 }
 
 .gameBlock .snake .body_snake_3 {
@@ -68,8 +69,8 @@
   height: 20px;
   background-color: green;
   position: absolute;
-  top: 60px;
-  left: 80px;
+  top: 80px;
+  left: 20px;
 }
 
 .buttonStart {
