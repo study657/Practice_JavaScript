@@ -73,6 +73,13 @@
   left: 20px;
 }
 
+.gameBlock .snake .snake_food {
+  background: url("images/cake.svg") center center/cover no-repeat;
+  width: 20px;
+  height: 20px;
+  position: absolute;
+}
+
 .buttonStart {
   width: 300px;
   margin: 30px auto;
