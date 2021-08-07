@@ -1,4 +1,5 @@
-let scoreBlock = document.querySelector('.scoreBlock'),
+let parentBlock = document.querySelector('.col-md-8'),
+    scoreBlock = document.querySelector('.scoreBlock'),
     bestScoreBlock = document.querySelector('.bestScoreBlock'),
     timerBlock = document.querySelector('.timerBlock'),
     gameBlock = document.querySelector('.gameBlock'),
@@ -6,8 +7,8 @@ let scoreBlock = document.querySelector('.scoreBlock'),
     head_snake = document.querySelector('.head_snake'),
     buttonStart = document.querySelector('.buttonStart'); // Получение элементов верстки
 
-let allCoordinates_top = ['0', '20px', '40px', '60px', '80px', '120px', '140px', '160px', '180px', '200px', '220px', '240px', '260px', '280px', '300px', '320px', '340px', '360px', '380px', '400px', '420px', '440px', '460px', '480px'];
-let allCoordinates_left = ['0', '20px', '40px', '60px', '80px', '120px', '140px', '160px', '180px', '200px', '220px', '240px', '260px', '280px', '300px', '320px', '340px', '360px', '380px', '400px', '420px', '440px', '460px', '480px', '500px', '520px', '540px', '560px', '580px', '600px', '620px', '640px', '660px', '680px', '700px', '720px', '740px'];
+let allCoordinates_top = ['0', '20px', '40px', '60px', '80px', '120px', '140px', '160px', '180px', '200px', '220px', '240px', '260px', '280px', '300px', '320px', '340px', '360px', '380px', '400px', '420px', '440px', '460px', '480px']; // Все координаты по оси Y
+let allCoordinates_left = ['0', '20px', '40px', '60px', '80px', '120px', '140px', '160px', '180px', '200px', '220px', '240px', '260px', '280px', '300px', '320px', '340px', '360px', '380px', '400px', '420px', '440px', '460px', '480px', '500px', '520px', '540px', '560px', '580px', '600px', '620px', '640px', '660px', '680px', '700px', '720px', '740px']; // Все координаты по оси X
 let currentOrientation = 'rotate(180deg)'; // Текущая ориентация поворота головы змеи
 let currentDirecrion = ''; // Текущее направление, куда смотрит змейка (право, вниз, лево, вверх)
 let valueSpeedSnake = 100; // Текущая скорость змейки
@@ -17,7 +18,7 @@ let bestScoreCurr = 0; // Текущий показатель лучшего с�
 
 let currentCoordinatesLeft = []; // Координата x головы змейки (всегда положительное значение)
 let currentCoordinatesTop = []; // Координата y головы змейки (всегда положительное значение)
-let paramsFoodSnake;
+let paramsFoodSnake; // Параметры еды, которые создаются в момент создания пищи для змейки
 
 
 window.addEventListener('keydown', function (event) { // Вещаем обработчик события на весь экран и отслеживаем нажатие клавиш на нем, для управления змейки и в случае нажатия клавиши, меняем текущее направление
@@ -56,7 +57,7 @@ buttonStart.addEventListener('click', function () { // Повесили обра
             let bodySnakes = document.querySelectorAll('.body_snake');
             let currentCoordinatesHeadSnake_left = getComputedStyle(head_snake).left;
             let currentCoordinatesHeadSnake_top = getComputedStyle(head_snake).top;
-            chekingSnakeEatFoodAndExpansionSnake(currentCoordinatesHeadSnake_top, currentCoordinatesHeadSnake_left, paramsFoodSnake['Y'], paramsFoodSnake['X'], paramsFoodSnake['elem'], bodySnakes);
+            chekingSnakeEatFoodAndExpansionSnake(currentCoordinatesHeadSnake_top, currentCoordinatesHeadSnake_left, paramsFoodSnake['Y'], paramsFoodSnake['X'], paramsFoodSnake['elem'], bodySnakes); // Проверка на то скушала ли змейка еду
             if (currentOrientation == 'rotate(180deg)') {
                 currentCoordinatesLeft.push(currentCoordinatesHeadSnake_left);
 
@@ -206,6 +207,7 @@ buttonStart.addEventListener('click', function () { // Повесили обра
         if (paramsFoodSnake == undefined) { // Вызываем функцию, которая заспавнит еду для змейки, а так же вернут нам массив с информацией о этой еде
             paramsFoodSnake = createSnakeFood();
         }
+        checkLoseAndRestartGame(timerTime, speedSnake); // Проверка на то, не врезалась ли змейка сама в себя и не окончилась ли игра из-за этого
     }, valueSpeedSnake);
 });
 
@@ -265,7 +267,6 @@ function createSnakeFood() { // Функция, которая создает и
     }
 };
 
-
 function chekingSnakeEatFoodAndExpansionSnake(coordinateTopHeadSnake, coordinateLeftHeadSnake, coordinateTopFood, coordinateLeftFood, elemFood, bodySnakes) { // Функция, которая проверяет скушала ли змейка еду и если да, тогда удаляет старую еду и потом создается новая
     if (coordinateTopHeadSnake == coordinateTopFood && coordinateLeftHeadSnake == coordinateLeftFood) {
         elemFood.remove();
@@ -287,7 +288,66 @@ function chekingSnakeEatFoodAndExpansionSnake(coordinateTopHeadSnake, coordinate
     }
 };
 
+function checkLoseAndRestartGame(timerId1, timerId2) { // Функция, которая проверяет не совпали ли показатели головы змейки с ее туловищем и если совпали, то игра окончена и соответственно появляется кнопочка, которая позволяет перезагрузить игру в полном объеме
+    let head_snake = document.querySelector('.head_snake');
+    let body_snakes = document.querySelectorAll('.body_snake');
 
+    let chekingObj = {
+        'top': [],
+        'left': []
+    };
+
+    let head_snakeCoordinateTop = getComputedStyle(head_snake).top;
+    let head_snakeCoordinateLeft = getComputedStyle(head_snake).left;
+
+    for (let i = 0; i < body_snakes.length; i++) {
+        chekingObj['top'].push(getComputedStyle(body_snakes[i]).top);
+        chekingObj['left'].push(getComputedStyle(body_snakes[i]).left);
+    }
+
+    for (let i = 0; i < chekingObj['left'].length; i++) {
+        if (chekingObj['left'][i] == head_snakeCoordinateLeft && chekingObj['top'][i] == head_snakeCoordinateTop) {
+            clearInterval(timerId1);
+            clearInterval(timerId2);
+
+            // СЮДА ДОБАВЛЯЕТСЯ ПРОВЕРКА НА ЛОКАЛЬНОЕ ХРАНИЛИЩЕ!!!
+            let buttonRestart = createElement('button', parentBlock, ['btn', 'btn-danger', 'buttonRestart']);
+            buttonRestart.innerHTML = 'Начать игру сначала';
+
+            buttonRestart.addEventListener('click', function(){
+                buttonRestart.remove();
+                
+                if(paramsFoodSnake['elem'] !== undefined){
+                    paramsFoodSnake['elem'].remove();
+                    paramsFoodSnake = undefined;
+                    buttonStart.removeAttribute('disabled');
+
+                    let bodySnakes = document.querySelectorAll('.body_snake');
+                    for(let i = 0; i < bodySnakes.length; i++){
+                        bodySnakes[i].remove();
+                    }
+
+                    head_snake.style.transform = 'rotate(180deg)';
+                    head_snake.style.top = '80px';
+                    head_snake.style.left = '80px';
+
+                    createElement('div', snakeBlock, ['body_snake_1', 'body_snake']);
+                    createElement('div', snakeBlock, ['body_snake_2', 'body_snake']);
+                    createElement('div', snakeBlock, ['body_snake_3', 'body_snake']);
+
+                    timeCurr = 0;
+                    scoreCurr = 0;
+                    scoreBlock.innerHTML = 'Счет: 0';
+                    timerBlock.innerHTML = 'Время: 0';
+                    currentOrientation = 'rotate(180deg)';
+                    currentDirecrion = '';
+                }
+            });
+
+            alert('Игра окончена, Вы проиграли!');
+        }
+    }
+};
 
 
 

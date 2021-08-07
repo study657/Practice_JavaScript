@@ -99,4 +99,13 @@
   font-weight: 800;
   font-family: cursive;
 }
+
+.buttonRestart {
+  width: 300px;
+  margin: 30px auto;
+  color: #332020;
+  font-size: 20px;
+  font-weight: 800;
+  font-family: cursive;
+}
 /*# sourceMappingURL=style.css.map */
