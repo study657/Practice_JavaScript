@@ -38,6 +38,15 @@
             left: 80px;
         }
 
+        .body_snake{
+            border: 1px solid green;
+            max-width: 20px;
+            width: 20px;
+            height: 20px;
+            background-color: green;
+            position: absolute;
+        }
+
         .body_snake_1 {
             border: 1px solid green;
             max-width: 20px;
@@ -76,6 +85,8 @@
             width: 20px;
             height: 20px;
             position: absolute;
+            top: 0;
+            left: 740px;
         }
     }
 }
