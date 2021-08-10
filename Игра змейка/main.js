@@ -20,6 +20,12 @@ let currentCoordinatesLeft = []; // Координата x головы змей
 let currentCoordinatesTop = []; // Координата y головы змейки (всегда положительное значение)
 let paramsFoodSnake; // Параметры еды, которые создаются в момент создания пищи для змейки
 
+if (localStorage.getItem('bestScore') !== null) { // Проверка на локальное хранилище с Лучшим счетом игрока
+    bestScoreBlock.innerHTML = bestScoreBlock.innerHTML + localStorage.getItem('bestScore');
+}else{
+    bestScoreBlock.innerHTML = 'Лучший счет: 0';
+}
+
 
 window.addEventListener('keydown', function (event) { // Вещаем обработчик события на весь экран и отслеживаем нажатие клавиш на нем, для управления змейки и в случае нажатия клавиши, меняем текущее направление
     let key = event.keyCode; // Получение кода нажатой клавиши
@@ -310,20 +316,25 @@ function checkLoseAndRestartGame(timerId1, timerId2) { // Функция, кот
             clearInterval(timerId1);
             clearInterval(timerId2);
 
-            // СЮДА ДОБАВЛЯЕТСЯ ПРОВЕРКА НА ЛОКАЛЬНОЕ ХРАНИЛИЩЕ!!!
+            if (localStorage.getItem('bestScore') == null) { // Добавление в локальное хранилище лучшего счета игрока
+                localStorage.setItem('bestScore', bestScoreCurr);
+            } else if(Number(localStorage.getItem('bestScore')) < bestScoreCurr){
+                localStorage.setItem('bestScore', bestScoreCurr);
+            }
+
             let buttonRestart = createElement('button', parentBlock, ['btn', 'btn-danger', 'buttonRestart']);
             buttonRestart.innerHTML = 'Начать игру сначала';
 
-            buttonRestart.addEventListener('click', function(){
+            buttonRestart.addEventListener('click', function () {
                 buttonRestart.remove();
-                
-                if(paramsFoodSnake['elem'] !== undefined){
+
+                if (paramsFoodSnake['elem'] !== undefined) {
                     paramsFoodSnake['elem'].remove();
                     paramsFoodSnake = undefined;
                     buttonStart.removeAttribute('disabled');
 
                     let bodySnakes = document.querySelectorAll('.body_snake');
-                    for(let i = 0; i < bodySnakes.length; i++){
+                    for (let i = 0; i < bodySnakes.length; i++) {
                         bodySnakes[i].remove();
                     }
 
