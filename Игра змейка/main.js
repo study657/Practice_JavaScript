@@ -25,7 +25,8 @@ let paramsFoodSnake = { // Параметры еды, которые созда�
 }
 
 if (localStorage.getItem('bestScore') !== null) { // Проверка на локальное хранилище с Лучшим счетом игрока
-    bestScoreBlock.innerHTML = bestScoreBlock.innerHTML + localStorage.getItem('bestScore');
+    bestScoreCurr = Number(localStorage.getItem('bestScore'));
+    bestScoreBlock.innerHTML = bestScoreBlock.innerHTML + bestScoreCurr;
 } else {
     bestScoreBlock.innerHTML = 'Лучший счет: 0';
 }
@@ -266,10 +267,17 @@ function chekingSnakeEatFoodAndExpansionSnake(coordinateTopHeadSnake, coordinate
         elem.style.left = x;
         elem.style.top = y;
 
+        if(localStorage.getItem('bestScore') !== null){ // Проверка на лучший счет игрока, чтобы он начинал добавляться в том случае, когда рекод старый побит
+            if(localStorage.getItem('bestScore') <= scoreCurr){
+                bestScoreCurr++;
+                bestScoreBlock.innerHTML = 'Лучший счет: ' + bestScoreCurr;
+            }
+        }else{
+            bestScoreCurr++;
+            bestScoreBlock.innerHTML = 'Лучший счет: ' + bestScoreCurr;
+        }
         scoreCurr++;
-        bestScoreCurr++;
         scoreBlock.innerHTML = 'Счет: ' + scoreCurr;
-        bestScoreBlock.innerHTML = 'Лучший счет: ' + scoreCurr;
     }
 };
 
