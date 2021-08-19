@@ -1,0 +1,30 @@
+.computer_block {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.computer_block .card1 {
+  width: 200px;
+  height: 400px;
+  background: url("images/cards/1_1.jpg") center center/contain no-repeat;
+}
+
+.computer_block .card2 {
+  width: 200px;
+  height: 400px;
+  background: url("images/cards/1_1.jpg") center center/contain no-repeat;
+}
+
+.computer_block .card3 {
+  width: 200px;
+  height: 400px;
+  background: url("images/cards/1_1.jpg") center center/contain no-repeat;
+}
+
+.computer_block .card4 {
+  width: 200px;
+  height: 400px;
+  background: url("images/cards/1_1.jpg") center center/contain no-repeat;
+}
+/*# sourceMappingURL=style.css.map */
