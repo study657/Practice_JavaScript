@@ -2,29 +2,147 @@
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  position: relative;
 }
 
-.computer_block .card1 {
-  width: 200px;
-  height: 400px;
-  background: url("images/cards/1_1.jpg") center center/contain no-repeat;
+.computer_block .zero1 {
+  width: 110px;
+  height: 160px;
+  background: url(images/cards/reverseSide.jpg) center center/contain no-repeat;
 }
 
-.computer_block .card2 {
-  width: 200px;
-  height: 400px;
-  background: url("images/cards/1_1.jpg") center center/contain no-repeat;
+.computer_block .zero2 {
+  width: 110px;
+  height: 160px;
+  background: url(images/cards/reverseSide.jpg) center center/contain no-repeat;
+  position: absolute;
+  left: 70px;
 }
 
-.computer_block .card3 {
-  width: 200px;
-  height: 400px;
-  background: url("images/cards/1_1.jpg") center center/contain no-repeat;
+.computer_block .zero3 {
+  width: 110px;
+  height: 160px;
+  background: url(images/cards/reverseSide.jpg) center center/contain no-repeat;
+  position: absolute;
+  left: 140px;
 }
 
-.computer_block .card4 {
-  width: 200px;
-  height: 400px;
-  background: url("images/cards/1_1.jpg") center center/contain no-repeat;
+.computer_block .zero4 {
+  width: 110px;
+  height: 160px;
+  background: url(images/cards/reverseSide.jpg) center center/contain no-repeat;
+  position: absolute;
+  left: 210px;
+}
+
+.computer_block .zero5 {
+  width: 110px;
+  height: 160px;
+  background: url(images/cards/reverseSide.jpg) center center/contain no-repeat;
+  position: absolute;
+  left: 280px;
+}
+
+.computer_block .zero6 {
+  width: 110px;
+  height: 160px;
+  background: url(images/cards/reverseSide.jpg) center center/contain no-repeat;
+  position: absolute;
+  left: 350px;
+}
+
+.player_block {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  position: relative;
+  margin: 90px 0;
+}
+
+.player_block .card_player {
+  cursor: pointer;
+  width: 110px;
+  height: 160px;
+  background: center center/contain no-repeat;
+}
+
+.player_block .card1 {
+  position: absolute;
+  left: 0;
+}
+
+.player_block .card1:hover {
+  top: -15px;
+}
+
+.player_block .card2 {
+  position: absolute;
+  left: 70px;
+}
+
+.player_block .card2:hover {
+  top: -15px;
+}
+
+.player_block .card3 {
+  position: absolute;
+  left: 140px;
+}
+
+.player_block .card3:hover {
+  top: -15px;
+}
+
+.player_block .card4 {
+  position: absolute;
+  left: 210px;
+}
+
+.player_block .card4:hover {
+  top: -15px;
+}
+
+.player_block .card5 {
+  position: absolute;
+  left: 280px;
+}
+
+.player_block .card5:hover {
+  top: -15px;
+}
+
+.player_block .card6 {
+  position: absolute;
+  left: 350px;
+}
+
+.player_block .card6:hover {
+  top: -15px;
+}
+
+.game_block {
+  height: 150px;
+  margin-top: 60px;
+}
+
+.game_block .koloda {
+  position: relative;
+}
+
+.game_block .koloda .card_kozir {
+  position: absolute;
+  left: 0;
+  width: 110px;
+  height: 160px;
+  background: center center/contain no-repeat;
+}
+
+.game_block .koloda .all_cards {
+  z-index: 1;
+  position: absolute;
+  left: 70px;
+  width: 110px;
+  height: 160px;
+  background: url(images/cards/reverseSide.jpg) center center/contain no-repeat;
 }
 /*# sourceMappingURL=style.css.map */
