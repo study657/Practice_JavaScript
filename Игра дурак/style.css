@@ -6,49 +6,50 @@
 }
 
 .computer_block .zero1 {
-  width: 110px;
+  background: url("images/cards/reverseSide.jpg") center center/contain no-repeat;
   height: 160px;
-  background: url(images/cards/reverseSide.jpg) center center/contain no-repeat;
+  width: 110px;
+  left: 0;
 }
 
 .computer_block .zero2 {
-  width: 110px;
+  background: url("images/cards/reverseSide.jpg") center center/contain no-repeat;
   height: 160px;
-  background: url(images/cards/reverseSide.jpg) center center/contain no-repeat;
-  position: absolute;
+  width: 110px;
   left: 70px;
+  position: absolute;
 }
 
 .computer_block .zero3 {
-  width: 110px;
+  background: url("images/cards/reverseSide.jpg") center center/contain no-repeat;
   height: 160px;
-  background: url(images/cards/reverseSide.jpg) center center/contain no-repeat;
-  position: absolute;
+  width: 110px;
   left: 140px;
+  position: absolute;
 }
 
 .computer_block .zero4 {
-  width: 110px;
+  background: url("images/cards/reverseSide.jpg") center center/contain no-repeat;
   height: 160px;
-  background: url(images/cards/reverseSide.jpg) center center/contain no-repeat;
-  position: absolute;
+  width: 110px;
   left: 210px;
+  position: absolute;
 }
 
 .computer_block .zero5 {
-  width: 110px;
+  background: url("images/cards/reverseSide.jpg") center center/contain no-repeat;
   height: 160px;
-  background: url(images/cards/reverseSide.jpg) center center/contain no-repeat;
-  position: absolute;
+  width: 110px;
   left: 280px;
+  position: absolute;
 }
 
 .computer_block .zero6 {
-  width: 110px;
+  background: url("images/cards/reverseSide.jpg") center center/contain no-repeat;
   height: 160px;
-  background: url(images/cards/reverseSide.jpg) center center/contain no-repeat;
-  position: absolute;
+  width: 110px;
   left: 350px;
+  position: absolute;
 }
 
 .player_block {
@@ -141,8 +142,8 @@
   z-index: 1;
   position: absolute;
   left: 70px;
-  width: 110px;
-  height: 160px;
+  width: 114px;
+  height: 162px;
   background: url(images/cards/reverseSide.jpg) center center/contain no-repeat;
 }
 /*# sourceMappingURL=style.css.map */

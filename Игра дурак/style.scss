@@ -1,55 +1,55 @@
+@mixin show_card_in_computer_block($picture, $height, $width, $left){
+    background: url($picture) center center/contain no-repeat;
+    height: $height;
+    width: $width;
+    left: $left;
+}
+
+@mixin show_card_in_player_block($left){
+    position: absolute;
+    left: $left;
+
+    &:hover {
+        top: -15px;
+    }
+}
+
+
+
+
 .computer_block{
     display: flex;
     position: relative;
 
     .zero1{
-        width: 110px;
-        height: 160px;
-        background: url(images/cards/reverseSide.jpg) center center/contain no-repeat;
+        @include show_card_in_computer_block('images/cards/reverseSide.jpg', 160px, 110px, 0);
     }
 
     .zero2{
-        width: 110px;
-        height: 160px;
-        background: url(images/cards/reverseSide.jpg) center center/contain no-repeat;
+        @include show_card_in_computer_block('images/cards/reverseSide.jpg', 160px, 110px, 70px);
         position: absolute;
-        left: 70px;
     }
 
     .zero3{
-        width: 110px;
-        height: 160px;
-        background: url(images/cards/reverseSide.jpg) center center/contain no-repeat;
+        @include show_card_in_computer_block('images/cards/reverseSide.jpg', 160px, 110px, 140px);
         position: absolute;
-        left: 140px;
     }
 
     .zero4{
-        width: 110px;
-        height: 160px;
-        background: url(images/cards/reverseSide.jpg) center center/contain no-repeat;
+        @include show_card_in_computer_block('images/cards/reverseSide.jpg', 160px, 110px, 210px);
         position: absolute;
-        left: 210px;
     }
 
     .zero5{
-        width: 110px;
-        height: 160px;
-        background: url(images/cards/reverseSide.jpg) center center/contain no-repeat;
+        @include show_card_in_computer_block('images/cards/reverseSide.jpg', 160px, 110px, 280px);
         position: absolute;
-        left: 280px;
     }
 
     .zero6{
-        width: 110px;
-        height: 160px;
-        background: url(images/cards/reverseSide.jpg) center center/contain no-repeat;
+        @include show_card_in_computer_block('images/cards/reverseSide.jpg', 160px, 110px, 350px);
         position: absolute;
-        left: 350px;
     }
 }
-
-
 
 .player_block {
     display: flex;
@@ -65,57 +65,27 @@
     }
 
     .card1 {
-        position: absolute;
-        left: 0;
-
-        &:hover {
-            top: -15px;
-        }
+        @include show_card_in_player_block(0);
     }
 
     .card2 {
-        position: absolute;
-        left: 70px;
-
-        &:hover {
-            top: -15px;
-        }
+        @include show_card_in_player_block(70px);
     }
 
     .card3 {
-        position: absolute;
-        left: 140px;
-
-        &:hover {
-            top: -15px;
-        }
+        @include show_card_in_player_block(140px);
     }
 
     .card4 {
-        position: absolute;
-        left: 210px;
-
-        &:hover {
-            top: -15px;
-        }
+        @include show_card_in_player_block(210px);
     }
 
     .card5 {
-        position: absolute;
-        left: 280px;
-
-        &:hover {
-            top: -15px;
-        }
+        @include show_card_in_player_block(280px);
     }
 
     .card6 {
-        position: absolute;
-        left: 350px;
-
-        &:hover {
-            top: -15px;
-        }
+        @include show_card_in_player_block(350px);
     }
 }
 
@@ -138,8 +108,8 @@
             z-index: 1;
             position: absolute;
             left: 70px;
-            width: 110px;
-            height: 160px;
+            width: 114px;
+            height: 162px;
             background: url(images/cards/reverseSide.jpg) center center/contain no-repeat;
         }
     }
