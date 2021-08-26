@@ -17,7 +17,7 @@ let cardsComputer = []; // Все карты компьютера в виде м
 let trumpCard; // Масть козыря
 let startMovie; // Определение на то, кто первый ходит. Если статус переменной true, то ходит первый игрок, если false, то компьютер
 
-function startGame() {
+function startGame() { // Функция, которая делает раздачу карт игрокам и проверяет, чтобы все соответсвовало требованиям карточной игры
     distributionСardsAtBeginningGame('card_player', 'card', player_block, cardsPlayer, 'showCard'); // Произвели раздачу 6-и карт игроку
     distributionСardsAtBeginningGame('card_computer', 'zero', computer_block, cardsComputer); // Произвели раздачу 6-и карт компьютеру
 
@@ -37,11 +37,12 @@ function startGame() {
 
     startMovie = checkOnFirstMove(); // Определение на то, кто первый ходит. Если статус переменной true, то ходит первый игрок, если false, то компьютер
 
-
     console.log(startMovie);
     console.log(allCards);
     console.log(cardsPlayer);
     console.log(cardsComputer);
+
+    checkOnFiveIdenticallyCards(cardsPlayer, cardsComputer); // Проверка на то, что мы не раздаем подряд 5 карт одной и той же масти одному из игроков
 };
 startGame();
 
@@ -136,21 +137,26 @@ function getweigthCardRegardingMasti(card) { // Функция, которая �
     }
 };
 
-function checkOnFiveIdenticallyCards(cardsAfterDistribution) { // Функция, которая проверяет, чтобы в начале не раздалось подряд 5 идентичных мастей, потому что по правилам игры при таком раскладе должна быть пересдача карт
+function checkOnFiveIdenticallyCards(cardsAfterDistributionPlayer, cardsAfterDistributionComputer) { // Функция, которая проверяет, чтобы в начале не раздалось подряд 5 идентичных мастей, потому что по правилам игры при таком раскладе должна быть пересдача карт
     let copyAllMasti = allMasti.slice();
 
     while (copyAllMasti.length > 0) {
         let firstElemFrom_copyAllMasti = copyAllMasti.splice(0, 1)[0];
-        let curr = 0;
+        let currForPlayer = 0;
+        let currForComputer = 0;
 
-        for (let i = 0; i < cardsAfterDistribution.length; i++) {
-            if (cardsAfterDistribution[i].classList.contains(firstElemFrom_copyAllMasti)) {
-                curr++;
+        for (let i = 0; i < cardsAfterDistributionPlayer.length; i++) {
+            if (cardsAfterDistributionPlayer[i].classList.contains(firstElemFrom_copyAllMasti)) {
+                currForPlayer++;
+            }
+
+            if (cardsAfterDistributionComputer[i].classList.contains(firstElemFrom_copyAllMasti)) {
+                currForComputer++;
             }
         }
 
-        if (curr == 5) {
-            allCards = { // Все карты, где six - это карта шестерка, а fourteen - это туз
+        if (currForPlayer == 5 || currForComputer == 5) {
+            allCards = {
                 'bubi_': ['six', 'seven', 'eigth', 'nine', 'ten', 'eleven', 'twelve', 'thirteen', 'fourteen'],
                 'chervi_': ['six', 'seven', 'eigth', 'nine', 'ten', 'eleven', 'twelve', 'thirteen', 'fourteen'],
                 'kresti_': ['six', 'seven', 'eigth', 'nine', 'ten', 'eleven', 'twelve', 'thirteen', 'fourteen'],
@@ -158,31 +164,24 @@ function checkOnFiveIdenticallyCards(cardsAfterDistribution) { // Функция
             };
 
             let cardPlayer = document.querySelectorAll('.card_player');
+            let card_kozir = document.querySelector('.card_kozir');
+            card_kozir.remove();
 
             for(let k = 0; k < cardPlayer.length; k++){
                 cardPlayer[k].remove();
+                cardsComputer[k].remove();
             }
 
             cardsPlayer.length = 0;
             cardsComputer.length = 0;
             trumpCard = undefined;
 
-            startGame();
-
             console.log('Произошла перездача карт');
-
+            startGame();
             break;
         }
     }
-
-    if(copyAllMasti.length == 0){
-        return true;
-    }else{
-        return false;
-    }
 };
-console.log(checkOnFiveIdenticallyCards(cardsPlayer));
-console.log(checkOnFiveIdenticallyCards(cardsComputer));
 
 function getRandomIntInclusive(min, max) { // Функция, которая отдаем рандомное число в соотвествии с переданными промежутками
     min = Math.ceil(min);
