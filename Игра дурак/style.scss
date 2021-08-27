@@ -5,9 +5,10 @@
     left: $left;
 }
 
-@mixin show_card_in_player_block($left){
+@mixin show_card_in_player_block($left, $value){
     position: absolute;
     left: $left;
+    z-index: $value;
 
     &:hover {
         top: -15px;
@@ -65,27 +66,27 @@
     }
 
     .card1 {
-        @include show_card_in_player_block(0);
+        @include show_card_in_player_block(0, 1);
     }
 
     .card2 {
-        @include show_card_in_player_block(70px);
+        @include show_card_in_player_block(70px, 2);
     }
 
     .card3 {
-        @include show_card_in_player_block(140px);
+        @include show_card_in_player_block(140px, 3);
     }
 
     .card4 {
-        @include show_card_in_player_block(210px);
+        @include show_card_in_player_block(210px, 4);
     }
 
     .card5 {
-        @include show_card_in_player_block(280px);
+        @include show_card_in_player_block(280px, 5);
     }
 
     .card6 {
-        @include show_card_in_player_block(350px);
+        @include show_card_in_player_block(350px, 6);
     }
 }
 

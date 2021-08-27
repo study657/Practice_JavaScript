@@ -37,14 +37,15 @@ function startGame() { // Функция, которая делает разда
 
     startMovie = checkOnFirstMove(); // Определение на то, кто первый ходит. Если статус переменной true, то ходит первый игрок, если false, то компьютер
 
-    console.log(startMovie);
-    console.log(allCards);
-    console.log(cardsPlayer);
-    console.log(cardsComputer);
-
+    sortCardsForPlayer(cardsPlayer); // Сортировка карт для игрока по значениям карт от большего к меньшему
     checkOnFiveIdenticallyCards(cardsPlayer, cardsComputer); // Проверка на то, что мы не раздаем подряд 5 карт одной и той же масти одному из игроков
 };
 startGame();
+
+console.log(startMovie);
+console.log(allCards);
+console.log(cardsPlayer);
+console.log(cardsComputer);
 
 
 
@@ -69,7 +70,7 @@ function distributionСardsAtBeginningGame(card_ClassName, cardOrZeroClassName, 
             i - 1;
         }
     }
-}
+};
 
 function checkOnFirstMove() { // Функция, которая возвращает показание того, кто первый ходит игрок или компьютер
     let checkHaveKozirAtPlayer = cardsPlayer.some(function (card) { // Проверка на то, есть ли козыри у игрока
@@ -92,13 +93,13 @@ function checkOnFirstMove() { // Функция, которая возвраща
 
         for (let i = 0; i < cardsPlayer.length; i++) {
             if (cardsPlayer[i].classList.contains(trumpCard)) {
-                weigthCardsPlayer.push(getweigthCardRegardingMasti(cardsPlayer[i]));
+                weigthCardsPlayer.push(getweigthCardRegardingMasti(cardsPlayer[i], trumpCard));
             }
         }
 
         for (let i = 0; i < cardsComputer.length; i++) {
             if (cardsComputer[i].classList.contains(trumpCard)) {
-                weigthCardsComputer.push(getweigthCardRegardingMasti(cardsComputer[i]));
+                weigthCardsComputer.push(getweigthCardRegardingMasti(cardsComputer[i], trumpCard));
             }
         }
 
@@ -113,25 +114,43 @@ function checkOnFirstMove() { // Функция, которая возвраща
     }
 };
 
-function getweigthCardRegardingMasti(card) { // Функция, которая возвращает вес карты в виде числового значения. Где (любой масти) шестерка - это 0, а туз - это 8
-    if (card.classList[card.classList.length - 1] == 'six') {
+function getweigthCardRegardingMasti(card, mastKozir) { // Функция, которая возвращает вес карты в виде числового значения. Где (любой масти) шестерка - это 0, а туз - это 8
+    if (card.classList[card.classList.length - 2] !== mastKozir && card.classList[card.classList.length - 1] == 'six') {
         return 0;
-    } else if (card.classList[card.classList.length - 1] == 'seven') {
+    } else if (card.classList[card.classList.length - 2] !== mastKozir && card.classList[card.classList.length - 1] == 'seven') {
         return 1;
-    } else if (card.classList[card.classList.length - 1] == 'eigth') {
+    } else if (card.classList[card.classList.length - 2] !== mastKozir && card.classList[card.classList.length - 1] == 'eigth') {
         return 2;
-    } else if (card.classList[card.classList.length - 1] == 'nine') {
+    } else if (card.classList[card.classList.length - 2] !== mastKozir && card.classList[card.classList.length - 1] == 'nine') {
         return 3;
-    } else if (card.classList[card.classList.length - 1] == 'ten') {
+    } else if (card.classList[card.classList.length - 2] !== mastKozir && card.classList[card.classList.length - 1] == 'ten') {
         return 4;
-    } else if (card.classList[card.classList.length - 1] == 'eleven') {
+    } else if (card.classList[card.classList.length - 2] !== mastKozir && card.classList[card.classList.length - 1] == 'eleven') {
         return 5;
-    } else if (card.classList[card.classList.length - 1] == 'twelve') {
+    } else if (card.classList[card.classList.length - 2] !== mastKozir && card.classList[card.classList.length - 1] == 'twelve') {
         return 6;
-    } else if (card.classList[card.classList.length - 1] == 'thirteen') {
+    } else if (card.classList[card.classList.length - 2] !== mastKozir && card.classList[card.classList.length - 1] == 'thirteen') {
         return 7;
-    } else if (card.classList[card.classList.length - 1] == 'fourteen') {
+    } else if (card.classList[card.classList.length - 2] !== mastKozir && card.classList[card.classList.length - 1] == 'fourteen') {
         return 8;
+    } else if (card.classList[card.classList.length - 2] == mastKozir && card.classList[card.classList.length - 1] == 'six') {
+        return 9;
+    } else if (card.classList[card.classList.length - 2] == mastKozir && card.classList[card.classList.length - 1] == 'seven') {
+        return 10;
+    } else if (card.classList[card.classList.length - 2] == mastKozir && card.classList[card.classList.length - 1] == 'eigth') {
+        return 11;
+    } else if (card.classList[card.classList.length - 2] == mastKozir && card.classList[card.classList.length - 1] == 'nine') {
+        return 12;
+    } else if (card.classList[card.classList.length - 2] == mastKozir && card.classList[card.classList.length - 1] == 'ten') {
+        return 13;
+    } else if (card.classList[card.classList.length - 2] == mastKozir && card.classList[card.classList.length - 1] == 'eleven') {
+        return 14;
+    } else if (card.classList[card.classList.length - 2] == mastKozir && card.classList[card.classList.length - 1] == 'twelve') {
+        return 15;
+    } else if (card.classList[card.classList.length - 2] == mastKozir && card.classList[card.classList.length - 1] == 'thirteen') {
+        return 16;
+    } else if (card.classList[card.classList.length - 2] == mastKozir && card.classList[card.classList.length - 1] == 'fourteen') {
+        return 17;
     } else {
         alert('Произошла ошибка получения значения карты');
     }
@@ -180,6 +199,26 @@ function checkOnFiveIdenticallyCards(cardsAfterDistributionPlayer, cardsAfterDis
             startGame();
             break;
         }
+    }
+};
+
+function sortCardsForPlayer(cardsArr) { // Функция, которая сортирует карты по их значениям от большего к меньшему и выводит их красиво на странице
+    let sortWeigthCards = [];
+    let curr = 1;
+
+    for (let i = 0; i < cardsArr.length; i++) {
+        sortWeigthCards.push(getweigthCardRegardingMasti(cardsArr[i], trumpCard));
+    }
+
+    while (curr < 7) {
+        let minWeigthCard = Math.min(...sortWeigthCards);
+        let indexMinWeigthCard = sortWeigthCards.indexOf(minWeigthCard);
+        cardsArr[indexMinWeigthCard].classList.remove(cardsArr[indexMinWeigthCard].classList[1]);
+        cardsArr[indexMinWeigthCard].classList.add('card' + curr);
+
+        sortWeigthCards.splice(indexMinWeigthCard, 1, (100 + curr));
+
+        curr++;
     }
 };
 

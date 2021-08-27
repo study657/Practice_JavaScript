@@ -70,6 +70,7 @@
 .player_block .card1 {
   position: absolute;
   left: 0;
+  z-index: 1;
 }
 
 .player_block .card1:hover {
@@ -79,6 +80,7 @@
 .player_block .card2 {
   position: absolute;
   left: 70px;
+  z-index: 2;
 }
 
 .player_block .card2:hover {
@@ -88,6 +90,7 @@
 .player_block .card3 {
   position: absolute;
   left: 140px;
+  z-index: 3;
 }
 
 .player_block .card3:hover {
@@ -97,6 +100,7 @@
 .player_block .card4 {
   position: absolute;
   left: 210px;
+  z-index: 4;
 }
 
 .player_block .card4:hover {
@@ -106,6 +110,7 @@
 .player_block .card5 {
   position: absolute;
   left: 280px;
+  z-index: 5;
 }
 
 .player_block .card5:hover {
@@ -115,6 +120,7 @@
 .player_block .card6 {
   position: absolute;
   left: 350px;
+  z-index: 6;
 }
 
 .player_block .card6:hover {
