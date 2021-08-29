@@ -1,5 +1,6 @@
 let computer_block = document.querySelector('.computer_block'),
     game_block = document.querySelector('.game_block'),
+    table_game = document.querySelector('.table_game'),
     koloda = document.querySelector('.koloda'),
     player_block = document.querySelector('.player_block'); // Получение элементов с html страницы
 
@@ -46,6 +47,28 @@ console.log(startMovie);
 console.log(allCards);
 console.log(cardsPlayer);
 console.log(cardsComputer);
+
+
+
+if (startMovie) {
+    for (let i = 0; i < cardsPlayer.length; i++) {
+        cardsPlayer[i].addEventListener('click', function add () {
+            console.log(this);
+            let index = cardsPlayer.indexOf(this);
+            cardsPlayer.splice(index, 1);
+            console.log(cardsPlayer);
+            this.classList.remove(cardsPlayer[i].classList[cardsPlayer[i].classList.length - 1]);
+            this.classList.remove('card_player');
+
+            this.classList.add('beat1');
+            table_game.append(this);
+
+            this.removeEventListener('click', add);
+        });
+    }
+} else {
+
+}
 
 
 
@@ -186,7 +209,7 @@ function checkOnFiveIdenticallyCards(cardsAfterDistributionPlayer, cardsAfterDis
             let card_kozir = document.querySelector('.card_kozir');
             card_kozir.remove();
 
-            for(let k = 0; k < cardPlayer.length; k++){
+            for (let k = 0; k < cardPlayer.length; k++) {
                 cardPlayer[k].remove();
                 cardsComputer[k].remove();
             }

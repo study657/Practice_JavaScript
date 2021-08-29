@@ -1,11 +1,11 @@
-@mixin show_card_in_computer_block($picture, $height, $width, $left){
+@mixin show_card_in_computer_block($picture, $height, $width, $left) {
     background: url($picture) center center/contain no-repeat;
     height: $height;
     width: $width;
     left: $left;
 }
 
-@mixin show_card_in_player_block($left, $value){
+@mixin show_card_in_player_block($left, $value) {
     position: absolute;
     left: $left;
     z-index: $value;
@@ -18,35 +18,35 @@
 
 
 
-.computer_block{
+.computer_block {
     display: flex;
     position: relative;
 
-    .zero1{
+    .zero1 {
         @include show_card_in_computer_block('images/cards/reverseSide.jpg', 160px, 110px, 0);
     }
 
-    .zero2{
+    .zero2 {
         @include show_card_in_computer_block('images/cards/reverseSide.jpg', 160px, 110px, 70px);
         position: absolute;
     }
 
-    .zero3{
+    .zero3 {
         @include show_card_in_computer_block('images/cards/reverseSide.jpg', 160px, 110px, 140px);
         position: absolute;
     }
 
-    .zero4{
+    .zero4 {
         @include show_card_in_computer_block('images/cards/reverseSide.jpg', 160px, 110px, 210px);
         position: absolute;
     }
 
-    .zero5{
+    .zero5 {
         @include show_card_in_computer_block('images/cards/reverseSide.jpg', 160px, 110px, 280px);
         position: absolute;
     }
 
-    .zero6{
+    .zero6 {
         @include show_card_in_computer_block('images/cards/reverseSide.jpg', 160px, 110px, 350px);
         position: absolute;
     }
@@ -58,7 +58,7 @@
     margin: 90px 0;
 
 
-    .card_player{
+    .card_player {
         cursor: pointer;
         width: 110px;
         height: 160px;
@@ -90,13 +90,127 @@
     }
 }
 
-.game_block{
+.game_block {
     height: 150px;
     margin-top: 60px;
 
-    .koloda{
+    .table_game {
         position: relative;
-    
+        max-width: 800px;
+        width: 800px;
+
+        .beat1 {
+            position: absolute;
+            background: center center/contain no-repeat;
+            height: 120px;
+            width: 80px;
+            left: 0;
+        }
+
+        .recapture1 {
+            position: absolute;
+            background: center center/contain no-repeat;
+            height: 120px;
+            width: 80px;
+            left: 40px;
+            z-index: 1;
+        }
+
+        .beat2 {
+            position: absolute;
+            background: center center/contain no-repeat;
+            height: 120px;
+            width: 80px;
+            left: 121px;
+            z-index: 2;
+        }
+
+        .recapture2 {
+            position: absolute;
+            background: center center/contain no-repeat;
+            height: 120px;
+            width: 80px;
+            left: 161px;
+            z-index: 3;
+        }
+
+        .beat3 {
+            position: absolute;
+            background: center center/contain no-repeat;
+            height: 120px;
+            width: 80px;
+            left: 242px;
+            z-index: 4;
+        }
+
+        .recapture3 {
+            position: absolute;
+            background: center center/contain no-repeat;
+            height: 120px;
+            width: 80px;
+            left: 282px;
+            z-index: 5;
+        }
+
+        .beat4 {
+            position: absolute;
+            background: center center/contain no-repeat;
+            height: 120px;
+            width: 80px;
+            left: 363px;
+            z-index: 6;
+        }
+
+        .recapture4 {
+            position: absolute;
+            background: center center/contain no-repeat;
+            height: 120px;
+            width: 80px;
+            left: 403px;
+            z-index: 7;
+        }
+
+        .beat5 {
+            position: absolute;
+            background: center center/contain no-repeat;
+            height: 120px;
+            width: 80px;
+            left: 484px;
+            z-index: 8;
+        }
+
+        .recapture5 {
+            position: absolute;
+            background: center center/contain no-repeat;
+            height: 120px;
+            width: 80px;
+            left: 524px;
+            z-index: 9;
+        }
+
+        .beat6 {
+            position: absolute;
+            background: center center/contain no-repeat;
+            height: 120px;
+            width: 80px;
+            left: 605px;
+            z-index: 10;
+        }
+
+        .recapture6 {
+            position: absolute;
+            background: center center/contain no-repeat;
+            height: 120px;
+            width: 80px;
+            left: 645px;
+            z-index: 11;
+        }
+    }
+
+    .koloda {
+        position: relative;
+        width: auto;
+
         .card_kozir {
             position: absolute;
             left: 0;
@@ -104,8 +218,8 @@
             height: 160px;
             background: center center/contain no-repeat;
         }
-    
-        .all_cards{
+
+        .all_cards {
             z-index: 1;
             position: absolute;
             left: 70px;

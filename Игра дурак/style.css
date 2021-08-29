@@ -132,8 +132,122 @@
   margin-top: 60px;
 }
 
+.game_block .table_game {
+  position: relative;
+  max-width: 800px;
+  width: 800px;
+}
+
+.game_block .table_game .beat1 {
+  position: absolute;
+  background: center center/contain no-repeat;
+  height: 120px;
+  width: 80px;
+  left: 0;
+}
+
+.game_block .table_game .recapture1 {
+  position: absolute;
+  background: center center/contain no-repeat;
+  height: 120px;
+  width: 80px;
+  left: 40px;
+  z-index: 1;
+}
+
+.game_block .table_game .beat2 {
+  position: absolute;
+  background: center center/contain no-repeat;
+  height: 120px;
+  width: 80px;
+  left: 121px;
+  z-index: 2;
+}
+
+.game_block .table_game .recapture2 {
+  position: absolute;
+  background: center center/contain no-repeat;
+  height: 120px;
+  width: 80px;
+  left: 161px;
+  z-index: 3;
+}
+
+.game_block .table_game .beat3 {
+  position: absolute;
+  background: center center/contain no-repeat;
+  height: 120px;
+  width: 80px;
+  left: 242px;
+  z-index: 4;
+}
+
+.game_block .table_game .recapture3 {
+  position: absolute;
+  background: center center/contain no-repeat;
+  height: 120px;
+  width: 80px;
+  left: 282px;
+  z-index: 5;
+}
+
+.game_block .table_game .beat4 {
+  position: absolute;
+  background: center center/contain no-repeat;
+  height: 120px;
+  width: 80px;
+  left: 363px;
+  z-index: 6;
+}
+
+.game_block .table_game .recapture4 {
+  position: absolute;
+  background: center center/contain no-repeat;
+  height: 120px;
+  width: 80px;
+  left: 403px;
+  z-index: 7;
+}
+
+.game_block .table_game .beat5 {
+  position: absolute;
+  background: center center/contain no-repeat;
+  height: 120px;
+  width: 80px;
+  left: 484px;
+  z-index: 8;
+}
+
+.game_block .table_game .recapture5 {
+  position: absolute;
+  background: center center/contain no-repeat;
+  height: 120px;
+  width: 80px;
+  left: 524px;
+  z-index: 9;
+}
+
+.game_block .table_game .beat6 {
+  position: absolute;
+  background: center center/contain no-repeat;
+  height: 120px;
+  width: 80px;
+  left: 605px;
+  z-index: 10;
+}
+
+.game_block .table_game .recapture6 {
+  position: absolute;
+  background: center center/contain no-repeat;
+  height: 120px;
+  width: 80px;
+  left: 645px;
+  z-index: 11;
+}
+
 .game_block .koloda {
   position: relative;
+  width: auto;
 }
 
 .game_block .koloda .card_kozir {
