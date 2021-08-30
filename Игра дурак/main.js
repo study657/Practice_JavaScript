@@ -52,18 +52,19 @@ console.log(cardsComputer);
 
 if (startMovie) {
     for (let i = 0; i < cardsPlayer.length; i++) {
-        cardsPlayer[i].addEventListener('click', function add () {
+        cardsPlayer[i].addEventListener('click', function add() {
             console.log(this);
             let index = cardsPlayer.indexOf(this);
-            cardsPlayer.splice(index, 1);
-            console.log(cardsPlayer);
-            this.classList.remove(cardsPlayer[i].classList[cardsPlayer[i].classList.length - 1]);
+            this.classList.remove(this.classList[this.classList.length - 1]);
             this.classList.remove('card_player');
 
             this.classList.add('beat1');
             table_game.append(this);
 
-            this.removeEventListener('click', add);
+            cardsPlayer.splice(index, 1);
+            console.log(cardsPlayer, index);
+
+            checkAbilityBeatPlayerCard(cardsComputer, this);
         });
     }
 } else {
@@ -116,13 +117,13 @@ function checkOnFirstMove() { // Функция, которая возвраща
 
         for (let i = 0; i < cardsPlayer.length; i++) {
             if (cardsPlayer[i].classList.contains(trumpCard)) {
-                weigthCardsPlayer.push(getweigthCardRegardingMasti(cardsPlayer[i], trumpCard));
+                weigthCardsPlayer.push(getweigthCardRegardingMasti(cardsPlayer[i], trumpCard, 1));
             }
         }
 
         for (let i = 0; i < cardsComputer.length; i++) {
             if (cardsComputer[i].classList.contains(trumpCard)) {
-                weigthCardsComputer.push(getweigthCardRegardingMasti(cardsComputer[i], trumpCard));
+                weigthCardsComputer.push(getweigthCardRegardingMasti(cardsComputer[i], trumpCard, 1));
             }
         }
 
@@ -137,42 +138,51 @@ function checkOnFirstMove() { // Функция, которая возвраща
     }
 };
 
-function getweigthCardRegardingMasti(card, mastKozir) { // Функция, которая возвращает вес карты в виде числового значения. Где (любой масти) шестерка - это 0, а туз - это 8
-    if (card.classList[card.classList.length - 2] !== mastKozir && card.classList[card.classList.length - 1] == 'six') {
+function getweigthCardRegardingMasti(card, mastKozir, indexNameCard) { // Функция, которая возвращает вес карты в виде числового значения. Где (любой масти) шестерка - это 0, а туз - это 8
+    let index;
+    for (let i = 0; i < allMasti.length; i++) {
+        if (card.classList.contains(allMasti[i])) {
+            index = [...card.classList].indexOf(allMasti[i]);
+
+            break;
+        }
+    }
+
+    if (card.classList[index] !== mastKozir && card.classList[card.classList.length - indexNameCard] == 'six') {
         return 0;
-    } else if (card.classList[card.classList.length - 2] !== mastKozir && card.classList[card.classList.length - 1] == 'seven') {
+    } else if (card.classList[index] !== mastKozir && card.classList[card.classList.length - indexNameCard] == 'seven') {
         return 1;
-    } else if (card.classList[card.classList.length - 2] !== mastKozir && card.classList[card.classList.length - 1] == 'eigth') {
+    } else if (card.classList[index] !== mastKozir && card.classList[card.classList.length - indexNameCard] == 'eigth') {
         return 2;
-    } else if (card.classList[card.classList.length - 2] !== mastKozir && card.classList[card.classList.length - 1] == 'nine') {
+    } else if (card.classList[index] !== mastKozir && card.classList[card.classList.length - indexNameCard] == 'nine') {
         return 3;
-    } else if (card.classList[card.classList.length - 2] !== mastKozir && card.classList[card.classList.length - 1] == 'ten') {
+    } else if (card.classList[index] !== mastKozir && card.classList[card.classList.length - indexNameCard] == 'ten') {
         return 4;
-    } else if (card.classList[card.classList.length - 2] !== mastKozir && card.classList[card.classList.length - 1] == 'eleven') {
+    } else if (card.classList[index] !== mastKozir && card.classList[card.classList.length - indexNameCard] == 'eleven') {
         return 5;
-    } else if (card.classList[card.classList.length - 2] !== mastKozir && card.classList[card.classList.length - 1] == 'twelve') {
+    } else if (card.classList[index] !== mastKozir && card.classList[card.classList.length - indexNameCard] == 'twelve') {
         return 6;
-    } else if (card.classList[card.classList.length - 2] !== mastKozir && card.classList[card.classList.length - 1] == 'thirteen') {
+    } else if (card.classList[index] !== mastKozir && card.classList[card.classList.length - indexNameCard] == 'thirteen') {
         return 7;
-    } else if (card.classList[card.classList.length - 2] !== mastKozir && card.classList[card.classList.length - 1] == 'fourteen') {
+    } else if (card.classList[index] !== mastKozir && card.classList[card.classList.length - indexNameCard] == 'fourteen') {
         return 8;
-    } else if (card.classList[card.classList.length - 2] == mastKozir && card.classList[card.classList.length - 1] == 'six') {
+    } else if (card.classList[index] == mastKozir && card.classList[card.classList.length - indexNameCard] == 'six') {
         return 9;
-    } else if (card.classList[card.classList.length - 2] == mastKozir && card.classList[card.classList.length - 1] == 'seven') {
+    } else if (card.classList[index] == mastKozir && card.classList[card.classList.length - indexNameCard] == 'seven') {
         return 10;
-    } else if (card.classList[card.classList.length - 2] == mastKozir && card.classList[card.classList.length - 1] == 'eigth') {
+    } else if (card.classList[index] == mastKozir && card.classList[card.classList.length - indexNameCard] == 'eigth') {
         return 11;
-    } else if (card.classList[card.classList.length - 2] == mastKozir && card.classList[card.classList.length - 1] == 'nine') {
+    } else if (card.classList[index] == mastKozir && card.classList[card.classList.length - indexNameCard] == 'nine') {
         return 12;
-    } else if (card.classList[card.classList.length - 2] == mastKozir && card.classList[card.classList.length - 1] == 'ten') {
+    } else if (card.classList[index] == mastKozir && card.classList[card.classList.length - indexNameCard] == 'ten') {
         return 13;
-    } else if (card.classList[card.classList.length - 2] == mastKozir && card.classList[card.classList.length - 1] == 'eleven') {
+    } else if (card.classList[index] == mastKozir && card.classList[card.classList.length - indexNameCard] == 'eleven') {
         return 14;
-    } else if (card.classList[card.classList.length - 2] == mastKozir && card.classList[card.classList.length - 1] == 'twelve') {
+    } else if (card.classList[index] == mastKozir && card.classList[card.classList.length - indexNameCard] == 'twelve') {
         return 15;
-    } else if (card.classList[card.classList.length - 2] == mastKozir && card.classList[card.classList.length - 1] == 'thirteen') {
+    } else if (card.classList[index] == mastKozir && card.classList[card.classList.length - indexNameCard] == 'thirteen') {
         return 16;
-    } else if (card.classList[card.classList.length - 2] == mastKozir && card.classList[card.classList.length - 1] == 'fourteen') {
+    } else if (card.classList[index] == mastKozir && card.classList[card.classList.length - indexNameCard] == 'fourteen') {
         return 17;
     } else {
         alert('Произошла ошибка получения значения карты');
@@ -230,7 +240,7 @@ function sortCardsForPlayer(cardsArr) { // Функция, которая сор
     let curr = 1;
 
     for (let i = 0; i < cardsArr.length; i++) {
-        sortWeigthCards.push(getweigthCardRegardingMasti(cardsArr[i], trumpCard));
+        sortWeigthCards.push(getweigthCardRegardingMasti(cardsArr[i], trumpCard, 1));
     }
 
     while (curr < 7) {
@@ -242,6 +252,21 @@ function sortCardsForPlayer(cardsArr) { // Функция, которая сор
         sortWeigthCards.splice(indexMinWeigthCard, 1, (100 + curr));
 
         curr++;
+    }
+};
+
+function checkAbilityBeatPlayerCard(cardsComputer, card) { // Функция, которая делает проверку на то, способен ли компьютер побить карту игрока
+    let mastCard = card.classList[0];
+    let weigthCard = getweigthCardRegardingMasti(card, trumpCard, 2);
+    console.log(mastCard, weigthCard);
+
+    for (let i = 0; i < cardsComputer.length; i++) {
+        if (cardsComputer[i].classList.contains(mastCard)) {
+            if(getweigthCardRegardingMasti(cardsComputer[i], trumpCard, 1) > weigthCard){
+                console.log('МОГУ ПОБИТЬ ЭТУ КАРТУ НА ИЗИ!', cardsComputer[i]);
+                break;
+            }
+        }
     }
 };
 
