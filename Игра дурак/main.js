@@ -64,18 +64,25 @@ if (startMovie) {
             cardsPlayer.splice(index, 1);
             console.log(cardsPlayer, index);
 
-            let cardForBeat = checkAbilityBeatPlayerCard(cardsComputer, this);
+            let cardForBeat;
 
-            if (cardForBeat && !this.classList.contains(trumpCard)) {
-                console.log(cardForBeat);
+            if (checkAbilityBeatPlayerCard(cardsComputer, this) && !this.classList.contains(trumpCard)) {
+                cardForBeat = checkAbilityBeatPlayerCard(cardsComputer, this);
             } else {
                 if(this.classList.contains(trumpCard)){
                     cardForBeat = checkAbilityBeatPlayerCard(cardsComputer, this);
-                    console.log('Это козырь и мы бьем его козырем!', cardForBeat);
+                    // console.log('Это козырь и мы бьем его козырем!', cardForBeat);
                 }else{
                     cardForBeat = getKozirForBeatPlayerCard(cardsComputer);
-                    console.log('Это обычная карта, но ее нет у игрока и мы бьем козырем!', cardForBeat);
+                    // console.log('Это обычная карта, но ее нет у игрока и мы бьем козырем!', cardForBeat);
                 }
+            }
+            console.log(cardForBeat);
+
+            if(cardForBeat){
+                
+            }else{
+
             }
         });
     }
@@ -268,19 +275,31 @@ function sortCardsForPlayer(cardsArr) { // Функция, которая сор
 };
 
 function checkAbilityBeatPlayerCard(cardsComputer, card) { // Функция, которая делает проверку на то, способен ли компьютер побить обычную карту игрока, т.е. проверка на данную масть и если такая масть имеется, которая выше, чем у игрока, тогда мы возвращаем этот элемент
+    let cardsAloneMasti = [];
+    let weigthCardsAloneMasti = [];
     let mastCard = card.classList[0];
     let weigthCard = getweigthCardRegardingMasti(card, trumpCard, 2);
 
-    // ПРОБЛЕМА В ТОМ, ЧТО МЫ ПОЛУЧАЕМ НЕ САМУЮ МАЛЕНЬКУЮ КАРТУ ДЛЯ ТОГО, ЧТОБЫ ЕЕ ПОБИТЬ. Т.Е. К ПРИМЕРУ ИГРОК ХОДИТ ШЕСТЕРКОЙ КРЕСТИ, У КОМПЬЮТЕРА ЕСТЬ 8 КРЕСТИ И 10 КРЕСТИ, ТАК ВОТ ОН МОЖЕТ ПОЙТИ 10 КРЕСТИ, ХОТЯ ЦЕЛЕСООБРАЗНО ПОЙТИ 8 КРЕСТИ!
-    // ??????????????????????????????????????????????????????????????????????????????
     for (let i = 0; i < cardsComputer.length; i++) {
         if (cardsComputer[i].classList.contains(mastCard)) {
             if (getweigthCardRegardingMasti(cardsComputer[i], trumpCard, 1) > weigthCard) {
-                return cardsComputer[i];
+                cardsAloneMasti.push(cardsComputer[i]);
             }
         }
     }
-    return false;
+
+    if (cardsAloneMasti.length == 0) {
+        return false;
+    } else {
+        for (let i = 0; i < cardsAloneMasti.length; i++) {
+            weigthCardsAloneMasti.push(getweigthCardRegardingMasti(cardsAloneMasti[i], trumpCard, 1));
+        }
+
+        let minWeigthCard = Math.min(...weigthCardsAloneMasti);
+        let index = weigthCardsAloneMasti.indexOf(minWeigthCard);
+
+        return cardsAloneMasti[index];
+    }
 };
 
 function getKozirForBeatPlayerCard(cardsComputer) { // Функция, которая отдает нам карту, которая козырная и происходит это в том случае, если у компьютер не может побить карту без козыря и у него просто нет подходящей карты
