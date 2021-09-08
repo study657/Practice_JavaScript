@@ -17,6 +17,8 @@ let cardsPlayer = []; // Все карты игрока в виде массив
 let cardsComputer = []; // Все карты компьютера в виде массива со ссылкой на html элемент
 let trumpCard; // Масть козыря
 let startMovie; // Определение на то, кто первый ходит. Если статус переменной true, то ходит первый игрок, если false, то компьютер
+let cardsOnTable = []; // Массив, в котором будут лежать карты, которые находятся на данный момент на столе
+let tableCurr = 0; // Данный параметр показывает сколько карт на данный момент на столе
 
 function startGame() { // Функция, которая делает раздачу карт игрокам и проверяет, чтобы все соответсвовало требованиям карточной игры
     distributionСardsAtBeginningGame('card_player', 'card', player_block, cardsPlayer, 'showCard'); // Произвели раздачу 6-и карт игроку
@@ -49,46 +51,64 @@ console.log(cardsPlayer);
 console.log(cardsComputer);
 
 
+function logicGame() {
+    if (startMovie) {
+        for (let i = 0; i < cardsPlayer.length; i++) {
+            cardsPlayer[i].addEventListener('click', function add() {
+                if (cardsOnTable.length == 0) {
+                    console.log(this);
+                    tableCurr++;
+                    let index = cardsPlayer.indexOf(this);
+                    this.classList.remove(this.classList[this.classList.length - 1]);
+                    this.classList.remove('card_player');
 
-if (startMovie) {
-    for (let i = 0; i < cardsPlayer.length; i++) {
-        cardsPlayer[i].addEventListener('click', function add() {
-            console.log(this);
-            let index = cardsPlayer.indexOf(this);
-            this.classList.remove(this.classList[this.classList.length - 1]);
-            this.classList.remove('card_player');
+                    this.classList.add('beat' + tableCurr);
+                    table_game.append(this);
 
-            this.classList.add('beat1');
-            table_game.append(this);
+                    cardsPlayer.splice(index, 1);
+                    cardsOnTable.push(this);
+                    console.log(cardsPlayer);
 
-            cardsPlayer.splice(index, 1);
-            console.log(cardsPlayer, index);
+                    let cardForBeat;
 
-            let cardForBeat;
+                    if (checkAbilityBeatPlayerCard(cardsComputer, this) && !this.classList.contains(trumpCard)) {
+                        cardForBeat = checkAbilityBeatPlayerCard(cardsComputer, this);
+                    } else {
+                        if (this.classList.contains(trumpCard)) {
+                            cardForBeat = checkAbilityBeatPlayerCard(cardsComputer, this);
+                            // console.log('Это козырь и мы бьем его козырем!', cardForBeat);
+                        } else {
+                            cardForBeat = getKozirForBeatPlayerCard(cardsComputer);
+                            // console.log('Это обычная карта, но ее нет у игрока и мы бьем козырем!', cardForBeat);
+                        }
+                    }
+                    console.log(cardForBeat);
 
-            if (checkAbilityBeatPlayerCard(cardsComputer, this) && !this.classList.contains(trumpCard)) {
-                cardForBeat = checkAbilityBeatPlayerCard(cardsComputer, this);
-            } else {
-                if(this.classList.contains(trumpCard)){
-                    cardForBeat = checkAbilityBeatPlayerCard(cardsComputer, this);
-                    // console.log('Это козырь и мы бьем его козырем!', cardForBeat);
-                }else{
-                    cardForBeat = getKozirForBeatPlayerCard(cardsComputer);
-                    // console.log('Это обычная карта, но ее нет у игрока и мы бьем козырем!', cardForBeat);
+                    if (cardForBeat) {
+                        let index = cardsComputer.indexOf(cardForBeat);
+                        cardForBeat.classList.remove('card_computer');
+                        cardForBeat.classList.remove(cardForBeat.classList[0]);
+
+                        cardForBeat.classList.add('recapture' + tableCurr);
+                        cardForBeat.style.backgroundImage = 'url(images/cards/' + cardForBeat.classList[0] + cardForBeat.classList[1] + '.jpg)'; // Показали данную карту на странице
+
+                        table_game.append(cardForBeat);
+
+                        cardsComputer.splice(index, 1);
+                        cardsOnTable.push(cardForBeat);
+                        console.log(cardsOnTable);
+                    } else {
+                        console.log('Не могу побить карту');
+
+                    }
                 }
-            }
-            console.log(cardForBeat);
+            });
+        }
+    } else {
 
-            if(cardForBeat){
-                
-            }else{
-
-            }
-        });
     }
-} else {
-
-}
+};
+logicGame();
 
 
 
@@ -203,9 +223,11 @@ function getweigthCardRegardingMasti(card, mastKozir, indexNameCard) { // Фун
         return 16;
     } else if (card.classList[index] == mastKozir && card.classList[card.classList.length - indexNameCard] == 'fourteen') {
         return 17;
-    } else {
-        alert('Произошла ошибка получения значения карты');
     }
+
+    // else {
+    //     alert('Произошла ошибка получения значения карты');
+    // }
 };
 
 function checkOnFiveIdenticallyCards(cardsAfterDistributionPlayer, cardsAfterDistributionComputer) { // Функция, которая проверяет, чтобы в начале не раздалось подряд 5 идентичных мастей, потому что по правилам игры при таком раскладе должна быть пересдача карт
