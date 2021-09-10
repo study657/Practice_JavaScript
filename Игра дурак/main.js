@@ -2,6 +2,7 @@ let computer_block = document.querySelector('.computer_block'),
     game_block = document.querySelector('.game_block'),
     table_game = document.querySelector('.table_game'),
     koloda = document.querySelector('.koloda'),
+    controlGame = document.querySelector('.controlGame'),
     player_block = document.querySelector('.player_block'); // Получение элементов с html страницы
 
 
@@ -21,8 +22,8 @@ let cardsOnTable = []; // Массив, в котором будут лежат�
 let tableCurr = 0; // Данный параметр показывает сколько карт на данный момент на столе
 
 function startGame() { // Функция, которая делает раздачу карт игрокам и проверяет, чтобы все соответсвовало требованиям карточной игры
-    distributionСardsAtBeginningGame('card_player', 'card', player_block, cardsPlayer, 'showCard'); // Произвели раздачу 6-и карт игроку
-    distributionСardsAtBeginningGame('card_computer', 'zero', computer_block, cardsComputer); // Произвели раздачу 6-и карт компьютеру
+    distributionСardsAtBeginningGame('card_player', 'card', player_block, cardsPlayer, 6, 'showCard'); // Произвели раздачу 6-и карт игроку
+    distributionСardsAtBeginningGame('card_computer', 'zero', computer_block, cardsComputer, 6); // Произвели раздачу 6-и карт компьютеру
 
 
     let randomMastiForKozir = allMasti[getRandomIntInclusive(0, allMasti.length - 1)]; // Получение рандомной масти для определения козыря
@@ -40,7 +41,8 @@ function startGame() { // Функция, которая делает разда
 
     startMovie = checkOnFirstMove(); // Определение на то, кто первый ходит. Если статус переменной true, то ходит первый игрок, если false, то компьютер
 
-    sortCardsForPlayer(cardsPlayer); // Сортировка карт для игрока по значениям карт от большего к меньшему
+    sortCardsForPlayer(cardsPlayer, 'card'); // Сортировка карт для игрока по значениям карт от большего к меньшему
+    sortCardsForPlayer(cardsComputer, 'zero'); // Сортировка карт для компьютера по значениям карт от большего к меньшему
     checkOnFiveIdenticallyCards(cardsPlayer, cardsComputer); // Проверка на то, что мы не раздаем подряд 5 карт одной и той же масти одному из игроков
 };
 startGame();
@@ -53,68 +55,128 @@ console.log(cardsComputer);
 
 function logicGame() {
     if (startMovie) {
-        for (let i = 0; i < cardsPlayer.length; i++) {
-            cardsPlayer[i].addEventListener('click', function add() {
-                if (cardsOnTable.length == 0) {
-                    console.log(this);
-                    tableCurr++;
-                    let index = cardsPlayer.indexOf(this);
-                    this.classList.remove(this.classList[this.classList.length - 1]);
-                    this.classList.remove('card_player');
-
-                    this.classList.add('beat' + tableCurr);
-                    table_game.append(this);
-
-                    cardsPlayer.splice(index, 1);
-                    cardsOnTable.push(this);
-                    console.log(cardsPlayer);
-
-                    let cardForBeat;
-
-                    if (checkAbilityBeatPlayerCard(cardsComputer, this) && !this.classList.contains(trumpCard)) {
-                        cardForBeat = checkAbilityBeatPlayerCard(cardsComputer, this);
-                    } else {
-                        if (this.classList.contains(trumpCard)) {
-                            cardForBeat = checkAbilityBeatPlayerCard(cardsComputer, this);
-                            // console.log('Это козырь и мы бьем его козырем!', cardForBeat);
-                        } else {
-                            cardForBeat = getKozirForBeatPlayerCard(cardsComputer);
-                            // console.log('Это обычная карта, но ее нет у игрока и мы бьем козырем!', cardForBeat);
-                        }
+        if (cardsOnTable.length == 0) {
+            for (let i = 0; i < cardsPlayer.length; i++) {
+                cardsPlayer[i].addEventListener('click', test);
+            }
+        } else {
+            for(let i = 0; i < cardsPlayer.length; i++){
+                let check = cardsOnTable.some(function(elem){
+                    if(cardsPlayer[i].classList[1] == elem.classList[1]){
+                        return true;
+                    }else{
+                        return false;
                     }
-                    console.log(cardForBeat);
+                });
 
-                    if (cardForBeat) {
-                        let index = cardsComputer.indexOf(cardForBeat);
-                        cardForBeat.classList.remove('card_computer');
-                        cardForBeat.classList.remove(cardForBeat.classList[0]);
-
-                        cardForBeat.classList.add('recapture' + tableCurr);
-                        cardForBeat.style.backgroundImage = 'url(images/cards/' + cardForBeat.classList[0] + cardForBeat.classList[1] + '.jpg)'; // Показали данную карту на странице
-
-                        table_game.append(cardForBeat);
-
-                        cardsComputer.splice(index, 1);
-                        cardsOnTable.push(cardForBeat);
-                        console.log(cardsOnTable);
-                    } else {
-                        console.log('Не могу побить карту');
-
-                    }
+                if(check){
+                    cardsPlayer[i].addEventListener('click', test);
                 }
-            });
+            }
         }
     } else {
-
+        console.log('Ходит компьютер');
     }
 };
 logicGame();
 
+function test() {
+    console.log(this);
+    tableCurr++;
+    let index = cardsPlayer.indexOf(this);
+    this.classList.remove(this.classList[this.classList.length - 1]);
+    this.classList.remove('card_player');
+
+    this.classList.add('beat' + tableCurr);
+    table_game.append(this);
+
+    cardsPlayer.splice(index, 1);
+    cardsOnTable.push(this);
+    console.log(cardsPlayer);
+
+    let cardForBeat;
+
+    if (checkAbilityBeatPlayerCard(cardsComputer, this) && !this.classList.contains(trumpCard)) {
+        cardForBeat = checkAbilityBeatPlayerCard(cardsComputer, this);
+    } else {
+        if (this.classList.contains(trumpCard)) {
+            cardForBeat = checkAbilityBeatPlayerCard(cardsComputer, this);
+            // console.log('Это козырь и мы бьем его козырем!', cardForBeat);
+        } else {
+            cardForBeat = getKozirForBeatPlayerCard(cardsComputer);
+            // console.log('Это обычная карта, но ее нет у игрока и мы бьем козырем!', cardForBeat);
+        }
+    }
+    console.log(cardForBeat);
+
+    if (cardForBeat) { // Проверка на то, есть ли нужная карта, которую компьютер может побить
+        let index = cardsComputer.indexOf(cardForBeat);
+        cardForBeat.classList.remove(cardForBeat.classList[cardForBeat.classList.length - 1]);
+        cardForBeat.classList.remove('card_computer');
+
+        cardForBeat.classList.add('recapture' + tableCurr);
+        cardForBeat.style.backgroundImage = 'url(images/cards/' + cardForBeat.classList[0] + cardForBeat.classList[1] + '.jpg)'; // Показали данную карту на странице
+
+        table_game.append(cardForBeat);
+
+        cardsComputer.splice(index, 1);
+        cardsOnTable.push(cardForBeat);
+        this.removeEventListener('click', test);
+
+        for (let i = 0; i < cardsPlayer.length; i++) {
+            cardsPlayer[i].removeEventListener('click', test);
+        }
+
+        controlGame.style.display = 'block';
+        controlGame.innerHTML = 'Бита';
+
+        controlGame.addEventListener('click', function(){
+            controlGame.style.display = 'none';
+
+            for(let i = 0; i < cardsOnTable.length; i++){
+                cardsOnTable[i].remove();
+            }
+            for (let i = 0; i < cardsPlayer.length; i++) {
+                cardsPlayer[i].removeEventListener('click', test);
+            }
+
+            cardsOnTable.length = 0;
+            tableCurr = 0;
+            startMovie = !startMovie;
+
+            let quantityCardsPlayer = 6 - cardsPlayer.length;
+            let quantityCardsComputer = 6 - cardsComputer.length;
+            distributionСardsAtBeginningGame('card_player', 'card', player_block, cardsPlayer, quantityCardsPlayer, 'showCard');
+            distributionСardsAtBeginningGame('card_computer', 'zero', computer_block, cardsComputer, quantityCardsComputer);
+            sortCardsForPlayer(cardsPlayer, 'card');
+            sortCardsForPlayer(cardsComputer, 'zero');
+            logicGame();
+            console.log(allCards);
+            console.log(cardsPlayer);
+            console.log(cardsComputer);
+        });
+
+        logicGame();
+        console.log(cardsOnTable);
+    } else {
+        controlGame.style.display = 'block';
+        controlGame.innerHTML = 'Всё';
 
 
+        controlGame.addEventListener('click', function(){
+            let quantityCardsPlayer = 6 - cardsPlayer.length;
+            distributionСardsAtBeginningGame('card_player', 'card', player_block, cardsPlayer, quantityCardsPlayer, 'showCard');
 
-function distributionСardsAtBeginningGame(card_ClassName, cardOrZeroClassName, parentBlock, cardsPerson, showCard = null) { // Функция, которая рандомно раздает карты обоим игрокам в начале игры, а так же помещает эти карты в нужные массивы в зависимости от того, кому карта раздалась
-    for (let i = 0; i < 6; i++) {
+
+        });
+
+        console.log('Не могу побить карту');
+    }
+};
+
+
+function distributionСardsAtBeginningGame(card_ClassName, cardOrZeroClassName, parentBlock, cardsPerson, quantityCardsForDistribution, showCard = null) { // Функция, которая рандомно раздает карты обоим игрокам в начале игры, а так же помещает эти карты в нужные массивы в зависимости от того, кому карта раздалась
+    for (let i = 0; i < quantityCardsForDistribution; i++) {
         let randomMasti = allMasti[getRandomIntInclusive(0, allMasti.length - 1)];
 
         if (allCards[randomMasti].length > 0) {
@@ -124,7 +186,7 @@ function distributionСardsAtBeginningGame(card_ClassName, cardOrZeroClassName, 
 
 
 
-            let card = createElement('div', [card_ClassName, cardOrZeroClassName + (i + 1), randomMasti, randomCard], parentBlock);
+            let card = createElement('div', [randomMasti, randomCard, card_ClassName, cardOrZeroClassName + (i + 1)], parentBlock);
             if (showCard !== null) {
                 card.style.backgroundImage = 'url(images/cards/' + randomMasti + randomCard + '.jpg)';
             }
@@ -156,13 +218,13 @@ function checkOnFirstMove() { // Функция, которая возвраща
 
         for (let i = 0; i < cardsPlayer.length; i++) {
             if (cardsPlayer[i].classList.contains(trumpCard)) {
-                weigthCardsPlayer.push(getweigthCardRegardingMasti(cardsPlayer[i], trumpCard, 1));
+                weigthCardsPlayer.push(getweigthCardRegardingMasti(cardsPlayer[i], trumpCard));
             }
         }
 
         for (let i = 0; i < cardsComputer.length; i++) {
             if (cardsComputer[i].classList.contains(trumpCard)) {
-                weigthCardsComputer.push(getweigthCardRegardingMasti(cardsComputer[i], trumpCard, 1));
+                weigthCardsComputer.push(getweigthCardRegardingMasti(cardsComputer[i], trumpCard));
             }
         }
 
@@ -177,57 +239,44 @@ function checkOnFirstMove() { // Функция, которая возвраща
     }
 };
 
-function getweigthCardRegardingMasti(card, mastKozir, indexNameCard) { // Функция, которая возвращает вес карты в виде числового значения. Где (любой масти) шестерка - это 0, а туз - это 8
-    let index;
-    for (let i = 0; i < allMasti.length; i++) {
-        if (card.classList.contains(allMasti[i])) {
-            index = [...card.classList].indexOf(allMasti[i]);
-
-            break;
-        }
-    }
-
-    if (card.classList[index] !== mastKozir && card.classList[card.classList.length - indexNameCard] == 'six') {
+function getweigthCardRegardingMasti(card, mastKozir) { // Функция, которая возвращает вес карты в виде числового значения. Где (любой масти) шестерка - это 0, а туз - это 8
+    if (card.classList[0] !== mastKozir && card.classList[1] == 'six') {
         return 0;
-    } else if (card.classList[index] !== mastKozir && card.classList[card.classList.length - indexNameCard] == 'seven') {
+    } else if (card.classList[0] !== mastKozir && card.classList[1] == 'seven') {
         return 1;
-    } else if (card.classList[index] !== mastKozir && card.classList[card.classList.length - indexNameCard] == 'eigth') {
+    } else if (card.classList[0] !== mastKozir && card.classList[1] == 'eigth') {
         return 2;
-    } else if (card.classList[index] !== mastKozir && card.classList[card.classList.length - indexNameCard] == 'nine') {
+    } else if (card.classList[0] !== mastKozir && card.classList[1] == 'nine') {
         return 3;
-    } else if (card.classList[index] !== mastKozir && card.classList[card.classList.length - indexNameCard] == 'ten') {
+    } else if (card.classList[0] !== mastKozir && card.classList[1] == 'ten') {
         return 4;
-    } else if (card.classList[index] !== mastKozir && card.classList[card.classList.length - indexNameCard] == 'eleven') {
+    } else if (card.classList[0] !== mastKozir && card.classList[1] == 'eleven') {
         return 5;
-    } else if (card.classList[index] !== mastKozir && card.classList[card.classList.length - indexNameCard] == 'twelve') {
+    } else if (card.classList[0] !== mastKozir && card.classList[1] == 'twelve') {
         return 6;
-    } else if (card.classList[index] !== mastKozir && card.classList[card.classList.length - indexNameCard] == 'thirteen') {
+    } else if (card.classList[0] !== mastKozir && card.classList[1] == 'thirteen') {
         return 7;
-    } else if (card.classList[index] !== mastKozir && card.classList[card.classList.length - indexNameCard] == 'fourteen') {
+    } else if (card.classList[0] !== mastKozir && card.classList[1] == 'fourteen') {
         return 8;
-    } else if (card.classList[index] == mastKozir && card.classList[card.classList.length - indexNameCard] == 'six') {
+    } else if (card.classList[0] == mastKozir && card.classList[1] == 'six') {
         return 9;
-    } else if (card.classList[index] == mastKozir && card.classList[card.classList.length - indexNameCard] == 'seven') {
+    } else if (card.classList[0] == mastKozir && card.classList[1] == 'seven') {
         return 10;
-    } else if (card.classList[index] == mastKozir && card.classList[card.classList.length - indexNameCard] == 'eigth') {
+    } else if (card.classList[0] == mastKozir && card.classList[1] == 'eigth') {
         return 11;
-    } else if (card.classList[index] == mastKozir && card.classList[card.classList.length - indexNameCard] == 'nine') {
+    } else if (card.classList[0] == mastKozir && card.classList[1] == 'nine') {
         return 12;
-    } else if (card.classList[index] == mastKozir && card.classList[card.classList.length - indexNameCard] == 'ten') {
+    } else if (card.classList[0] == mastKozir && card.classList[1] == 'ten') {
         return 13;
-    } else if (card.classList[index] == mastKozir && card.classList[card.classList.length - indexNameCard] == 'eleven') {
+    } else if (card.classList[0] == mastKozir && card.classList[1] == 'eleven') {
         return 14;
-    } else if (card.classList[index] == mastKozir && card.classList[card.classList.length - indexNameCard] == 'twelve') {
+    } else if (card.classList[0] == mastKozir && card.classList[1] == 'twelve') {
         return 15;
-    } else if (card.classList[index] == mastKozir && card.classList[card.classList.length - indexNameCard] == 'thirteen') {
+    } else if (card.classList[0] == mastKozir && card.classList[1] == 'thirteen') {
         return 16;
-    } else if (card.classList[index] == mastKozir && card.classList[card.classList.length - indexNameCard] == 'fourteen') {
+    } else if (card.classList[0] == mastKozir && card.classList[1] == 'fourteen') {
         return 17;
     }
-
-    // else {
-    //     alert('Произошла ошибка получения значения карты');
-    // }
 };
 
 function checkOnFiveIdenticallyCards(cardsAfterDistributionPlayer, cardsAfterDistributionComputer) { // Функция, которая проверяет, чтобы в начале не раздалось подряд 5 идентичных мастей, потому что по правилам игры при таком раскладе должна быть пересдача карт
@@ -276,19 +325,19 @@ function checkOnFiveIdenticallyCards(cardsAfterDistributionPlayer, cardsAfterDis
     }
 };
 
-function sortCardsForPlayer(cardsArr) { // Функция, которая сортирует карты по их значениям от большего к меньшему и выводит их красиво на странице
+function sortCardsForPlayer(cardsArr, className) { // Функция, которая сортирует карты по их значениям от большего к меньшему и выводит их красиво на странице
     let sortWeigthCards = [];
     let curr = 1;
 
     for (let i = 0; i < cardsArr.length; i++) {
-        sortWeigthCards.push(getweigthCardRegardingMasti(cardsArr[i], trumpCard, 1));
+        sortWeigthCards.push(getweigthCardRegardingMasti(cardsArr[i], trumpCard));
     }
 
     while (curr < 7) {
         let minWeigthCard = Math.min(...sortWeigthCards);
         let indexMinWeigthCard = sortWeigthCards.indexOf(minWeigthCard);
-        cardsArr[indexMinWeigthCard].classList.remove(cardsArr[indexMinWeigthCard].classList[1]);
-        cardsArr[indexMinWeigthCard].classList.add('card' + curr);
+        cardsArr[indexMinWeigthCard].classList.remove(cardsArr[indexMinWeigthCard].classList[3]);
+        cardsArr[indexMinWeigthCard].classList.add(className + curr);
 
         sortWeigthCards.splice(indexMinWeigthCard, 1, (100 + curr));
 
@@ -300,11 +349,11 @@ function checkAbilityBeatPlayerCard(cardsComputer, card) { // Функция, к
     let cardsAloneMasti = [];
     let weigthCardsAloneMasti = [];
     let mastCard = card.classList[0];
-    let weigthCard = getweigthCardRegardingMasti(card, trumpCard, 2);
+    let weigthCard = getweigthCardRegardingMasti(card, trumpCard);
 
     for (let i = 0; i < cardsComputer.length; i++) {
         if (cardsComputer[i].classList.contains(mastCard)) {
-            if (getweigthCardRegardingMasti(cardsComputer[i], trumpCard, 1) > weigthCard) {
+            if (getweigthCardRegardingMasti(cardsComputer[i], trumpCard) > weigthCard) {
                 cardsAloneMasti.push(cardsComputer[i]);
             }
         }
@@ -314,7 +363,7 @@ function checkAbilityBeatPlayerCard(cardsComputer, card) { // Функция, к
         return false;
     } else {
         for (let i = 0; i < cardsAloneMasti.length; i++) {
-            weigthCardsAloneMasti.push(getweigthCardRegardingMasti(cardsAloneMasti[i], trumpCard, 1));
+            weigthCardsAloneMasti.push(getweigthCardRegardingMasti(cardsAloneMasti[i], trumpCard));
         }
 
         let minWeigthCard = Math.min(...weigthCardsAloneMasti);
@@ -338,7 +387,7 @@ function getKozirForBeatPlayerCard(cardsComputer) { // Функция, кото�
         return false;
     } else {
         for (let i = 0; i < kozirsComputerArr.length; i++) {
-            weigthComputerArr.push(getweigthCardRegardingMasti(kozirsComputerArr[i], trumpCard, 1));
+            weigthComputerArr.push(getweigthCardRegardingMasti(kozirsComputerArr[i], trumpCard));
         }
 
         let minWeigthCard = Math.min(...weigthComputerArr);
@@ -347,6 +396,8 @@ function getKozirForBeatPlayerCard(cardsComputer) { // Функция, кото�
         return kozirsComputerArr[index];
     }
 };
+
+
 
 function getRandomIntInclusive(min, max) { // Функция, которая отдаем рандомное число в соотвествии с переданными промежутками
     min = Math.ceil(min);

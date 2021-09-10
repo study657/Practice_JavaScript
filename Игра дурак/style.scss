@@ -1,8 +1,9 @@
-@mixin show_card_in_computer_block($picture, $height, $width, $left) {
+@mixin show_card_in_computer_block($picture, $height, $width, $left, $value) {
     background: url($picture) center center/contain no-repeat;
     height: $height;
     width: $width;
     left: $left;
+    z-index: $value;
 }
 
 @mixin show_card_in_player_block($left, $value) {
@@ -23,31 +24,76 @@
     position: relative;
 
     .zero1 {
-        @include show_card_in_computer_block('images/cards/reverseSide.jpg', 160px, 110px, 0);
+        @include show_card_in_computer_block('images/cards/reverseSide.jpg', 160px, 110px, 0, 1);
     }
 
     .zero2 {
-        @include show_card_in_computer_block('images/cards/reverseSide.jpg', 160px, 110px, 70px);
+        @include show_card_in_computer_block('images/cards/reverseSide.jpg', 160px, 110px, 70px, 2);
         position: absolute;
     }
 
     .zero3 {
-        @include show_card_in_computer_block('images/cards/reverseSide.jpg', 160px, 110px, 140px);
+        @include show_card_in_computer_block('images/cards/reverseSide.jpg', 160px, 110px, 140px, 3);
         position: absolute;
     }
 
     .zero4 {
-        @include show_card_in_computer_block('images/cards/reverseSide.jpg', 160px, 110px, 210px);
+        @include show_card_in_computer_block('images/cards/reverseSide.jpg', 160px, 110px, 210px, 4);
         position: absolute;
     }
 
     .zero5 {
-        @include show_card_in_computer_block('images/cards/reverseSide.jpg', 160px, 110px, 280px);
+        @include show_card_in_computer_block('images/cards/reverseSide.jpg', 160px, 110px, 280px, 5);
         position: absolute;
     }
 
     .zero6 {
-        @include show_card_in_computer_block('images/cards/reverseSide.jpg', 160px, 110px, 350px);
+        @include show_card_in_computer_block('images/cards/reverseSide.jpg', 160px, 110px, 350px, 6);
+        position: absolute;
+    }
+
+    .zero7 {
+        @include show_card_in_computer_block('images/cards/reverseSide.jpg', 160px, 110px, 420px, 7);
+        position: absolute;
+    }
+
+    .zero8 {
+        @include show_card_in_computer_block('images/cards/reverseSide.jpg', 160px, 110px, 490px, 8);
+        position: absolute;
+    }
+
+    .zero9 {
+        @include show_card_in_computer_block('images/cards/reverseSide.jpg', 160px, 110px, 560px, 9);
+        position: absolute;
+    }
+
+    .zero10 {
+        @include show_card_in_computer_block('images/cards/reverseSide.jpg', 160px, 110px, 630px, 10);
+        position: absolute;
+    }
+
+    .zero11 {
+        @include show_card_in_computer_block('images/cards/reverseSide.jpg', 160px, 110px, 700px, 11);
+        position: absolute;
+    }
+
+    .zero12 {
+        @include show_card_in_computer_block('images/cards/reverseSide.jpg', 160px, 110px, 770px, 12);
+        position: absolute;
+    }
+
+    .zero13 {
+        @include show_card_in_computer_block('images/cards/reverseSide.jpg', 160px, 110px, 840px, 13);
+        position: absolute;
+    }
+
+    .zero14 {
+        @include show_card_in_computer_block('images/cards/reverseSide.jpg', 160px, 110px, 910px, 14);
+        position: absolute;
+    }
+
+    .zero15 {
+        @include show_card_in_computer_block('images/cards/reverseSide.jpg', 160px, 110px, 980px, 15);
         position: absolute;
     }
 }
@@ -210,6 +256,10 @@
     .koloda {
         position: relative;
         width: auto;
+
+        .controlGame{
+            display: none;
+        }
 
         .card_kozir {
             position: absolute;
