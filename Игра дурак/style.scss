@@ -257,7 +257,11 @@
         position: relative;
         width: auto;
 
-        .controlGame{
+        .controlGameBita{
+            display: none;
+        }
+
+        .controlGameVse{
             display: none;
         }
 

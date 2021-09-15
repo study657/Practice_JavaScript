@@ -337,7 +337,11 @@
   width: auto;
 }
 
-.game_block .koloda .controlGame {
+.game_block .koloda .controlGameBita {
+  display: none;
+}
+
+.game_block .koloda .controlGameVse {
   display: none;
 }
 
