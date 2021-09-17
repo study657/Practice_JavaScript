@@ -3,6 +3,7 @@
   display: -ms-flexbox;
   display: flex;
   position: relative;
+  height: 200px;
 }
 
 .computer_block .zero1 {
@@ -211,6 +212,96 @@
 }
 
 .player_block .card6:hover {
+  top: -15px;
+}
+
+.player_block .card7 {
+  position: absolute;
+  left: 420px;
+  z-index: 7;
+}
+
+.player_block .card7:hover {
+  top: -15px;
+}
+
+.player_block .card8 {
+  position: absolute;
+  left: 490px;
+  z-index: 8;
+}
+
+.player_block .card8:hover {
+  top: -15px;
+}
+
+.player_block .card9 {
+  position: absolute;
+  left: 560px;
+  z-index: 9;
+}
+
+.player_block .card9:hover {
+  top: -15px;
+}
+
+.player_block .card10 {
+  position: absolute;
+  left: 630px;
+  z-index: 10;
+}
+
+.player_block .card10:hover {
+  top: -15px;
+}
+
+.player_block .card11 {
+  position: absolute;
+  left: 700px;
+  z-index: 11;
+}
+
+.player_block .card11:hover {
+  top: -15px;
+}
+
+.player_block .card12 {
+  position: absolute;
+  left: 770px;
+  z-index: 12;
+}
+
+.player_block .card12:hover {
+  top: -15px;
+}
+
+.player_block .card13 {
+  position: absolute;
+  left: 840px;
+  z-index: 13;
+}
+
+.player_block .card13:hover {
+  top: -15px;
+}
+
+.player_block .card14 {
+  position: absolute;
+  left: 910px;
+  z-index: 14;
+}
+
+.player_block .card14:hover {
+  top: -15px;
+}
+
+.player_block .card15 {
+  position: absolute;
+  left: 980px;
+  z-index: 15;
+}
+
+.player_block .card15:hover {
   top: -15px;
 }
 

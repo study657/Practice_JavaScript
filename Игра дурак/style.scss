@@ -22,6 +22,7 @@
 .computer_block {
     display: flex;
     position: relative;
+    height: 200px;
 
     .zero1 {
         @include show_card_in_computer_block('images/cards/reverseSide.jpg', 160px, 110px, 0, 1);
@@ -133,6 +134,42 @@
 
     .card6 {
         @include show_card_in_player_block(350px, 6);
+    }
+    
+    .card7 {
+        @include show_card_in_player_block(420px, 7);
+    }
+
+    .card8 {
+        @include show_card_in_player_block(490px, 8);
+    }
+
+    .card9 {
+        @include show_card_in_player_block(560px, 9);
+    }
+
+    .card10 {
+        @include show_card_in_player_block(630px, 10);
+    }
+
+    .card11 {
+        @include show_card_in_player_block(700px, 11);
+    }
+
+    .card12 {
+        @include show_card_in_player_block(770px, 12);
+    }
+
+    .card13 {
+        @include show_card_in_player_block(840px, 13);
+    }
+
+    .card14 {
+        @include show_card_in_player_block(910px, 14);
+    }
+
+    .card15 {
+        @include show_card_in_player_block(980px, 15);
     }
 }
 

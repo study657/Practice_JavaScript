@@ -81,12 +81,62 @@ function logicGame() {
             }
         }
     } else { // ХОДИТ КОМПЬЮТЕР
-        console.log('Ходит компьютер');
+        if (tableCurr == 0) { // Проверка есть ли карты на столе или же нет, т.е. когда игрок бьет карту, то в след.раз логика компьютера меняется
+            controlGameVse.style.display = 'block';
+            let weigthCards = [];
+            for (let i = 0; i < cardsComputer.length; i++) {
+                weigthCards.push(getweigthCardRegardingMasti(cardsComputer[i], trumpCard));
+            }
+
+            let minCardWeigth = Math.min(...weigthCards);
+            let index = weigthCards.indexOf(minCardWeigth);
+            let minCard = cardsComputer[index];
+            cardsComputer.splice(index, 1);
+            cardsOnTable.push(minCard);
+            tableCurr++;
+            console.log(minCard);
+
+
+            minCard.classList.remove(minCard.classList[minCard.classList.length - 1]);
+            minCard.classList.remove('card_computer');
+            minCard.classList.add('beat' + tableCurr);
+            minCard.style.backgroundImage = 'url(images/cards/' + minCard.classList[0] + minCard.classList[1] + '.jpg)';
+            table_game.append(minCard);
+
+
+
+
+            let cardsForBeatCardComputer = getAbilityBeatComputerCard(cardsPlayer, minCard);
+
+            if (cardsForBeatCardComputer.length > 0) { // Если игрок может побить карту, тогда вешается обработчик события на доступные карты для битья
+                for (let i = 0; i < cardsForBeatCardComputer.length; i++) {
+                    cardsForBeatCardComputer[i].addEventListener('click', add);
+                }
+            } else { // Если игроку просто нечем бить карту, тогда мы вешаем логику на кнопочку "Всё"
+                controlGameVse.addEventListener('click', function(){
+                    // ?????????????????????????????????????????????????????????????????????????????????????????????????????????
+
+
+
+                    
+                });
+            }
+        } else { // Т.е. игрок побил первую карту компьютера, поэтому должна быть уже другая логика выборки карт, которые компьютер может подкинуть или же нет
+            for (let i = 0; i < cardsPlayer.length; i++) {
+                cardsPlayer[i].removeEventListener('click', add);
+            }
+
+
+
+
+
+
+        }
     }
 };
 logicGame();
 
-function logicForMoviePlayer() { // Функция-обработчик события, которая вешается на карту и выполняет определенную логику с хотьбой
+function logicForMoviePlayer() { // Функция-обработчик события, которая вешается на карту и выполняет определенную логику с ходом, при условии что компьютер отбивается
     tableCurr++; // Увеличивает текущий показатель карт на столе
     let index = cardsPlayer.indexOf(this); // Получаем индекс карты, которую выбрали для хода из общего массива карт игрока
     this.classList.remove(this.classList[this.classList.length - 1]); // Удаляем последний класс у данной карты
@@ -185,7 +235,6 @@ function logicForMoviePlayer() { // Функция-обработчик собы
                 computer_block.append(cardsOnTable[i]); // Показываем эту карту в картах компьютера
                 cardsOnTable[i].style.backgroundImage = 'url(images/cards/reverseSide.jpg'; // Отображаем ее
                 quantityCardsComputer++; // Увеличиваем кол-во карт у игрока на 1
-                console.log(quantityCardsComputer);
             }
             sortCardsForPlayer(cardsComputer, 'zero'); // Производим сортировку всех текущих карт игрока
 
@@ -198,6 +247,23 @@ function logicForMoviePlayer() { // Функция-обработчик собы
         logicGame();
         console.log('Не могу побить карту');
     }
+};
+
+function add() {
+    controlGameVse.style.display = 'none';
+
+    let index = cardsPlayer.indexOf(this);
+    this.classList.remove(this.classList[this.classList.length - 1]);
+    this.classList.remove('card_player');
+    this.classList.add('recapture' + tableCurr);
+    cardsPlayer.splice(index, 1);
+    table_game.append(this);
+
+    cardsOnTable.push(this);
+    tableCurr++;
+
+    this.removeEventListener('click', add);
+    logicGame();
 };
 
 
@@ -443,6 +509,24 @@ function getKozirForBeatPlayerCard(cardsComputer) { // Функция, кото�
 
         return kozirsComputerArr[index];
     }
+};
+
+function getAbilityBeatComputerCard(cardsPlayer, cardComputer) { // Функция, которая будет возвращать массив с картами, которые игрок может побить в данный момент исходя из хода компьютера
+    let result = [];
+    let mastCard = cardComputer.classList[0];
+    let weigthCardComputer = getweigthCardRegardingMasti(cardComputer, trumpCard);
+
+    for (let i = 0; i < cardsPlayer.length; i++) {
+        if (cardsPlayer[i].classList[0] == mastCard && getweigthCardRegardingMasti(cardsPlayer[i], trumpCard) > weigthCardComputer) {
+            result.push(cardsPlayer[i]);
+        }
+
+        if (cardsPlayer[i].classList[0] == trumpCard && getweigthCardRegardingMasti(cardsPlayer[i], trumpCard) > weigthCardComputer) {
+            result.push(cardsPlayer[i]);
+        }
+    }
+
+    return result;
 };
 
 
