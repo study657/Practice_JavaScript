@@ -293,6 +293,7 @@
     .koloda {
         position: relative;
         width: auto;
+        left: 700px; // ДЛЯ ДЕБАГЕРА И ОТЛАДКИ КОДА (УДАЛИТЬ ПОТОМ)
 
         .controlGameBita{
             display: none;

@@ -53,10 +53,10 @@ function startGame() { // Функция, которая делает разда
 };
 startGame();
 
-console.log(startMovie);
-console.log(cardsPlayer);
-console.log(cardsComputer);
-console.log(allCards);
+// console.log(startMovie);
+// console.log(cardsPlayer);
+// console.log(cardsComputer);
+// console.log(allCards);
 
 
 function logicGame() {
@@ -109,6 +109,9 @@ function logicGame() {
 
             let cardsForBeatCardComputer = getAbilityBeatComputerCard(cardsPlayer, minCard); // Получаем все карты игрока, которые могут побить карту компьютера
 
+            controlGameVse.style.display = 'block';
+            controlGameVse.addEventListener('click', logicForVseButton);
+
             if (cardsForBeatCardComputer.length > 0) { // Если игрок может побить карту, тогда вешается обработчик события на доступные карты для битья
                 for (let i = 0; i < cardsForBeatCardComputer.length; i++) {
                     cardsForBeatCardComputer[i].addEventListener('click', logicForMovieComputer);
@@ -143,33 +146,7 @@ function logicGame() {
                     }
                 }
 
-
-
-
-                controlGameVse.addEventListener('click', function () {
-                    controlGameVse.style.display = 'none'; // При нажатии на кнопку эту кнопка удаляется со страницы
-                    let quantityCardsComputer = 6 - cardsComputer.length; // Получаем кол-во карт, которое нужно компьютеру (до 6 карт)
-                    distributionСardsAtBeginningGame('card_computer', 'zero', computer_block, cardsComputer, quantityCardsComputer); // Раздаем компьютеру карты до 6 штук
-                    sortCardsForPlayer(cardsComputer, 'zero'); // Сортируем красиво карты компьютера
-
-                    let quantityCardsPlayer = cardsPlayer.length; // Получаем текущее кол-во карт у Игрока
-                    for (let i = 0; i < cardsOnTable.length; i++) { // Запускается цикл, который будет крутиться столько раз, сколько было карт на столе
-                        cardsOnTable[i].classList.remove(cardsOnTable[i].classList[cardsOnTable[i].classList.length - 1]); // Удаляем с карт на столе последний класс
-                        cardsOnTable[i].classList.add('card_player'); // Удаляем с карт на столе класс card_computer
-                        cardsOnTable[i].classList.add('card' + (quantityCardsPlayer + 1)); // Добавляем класс zero
-                        cardsPlayer.push(cardsOnTable[i]); // Добавляем в массив с картами компьютера все карты со стола
-                        player_block.append(cardsOnTable[i]); // Показываем эту карту в картах компьютера
-                        cardsOnTable[i].style.backgroundImage = 'url(images/cards/' + cardsOnTable[i].classList[0] + cardsOnTable[i].classList[1] + '.jpg)'; // Отображаем ее
-                        quantityCardsPlayer++; // Увеличиваем кол-во карт у игрока на 1
-                    }
-                    sortCardsForPlayer(cardsPlayer, 'card'); // Производим сортировку всех текущих карт игрока
-
-                    startMovie = false; // Гооврим, что ходит попрежнему компьютер
-                    cardsOnTable.length = 0; // Обнуляем наш массив с картами на столе
-                    tableCurr = 0; // Обнулили текущий показатель карт на столе
-                    checkCanBeat = true; // Перевели параметр по возможности отбития карты в true
-                    logicGame();
-                });
+                controlGameVse.addEventListener('click', logicForVseButton);
             }
         } else { // Т.е. игрок побил первую карту компьютера, поэтому должна быть уже другая логика выборки карт, которые компьютер может подкинуть или же нет
             for (let i = 0; i < cardsPlayer.length; i++) { // Снимаем логику предыдующую с карт
@@ -233,11 +210,6 @@ function logicGame() {
 
 
                         // ВЫПОЛНЯЕТСЯ ЛОГИКА КОГДА ИГРОК НЕ МОЖЕТ ПОБИТЬ ПОДКИДАННЫЕ КАРТЫ КОМПЬЮТЕРА!!!
-
-
-
-
-                        controlGameVse.style.display = 'block';
                         let cardsForGame = []; // Получаем карты компьютера, которые он может подкинуть игроку (не нужные карты)
 
                         for (let i = 0; i < cardsOnTable.length; i++) {
@@ -268,30 +240,8 @@ function logicGame() {
 
 
 
-                        controlGameVse.addEventListener('click', function () {
-                            controlGameVse.style.display = 'none'; // При нажатии на кнопку эту кнопка удаляется со страницы
-                            let quantityCardsComputer = 6 - cardsComputer.length; // Получаем кол-во карт, которое нужно компьютеру (до 6 карт)
-                            distributionСardsAtBeginningGame('card_computer', 'zero', computer_block, cardsComputer, quantityCardsComputer); // Раздаем компьютеру карты до 6 штук
-                            sortCardsForPlayer(cardsComputer, 'zero'); // Сортируем красиво карты компьютера
-
-                            let quantityCardsPlayer = cardsPlayer.length; // Получаем текущее кол-во карт у Игрока
-                            for (let i = 0; i < cardsOnTable.length; i++) { // Запускается цикл, который будет крутиться столько раз, сколько было карт на столе
-                                cardsOnTable[i].classList.remove(cardsOnTable[i].classList[cardsOnTable[i].classList.length - 1]); // Удаляем с карт на столе последний класс
-                                cardsOnTable[i].classList.add('card_player'); // Удаляем с карт на столе класс card_computer
-                                cardsOnTable[i].classList.add('card' + (quantityCardsPlayer + 1)); // Добавляем класс zero
-                                cardsPlayer.push(cardsOnTable[i]); // Добавляем в массив с картами компьютера все карты со стола
-                                player_block.append(cardsOnTable[i]); // Показываем эту карту в картах компьютера
-                                cardsOnTable[i].style.backgroundImage = 'url(images/cards/' + cardsOnTable[i].classList[0] + cardsOnTable[i].classList[1] + '.jpg)'; // Отображаем ее
-                                quantityCardsPlayer++; // Увеличиваем кол-во карт у игрока на 1
-                            }
-                            sortCardsForPlayer(cardsPlayer, 'card'); // Производим сортировку всех текущих карт игрока
-
-                            startMovie = false; // Гооврим, что ходит попрежнему компьютер
-                            cardsOnTable.length = 0; // Обнуляем наш массив с картами на столе
-                            tableCurr = 0; // Обнулили текущий показатель карт на столе
-                            checkCanBeat = true; // Перевели параметр по возможности отбития карты в true
-                            logicGame();
-                        });
+                        controlGameVse.style.display = 'block';
+                        controlGameVse.addEventListener('click', logicForVseButton);
                     }
                 } else { // Если карт для подкидывания у компьютера больше нет, тогда невидимая бита
                     for (let i = 0; i < cardsOnTable.length; i++) { // Очистили все карты со стола
@@ -368,35 +318,10 @@ function logicForMoviePlayer() { // Функция-обработчик собы
         }
 
         controlGameBita.style.display = 'block'; // Затем показали кнопочку "Бита" на нашей странице
-
-        controlGameBita.addEventListener('click', function () { // На кнопочку "Бита" навесили обработчик события
-            controlGameBita.style.display = 'none'; // При нажатии на кнопочку, удалили кнопочку "Бита" со страницы
-
-            for (let i = 0; i < cardsOnTable.length; i++) { // Очистили все карты со стола
-                cardsOnTable[i].remove();
-            }
-            for (let i = 0; i < cardsPlayer.length; i++) { // Удалили все события с карт игрока
-                cardsPlayer[i].removeEventListener('click', logicForMoviePlayer);
-            }
-
-            cardsOnTable.length = 0; // Зачистили массив с картами на столе
-            tableCurr = 0; // Обнулили текущий показатель карт на столе
-            startMovie = false; // Сказали, что ходит теперь компьютер
-
-            let quantityCardsPlayer = 6 - cardsPlayer.length,
-                quantityCardsComputer = 6 - cardsComputer.length; // Взяли кол-во карт, которое не достает до нужного (6 карт)
-            distributionСardsAtBeginningGame('card_player', 'card', player_block, cardsPlayer, quantityCardsPlayer, 'showCard'); // Раздали карты сначала игроку, т.к. он ходил первый
-            distributionСardsAtBeginningGame('card_computer', 'zero', computer_block, cardsComputer, quantityCardsComputer); // Раздали карты компьютеру, т.к. он отбивался
-            sortCardsForPlayer(cardsPlayer, 'card'); // Произвели сортировку карт игрока
-            sortCardsForPlayer(cardsComputer, 'zero'); // Произвели сортировку карт игрока для того, чтобы они красиво выстроились в ряд
-            logicGame();
-            console.log(allCards);
-            console.log(cardsPlayer);
-            console.log(cardsComputer);
-        });
+        controlGameBita.addEventListener('click', logicForBitaButton); // На кнопочку "Бита" навесили обработчик события
 
         logicGame();
-        console.log(cardsOnTable);
+        // console.log(cardsOnTable);
     } else { // Проверка на то, что компьютер уже не может побить карту
         checkCanBeat = false; // В параметр записали, что карта уже не может быть побита, а значит логика выше уже не исполнется
         controlGameBita.style.display = 'none'; // Убрали кнопочку "Бита"
@@ -446,15 +371,65 @@ function logicForMovieComputer() { // Функция-обработчик соб
     table_game.append(this);
 
     cardsOnTable.push(this);
-    // tableCurr++;
 
     this.removeEventListener('click', logicForMovieComputer);
     logicGame();
 };
 
+function logicForBitaButton() { // Функция-обработчик события, которая вешается на кнопочку Бита и при нажатии на нее выполняется определенная логика
+    controlGameBita.style.display = 'none'; // При нажатии на кнопочку, удалили кнопочку "Бита" со страницы
+
+    for (let i = 0; i < cardsOnTable.length; i++) { // Очистили все карты со стола
+        cardsOnTable[i].remove();
+    }
+    for (let i = 0; i < cardsPlayer.length; i++) { // Удалили все события с карт игрока
+        cardsPlayer[i].removeEventListener('click', logicForMoviePlayer);
+    }
+
+    cardsOnTable.length = 0; // Зачистили массив с картами на столе
+    tableCurr = 0; // Обнулили текущий показатель карт на столе
+    startMovie = false; // Сказали, что ходит теперь компьютер
+
+    let quantityCardsPlayer = 6 - cardsPlayer.length,
+        quantityCardsComputer = 6 - cardsComputer.length; // Взяли кол-во карт, которое не достает до нужного (6 карт)
+    distributionСardsAtBeginningGame('card_player', 'card', player_block, cardsPlayer, quantityCardsPlayer, 'showCard'); // Раздали карты сначала игроку, т.к. он ходил первый
+    distributionСardsAtBeginningGame('card_computer', 'zero', computer_block, cardsComputer, quantityCardsComputer); // Раздали карты компьютеру, т.к. он отбивался
+    sortCardsForPlayer(cardsPlayer, 'card'); // Произвели сортировку карт игрока
+    sortCardsForPlayer(cardsComputer, 'zero'); // Произвели сортировку карт игрока для того, чтобы они красиво выстроились в ряд
+    logicGame();
+};
+
+function logicForVseButton(){
+    controlGameVse.style.display = 'none'; // При нажатии на кнопку эту кнопка удаляется со страницы
+    let quantityCardsComputer = 6 - cardsComputer.length; // Получаем кол-во карт, которое нужно компьютеру (до 6 карт)
+    distributionСardsAtBeginningGame('card_computer', 'zero', computer_block, cardsComputer, quantityCardsComputer); // Раздаем компьютеру карты до 6 штук
+    sortCardsForPlayer(cardsComputer, 'zero'); // Сортируем красиво карты компьютера
+
+    let quantityCardsPlayer = cardsPlayer.length; // Получаем текущее кол-во карт у Игрока
+    for (let i = 0; i < cardsOnTable.length; i++) { // Запускается цикл, который будет крутиться столько раз, сколько было карт на столе
+        cardsOnTable[i].classList.remove(cardsOnTable[i].classList[cardsOnTable[i].classList.length - 1]); // Удаляем с карт на столе последний класс
+        cardsOnTable[i].classList.add('card_player'); // Удаляем с карт на столе класс card_computer
+        cardsOnTable[i].classList.add('card' + (quantityCardsPlayer + 1)); // Добавляем класс zero
+        cardsPlayer.push(cardsOnTable[i]); // Добавляем в массив с картами компьютера все карты со стола
+        player_block.append(cardsOnTable[i]); // Показываем эту карту в картах компьютера
+        cardsOnTable[i].style.backgroundImage = 'url(images/cards/' + cardsOnTable[i].classList[0] + cardsOnTable[i].classList[1] + '.jpg)'; // Отображаем ее
+        quantityCardsPlayer++; // Увеличиваем кол-во карт у игрока на 1
+    }
+    sortCardsForPlayer(cardsPlayer, 'card'); // Производим сортировку всех текущих карт игрока
+
+    startMovie = false; // Гооврим, что ходит попрежнему компьютер
+    cardsOnTable.length = 0; // Обнуляем наш массив с картами на столе
+    tableCurr = 0; // Обнулили текущий показатель карт на столе
+    checkCanBeat = true; // Перевели параметр по возможности отбития карты в true
+    logicGame();
+}
+
 
 function distributionСardsAtBeginningGame(card_ClassName, cardOrZeroClassName, parentBlock, cardsPerson, quantityCardsForDistribution, showCard = null) { // Функция, которая рандомно раздает карты обоим игрокам в начале игры, а так же помещает эти карты в нужные массивы в зависимости от того, кому карта раздалась
-    for (let i = 0; i < quantityCardsForDistribution; i++) {
+    let paramQualityCards = quantityCardsForDistribution;
+    let i = 0;
+
+    while (paramQualityCards > 0) {
         let check = allMasti.some(function (elem) {
             if (allCards[elem].length !== 0) {
                 return true;
@@ -478,18 +453,29 @@ function distributionСardsAtBeginningGame(card_ClassName, cardOrZeroClassName, 
                     card.style.backgroundImage = 'url(images/cards/' + randomMasti + randomCard + '.jpg)';
                 }
                 cardsPerson.push(card);
-            } else {
-                i - 1;
+                paramQualityCards--;
+                i++;
             }
-        } else if (!check && cardKozir !== undefined) {
+        }
+
+        if (!check && cardKozir !== undefined) {
             all_cards.style.display = 'none';
             cardKozir.classList.remove('card_kozir');
             cardKozir.classList.add(card_ClassName);
             cardKozir.classList.add(cardOrZeroClassName + (i + 1));
+            if(parentBlock == computer_block){
+                cardKozir.style.backgroundImage = 'url(images/cards/reverseSide.jpg';
+            }
+            cardsPerson.push(cardKozir);
+            parentBlock.append(cardKozir);
             cardKozir = undefined;
             break;
         }
-    }
+
+        if (!check && cardKozir == undefined) {
+            break;
+        }
+    };
 
     for (let k = 0; k < cardsPerson.length; k++) { // Добавление тегов card или zero по номерам грамотно!
         cardsPerson[k].classList.remove(cardsPerson[k].classList[cardsPerson[k].classList.length - 1]);

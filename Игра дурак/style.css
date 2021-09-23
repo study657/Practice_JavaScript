@@ -426,6 +426,7 @@
 .game_block .koloda {
   position: relative;
   width: auto;
+  left: 700px;
 }
 
 .game_block .koloda .controlGameBita {
