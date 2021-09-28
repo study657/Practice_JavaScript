@@ -293,13 +293,16 @@
     .koloda {
         position: relative;
         width: auto;
-        left: 700px; // ДЛЯ ДЕБАГЕРА И ОТЛАДКИ КОДА (УДАЛИТЬ ПОТОМ)
 
         .controlGameBita{
             display: none;
         }
 
         .controlGameVse{
+            display: none;
+        }
+
+        .controlGameBery{
             display: none;
         }
 
@@ -320,4 +323,12 @@
             background: url(images/cards/reverseSide.jpg) center center/contain no-repeat;
         }
     }
+}
+
+.statisticBlock{
+    margin-top: 200px;
+    color: green;
+    text-align: center;
+    font-size: 20px;
+    font-weight: 900;
 }

@@ -426,7 +426,6 @@
 .game_block .koloda {
   position: relative;
   width: auto;
-  left: 700px;
 }
 
 .game_block .koloda .controlGameBita {
@@ -434,6 +433,10 @@
 }
 
 .game_block .koloda .controlGameVse {
+  display: none;
+}
+
+.game_block .koloda .controlGameBery {
   display: none;
 }
 
@@ -452,5 +455,13 @@
   width: 114px;
   height: 162px;
   background: url(images/cards/reverseSide.jpg) center center/contain no-repeat;
+}
+
+.statisticBlock {
+  margin-top: 200px;
+  color: green;
+  text-align: center;
+  font-size: 20px;
+  font-weight: 900;
 }
 /*# sourceMappingURL=style.css.map */
